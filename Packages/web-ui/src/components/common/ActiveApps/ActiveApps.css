@@ -1,0 +1,65 @@
+/* ==================== ACTIVE APPS (EMPTY STATE) ==================== */
+
+.ActiveApps-Container {
+  position: absolute;
+  bottom: 2.5%;
+  left: 2%;
+  width: 31%;
+  height: 30%;
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-responsive-xl);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-base);
+  transition: all var(--transition-slow);
+  overflow: hidden;
+  container-type: size;
+}
+
+.ActiveApps-Container:hover {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ==================== DIAGONAL X ==================== */
+
+.ActiveApps-Container::before,
+.ActiveApps-Container::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background: linear-gradient(
+    to bottom,
+    transparent 49%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 51%
+  );
+  pointer-events: none;
+  transition: opacity var(--transition-slow);
+}
+
+.ActiveApps-Container::before {
+  transform: rotate(27.5deg);
+}
+
+.ActiveApps-Container::after {
+  transform: rotate(-27.5deg);
+}
+
+/* ==================== CONTENT ==================== */
+
+.apps-content {
+  position: relative;
+  z-index: 1;
+  padding: var(--space-lg);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-align: center;
+}

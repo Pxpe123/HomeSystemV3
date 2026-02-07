@@ -1,0 +1,15 @@
+﻿services:
+  centralserver:
+    image: mcr.microsoft.com/dotnet/aspnet:9.0
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /opt/CentralServer/ServerFiles:/app
+    command:
+      - dotnet
+      - /app/CentralServer.dll
+    environment:
+      - PORT=8080
+      - DEVMODE=true
+      - PC={"MacAddress":"D8:BB:C1:42:48:8C","IP":"192.168.50.75","BroadCastIP":"192.168.50.255","Shutdown":true,"WakeOnLan":true}
+networks: { }

@@ -1,0 +1,7 @@
+.homescreen-bg {
+  min-height: 100vh;
+  background-image: url(/background.jpg);
+  background-size: cover;
+  background-position: center;
+  filter: blur(var(--homescreen-bg-blur)); 
+}

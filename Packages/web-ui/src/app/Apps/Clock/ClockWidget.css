@@ -1,0 +1,629 @@
+/* Clock Widget - Scoped styles */
+
+.Clock-Container {
+  position: absolute;
+  top: 2.5%;
+  left: 2%;
+  width: 31%;
+  height: 62.5%;
+  padding: var(--space-responsive-lg);
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-responsive-xl);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: var(--z-base);
+  transition: all var(--transition-slow);
+  overflow: hidden;
+  container-type: size;
+}
+
+.Clock-Container:hover {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ==================== DYNAMIC LIGHTING EFFECTS ==================== */
+.Clock-Container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 3s var(--ease-smooth);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: var(--radius-xl);
+}
+
+.Clock-Container.day::before {
+  opacity: 0.12;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255, 220, 100, 0.6) 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(255, 200, 55, 0.15) 0%, transparent 70%);
+}
+
+.Clock-Container.sunrise::before {
+  opacity: 0.15;
+  background:
+    radial-gradient(ellipse 140% 60% at 50% 100%, rgba(255, 140, 0, 0.7) 0%, rgba(255, 105, 180, 0.4) 30%, transparent 60%),
+    linear-gradient(to top, rgba(255, 140, 0, 0.2) 0%, transparent 50%);
+}
+
+.Clock-Container.sunset::before {
+  opacity: 0.15;
+  background:
+    radial-gradient(ellipse 140% 60% at 50% 100%, rgba(255, 99, 71, 0.7) 0%, rgba(138, 43, 226, 0.5) 30%, transparent 60%),
+    linear-gradient(to top, rgba(255, 80, 50, 0.2) 0%, rgba(138, 43, 226, 0.15) 50%, transparent 70%);
+}
+
+.Clock-Container.night::before {
+  opacity: 0.1;
+  background:
+    radial-gradient(ellipse 100% 70% at 50% 0%, rgba(100, 100, 255, 0.4) 0%, rgba(72, 61, 139, 0.25) 40%, transparent 70%),
+    radial-gradient(circle at 30% 30%, rgba(150, 150, 255, 0.15) 0%, transparent 50%);
+}
+
+.Clock-Container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==================== CELESTIAL ARC ==================== */
+.Clock-Container .celestial-arc {
+  position: relative;
+  width: 100%;
+  height: 14%;
+  min-height: 50px;
+  max-height: 70px;
+}
+
+.Clock-Container .arc-svg {
+  width: 100%;
+  height: 100%;
+  color: var(--text-muted);
+}
+
+.Clock-Container .celestial-body {
+  position: absolute;
+  top: 65%;
+  font-size: var(--icon-size-2xl);
+  transition: all 1s var(--ease-smooth);
+  animation: celestialPulse 2s ease-in-out infinite;
+}
+
+@keyframes celestialPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+.Clock-Container.day .celestial-body {
+  color: #FFD93D;
+  filter: drop-shadow(0 0 20px rgba(255, 217, 61, 1)) drop-shadow(0 0 40px rgba(255, 200, 55, 0.8));
+}
+
+.Clock-Container.sunrise .celestial-body {
+  color: #FFA500;
+  filter: drop-shadow(0 0 20px rgba(255, 165, 0, 1)) drop-shadow(0 0 40px rgba(255, 140, 0, 0.9));
+}
+
+.Clock-Container.sunset .celestial-body {
+  color: #FF6B4A;
+  filter: drop-shadow(0 0 20px rgba(255, 107, 74, 1)) drop-shadow(0 0 40px rgba(255, 99, 71, 0.9));
+}
+
+.Clock-Container.night .celestial-body {
+  color: #A8C8FF;
+  filter: drop-shadow(0 0 20px rgba(168, 200, 255, 1)) drop-shadow(0 0 40px rgba(150, 180, 255, 0.8));
+}
+
+/* ==================== HEADER ==================== */
+.Clock-Container .clock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-responsive-sm);
+  flex-shrink: 0;
+}
+
+.Clock-Container .header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.Clock-Container .header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-responsive-sm);
+}
+
+.Clock-Container .day-name {
+  font-size: var(--font-responsive-xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.Clock-Container .date-full {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-responsive-xs);
+}
+
+.Clock-Container .date-day {
+  font-size: var(--font-responsive-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-tertiary);
+}
+
+.Clock-Container .date-year {
+  font-size: var(--font-responsive-sm);
+  color: var(--text-muted);
+}
+
+.Clock-Container .week-badge {
+  padding: var(--space-responsive-xs) var(--space-responsive-sm);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  font-size: var(--font-responsive-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-secondary);
+}
+
+.Clock-Container .time-period-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-responsive-xs);
+  padding: var(--space-responsive-xs) var(--space-responsive-sm);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-secondary);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.Clock-Container .period-label {
+  font-size: var(--font-responsive-sm);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.Clock-Container.day .time-period-indicator {
+  background: rgba(255, 200, 55, 0.15);
+  border-color: rgba(255, 200, 55, 0.4);
+}
+
+.Clock-Container.day .period-label {
+  color: rgba(255, 180, 20, 1);
+}
+
+.Clock-Container.sunrise .time-period-indicator {
+  background: rgba(255, 140, 0, 0.15);
+  border-color: rgba(255, 140, 0, 0.4);
+}
+
+.Clock-Container.sunrise .period-label {
+  color: rgba(255, 120, 0, 1);
+}
+
+.Clock-Container.sunset .time-period-indicator {
+  background: rgba(255, 99, 71, 0.15);
+  border-color: rgba(255, 99, 71, 0.4);
+}
+
+.Clock-Container.sunset .period-label {
+  color: rgba(255, 80, 50, 1);
+}
+
+.Clock-Container.night .time-period-indicator {
+  background: rgba(100, 100, 255, 0.15);
+  border-color: rgba(100, 100, 255, 0.4);
+}
+
+.Clock-Container.night .period-label {
+  color: rgba(130, 130, 255, 1);
+}
+
+/* ==================== TIME SECTION ==================== */
+.Clock-Container .time-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 32%;
+  cursor: pointer;
+  overflow: visible;
+  margin-top: -10%;
+}
+
+.Clock-Container .time-display {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-responsive-md);
+  width: 100%;
+}
+
+.Clock-Container .time-display.digital {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.Clock-Container .time-display.analog {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.Clock-Container .time-main {
+  font-family: 'Inter', var(--font-family-primary);
+  font-size: var(--font-responsive-6xl);
+  font-weight: var(--font-weight-light);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+
+.Clock-Container .time-main .separator {
+  opacity: 0.35;
+  margin: 0 2px;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 0.35; }
+  50%, 100% { opacity: 0.12; }
+}
+
+.Clock-Container .time-suffix {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding-top: var(--space-responsive-xs);
+}
+
+.Clock-Container .seconds-display {
+  font-family: 'Inter', var(--font-family-primary);
+  font-size: var(--font-responsive-2xl);
+  font-weight: var(--font-weight-light);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.Clock-Container .period-12h {
+  font-size: var(--font-responsive-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.Clock-Container .clock-mode-hint {
+  font-size: var(--font-responsive-sm);
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  padding: var(--space-responsive-xs) 0;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.Clock-Container .time-section:hover .clock-mode-hint {
+  opacity: 0.6;
+}
+
+/* ==================== ANALOG CLOCK ==================== */
+.Clock-Container .analog-clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Clock-Container .clock-face {
+  position: relative;
+  width: clamp(110px, 30cqmin, 170px);
+  height: clamp(110px, 30cqmin, 170px);
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-secondary);
+  box-shadow: var(--shadow-md);
+}
+
+.Clock-Container .hour-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.Clock-Container .mark-inner {
+  width: 2px;
+  height: 10px;
+  margin-top: 6px;
+  background: var(--text-muted);
+  border-radius: 1px;
+}
+
+.Clock-Container .hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  border-radius: 2px;
+}
+
+.Clock-Container .hour-hand {
+  width: 3px;
+  height: 22%;
+  background: var(--text-primary);
+  margin-left: -1.5px;
+}
+
+.Clock-Container .minute-hand {
+  width: 2px;
+  height: 32%;
+  background: var(--text-secondary);
+  margin-left: -1px;
+}
+
+.Clock-Container .second-hand {
+  width: 1px;
+  height: 38%;
+  background: var(--accent-primary);
+  margin-left: -0.5px;
+}
+
+.Clock-Container .center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ==================== DAY PROGRESS ==================== */
+.Clock-Container .day-progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-responsive-xs);
+  padding: var(--space-responsive-sm) var(--space-responsive-md);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-responsive-md);
+  border: 1px solid var(--border-secondary);
+}
+
+.Clock-Container .progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Clock-Container .progress-label {
+  font-size: var(--font-responsive-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.Clock-Container .progress-value {
+  font-size: var(--font-responsive-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.Clock-Container .day-progress-bar {
+  position: relative;
+  height: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-full);
+}
+
+.Clock-Container .day-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: var(--radius-full);
+  transition: width 1s ease;
+}
+
+.Clock-Container .day-progress-marker {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: calc(100% + 6px);
+  border-radius: 1px;
+  transform: translateX(-50%);
+}
+
+.Clock-Container .day-progress-marker.sunrise-marker {
+  background: var(--accent-warning);
+}
+
+.Clock-Container .day-progress-marker.sunset-marker {
+  background: var(--accent-error);
+}
+
+.Clock-Container .daylight-remaining {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-responsive-xs);
+}
+
+.Clock-Container .daylight-label {
+  font-size: var(--font-responsive-sm);
+  color: var(--text-muted);
+}
+
+.Clock-Container .daylight-value {
+  font-size: var(--font-responsive-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+/* ==================== STOPWATCH ==================== */
+.Clock-Container .stopwatch-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-responsive-sm) var(--space-responsive-md);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-responsive-md);
+  border: 1px solid var(--border-secondary);
+}
+
+.Clock-Container .stopwatch-display {
+  font-family: 'Inter', monospace;
+  font-size: var(--font-responsive-xl);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.Clock-Container .stopwatch-controls {
+  display: flex;
+  gap: var(--space-responsive-xs);
+}
+
+.Clock-Container .stopwatch-btn {
+  width: clamp(48px, 14cqw, 64px);
+  height: clamp(48px, 14cqw, 64px);
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: var(--font-responsive-xl);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Clock-Container .stopwatch-btn:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.Clock-Container .stopwatch-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.Clock-Container .stopwatch-btn.play {
+  background: rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.Clock-Container .stopwatch-btn.pause {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ff9800;
+}
+
+/* ==================== SUN/MOON TIMES ==================== */
+.Clock-Container .sun-moon-times {
+  display: flex;
+  align-items: center;
+  gap: var(--space-responsive-md);
+  padding: var(--space-responsive-md) var(--space-responsive-lg);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-responsive-lg);
+  border: 1px solid var(--border-secondary);
+  flex-shrink: 0;
+}
+
+.Clock-Container .sun-moon-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-responsive-sm);
+  min-width: 0;
+}
+
+.Clock-Container .sun-moon-item.center {
+  justify-content: center;
+}
+
+.Clock-Container .sun-moon-icon {
+  font-size: var(--icon-size-lg);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.Clock-Container .sun-moon-icon.sunrise {
+  color: var(--accent-warning);
+}
+
+.Clock-Container .sun-moon-icon.sunset {
+  color: var(--accent-error);
+}
+
+.Clock-Container .sun-moon-icon .sun-arrow {
+  font-size: 0.6em;
+}
+
+.Clock-Container .sun-moon-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.Clock-Container .sun-moon-label {
+  font-size: var(--font-responsive-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+  white-space: nowrap;
+}
+
+.Clock-Container .sun-moon-time {
+  font-size: var(--font-responsive-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.Clock-Container .sun-moon-divider {
+  width: 1px;
+  height: clamp(32px, 8cqh, 48px);
+  background: var(--border-secondary);
+  flex-shrink: 0;
+}
+
+.Clock-Container .daylight-duration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}

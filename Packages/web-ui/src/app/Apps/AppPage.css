@@ -1,0 +1,116 @@
+/* ==================== APP PAGE BASE ==================== */
+.app-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: var(--space-2xl);
+  overflow: hidden;
+}
+
+/* ==================== APP HEADER ==================== */
+.app-page-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-primary);
+  flex-shrink: 0;
+  margin-bottom: var(--space-lg);
+}
+
+.app-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.app-back-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+.app-back-btn:active {
+  transform: scale(0.95);
+}
+
+.app-page-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 1;
+  min-width: 0;
+}
+
+.app-page-icon {
+  font-size: var(--font-size-2xl);
+}
+
+.app-page-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+/* ==================== APP CONTENT ==================== */
+.app-page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.app-page-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==================== PLACEHOLDER ==================== */
+.app-placeholder {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-primary);
+}
+
+.app-placeholder-icon {
+  font-size: 64px;
+}
+
+.app-placeholder-text {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+}
+
+.app-placeholder-hint {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}

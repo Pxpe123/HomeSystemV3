@@ -1,0 +1,219 @@
+/* NotificationsApp - Notifications page styles */
+
+.notifications-app .app-content {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  overflow-y: auto;
+}
+
+/* Header */
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notifications-count {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.notifications-count svg {
+  color: var(--accent-primary);
+}
+
+.notifications-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.notifications-actions button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-card);
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
+}
+
+.notifications-actions button:hover:not(:disabled) {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.notifications-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Filter */
+.notifications-filter {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  width: fit-content;
+}
+
+.notifications-filter button {
+  padding: var(--space-sm) var(--space-lg);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.notifications-filter button:hover {
+  color: var(--text-primary);
+}
+
+.notifications-filter button.active {
+  background: var(--accent-primary);
+  color: white;
+}
+
+/* Notifications List */
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.notifications-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-3xl);
+  color: var(--text-tertiary);
+}
+
+.notifications-empty svg {
+  font-size: 3rem;
+}
+
+/* Notification Item */
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+}
+
+.notification-item:hover {
+  background: var(--bg-card-hover);
+}
+
+.notification-item.read {
+  opacity: 0.7;
+}
+
+.notification-item.info { border-left-color: var(--accent-primary); }
+.notification-item.success { border-left-color: var(--accent-success); }
+.notification-item.warning { border-left-color: var(--accent-warning); }
+.notification-item.error { border-left-color: var(--accent-error); }
+
+.notification-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notification-icon.info {
+  background: rgba(var(--accent-primary-rgb), 0.2);
+  color: var(--accent-primary);
+}
+
+.notification-icon.success {
+  background: rgba(var(--accent-success-rgb), 0.2);
+  color: var(--accent-success);
+}
+
+.notification-icon.warning {
+  background: rgba(var(--accent-warning-rgb), 0.2);
+  color: var(--accent-warning);
+}
+
+.notification-icon.error {
+  background: rgba(var(--accent-error-rgb), 0.2);
+  color: var(--accent-error);
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.notification-header h4 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.unread-dot {
+  font-size: 8px;
+  color: var(--accent-primary);
+}
+
+.notification-content p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: var(--space-xs) 0;
+  line-height: 1.4;
+}
+
+.notification-time {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+.notification-delete {
+  background: none;
+  border: none;
+  padding: var(--space-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  opacity: 0;
+}
+
+.notification-item:hover .notification-delete {
+  opacity: 1;
+}
+
+.notification-delete:hover {
+  background: var(--accent-error);
+  color: white;
+}

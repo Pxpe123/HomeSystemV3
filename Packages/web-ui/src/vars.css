@@ -1,0 +1,211 @@
+:root {
+  /* ========== LAYOUT ========== */
+  --app-width: 1280px;     /* OLD 960px */
+  --app-height: 800px;   /* OLD 540px */
+  --app-border-radius: 0.5rem;
+  --bg-image: url(./assets/background_alt.jpg);
+
+  /* ========== COLORS - BACKGROUNDS ========== */
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #050505;
+  --bg-outer: #1a1a1a;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-elevated: rgba(255, 255, 255, 0.06);
+
+  /* ========== COLORS - TEXT ========== */
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --text-disabled: rgba(255, 255, 255, 0.3);
+
+  /* ========== COLORS - ACCENTS ========== */
+  --accent-primary: #4A9EFF;
+  --accent-secondary: #6B5CFF;
+  --accent-success: #00D9A3;
+  --accent-warning: #FFB74D;
+  --accent-error: #FF6B9D;
+  --accent-spotify: #1DB954;
+
+  /* ========== COLORS - BORDERS ========== */
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(74, 158, 255, 0.5);
+
+  /* ========== SPACING ========== */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.25rem;
+  --space-2xl: 1.5rem;
+  --space-3xl: 2rem;
+  --space-4xl: 2.5rem;
+
+  /* ========== BORDER RADIUS ========== */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-full: 9999px;
+
+  /* ========== TYPOGRAPHY ========== */
+  --font-family-primary: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-mono: "SF Mono", "Consolas", "Monaco", monospace;
+
+  /* Static font sizes */
+  --font-size-xs: 0.625rem;
+  --font-size-sm: 0.6875rem;
+  --font-size-base: 0.8125rem;
+  --font-size-md: 0.875rem;
+  --font-size-lg: 0.9375rem;
+  --font-size-xl: 1.125rem;
+  --font-size-2xl: 1.375rem;
+  --font-size-3xl: 1.625rem;
+  --font-size-4xl: 2rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 4rem;
+  --font-size-7xl: 5rem;
+
+  /* Responsive font sizes (unchanged) */
+  --font-responsive-xs: clamp(0.625rem, 1.5cqw, 0.8125rem);
+  --font-responsive-sm: clamp(0.6875rem, 2cqw, 0.875rem);
+  --font-responsive-base: clamp(0.75rem, 2.5cqw, 1rem);
+  --font-responsive-md: clamp(0.875rem, 3cqw, 1.0625rem);
+  --font-responsive-lg: clamp(0.9375rem, 3.5cqw, 1.25rem);
+  --font-responsive-xl: clamp(1.125rem, 4cqw, 1.5rem);
+  --font-responsive-2xl: clamp(1.125rem, 4.5cqw, 1.625rem);
+  --font-responsive-3xl: clamp(0.9375rem, 3.8cqw, 1.375rem);
+  --font-responsive-4xl: clamp(1.25rem, 5.5cqw, 2rem);
+  --font-responsive-5xl: clamp(1.75rem, 8cqw, 3.25rem);
+  --font-responsive-6xl: clamp(3.25rem, 16cqw, 6.25rem);
+  --font-responsive-7xl: clamp(4.5rem, 18cqw, 6.875rem);
+
+  /* Icon sizes (unchanged) */
+  --icon-size-xs: clamp(0.875rem, 2.5cqw, 1.125rem);
+  --icon-size-sm: clamp(0.875rem, 3.5cqw, 1.125rem);
+  --icon-size-md: clamp(1rem, 4cqw, 1.375rem);
+  --icon-size-lg: clamp(1.25rem, 5cqw, 1.75rem);
+  --icon-size-xl: clamp(1.375rem, 5.5cqw, 2rem);
+  --icon-size-2xl: clamp(1.75rem, 7cqw, 2.75rem);
+  --icon-size-3xl: clamp(2.75rem, 10cqw, 4rem);
+
+  /* Font weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Line height */
+  --line-height-tight: 1;
+  --line-height-snug: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  --line-height-loose: 2;
+
+  /* Letter spacing (px → em) */
+  --letter-spacing-tight: -0.03125em;   /* -0.5px */
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.03125em;     /* 0.5px */
+  --letter-spacing-wider: 0.0625em;     /* 1px */
+  --letter-spacing-widest: 0.09375em;   /* 1.5px */
+
+  /* ========== SHADOWS ========== */
+  --shadow-sm: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 0.5rem 2rem rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 0.75rem 3rem rgba(0, 0, 0, 0.4);
+  --shadow-2xl: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.6);
+  --shadow-inner: inset 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
+
+  /* ========== TRANSITIONS ========== */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  --transition-slower: 0.5s ease;
+
+  /* ========== COMPONENT SPECIFIC ========== */
+  --btn-height-sm: 2rem;
+  --btn-height-md: 2.25rem;
+  --btn-height-lg: 2.75rem;
+  --btn-padding-x: var(--space-lg);
+  --btn-padding-y: var(--space-sm);
+
+  --card-padding: var(--space-2xl);
+  --card-gap: var(--space-md);
+
+  --header-height: 4rem;
+  --header-padding: var(--space-2xl);
+
+  --footer-height: 5rem;
+
+  --grid-gap: var(--space-md);
+  --grid-columns-sm: 2;
+  --grid-columns-md: 3;
+  --grid-columns-lg: 4;
+
+  --opacity-disabled: 0.4;
+  --opacity-muted: 0.6;
+  --opacity-normal: 1;
+
+  --blur-sm: 0.5rem;
+  --blur-md: 1rem;
+  --blur-lg: 1.5rem;
+  --blur-xl: 2.5rem;
+
+  /* ========== RESPONSIVE BREAKPOINTS ========== */
+  --breakpoint-xs: 30rem;   /* 480px */
+  --breakpoint-sm: 40rem;   /* 640px */
+  --breakpoint-md: 48rem;   /* 768px */
+  --breakpoint-lg: 64rem;   /* 1024px */
+  --breakpoint-xl: 80rem;   /* 1280px */
+  --breakpoint-2xl: 96rem;  /* 1536px */
+
+  /* ========== RESPONSIVE SPACING (unchanged) ========== */
+  --space-responsive-xs: clamp(0.25rem, 1cqw, 0.5rem);
+  --space-responsive-sm: clamp(0.375rem, 1.5cqw, 0.625rem);
+  --space-responsive-md: clamp(0.5rem, 2cqw, 0.75rem);
+  --space-responsive-lg: clamp(0.75rem, 2.5cqw, 1rem);
+  --space-responsive-xl: clamp(1rem, 3cqw, 1.25rem);
+  --space-responsive-2xl: clamp(1.25rem, 3.5cqw, 1.5rem);
+  --space-responsive-3xl: clamp(1.5rem, 4cqw, 2rem);
+  --space-responsive-4xl: clamp(2rem, 5cqw, 2.5rem);
+
+  /* ========== RESPONSIVE COMPONENT SIZES (unchanged) ========== */
+  --button-height-sm: clamp(1.75rem, 4cqw, 2rem);
+  --button-height-md: clamp(2rem, 5cqw, 2.25rem);
+  --button-height-lg: clamp(2.75rem, 10cqw, 3.5rem);
+  --button-padding-x: clamp(0.75rem, 2cqw, 1rem);
+  --button-padding-y: clamp(0.375rem, 1cqw, 0.5rem);
+
+  --card-padding-sm: clamp(0.625rem, 2.5cqw, 0.875rem);
+  --card-padding-md: clamp(0.75rem, 2.5cqw, 1rem);
+  --card-padding-lg: clamp(1rem, 2.5cqw, 1.25rem);
+  --card-gap-sm: clamp(0.5rem, 2cqw, 0.75rem);
+  --card-gap-md: clamp(0.75rem, 2cqw, 1rem);
+  --card-gap-lg: clamp(1rem, 2.5cqw, 1.25rem);
+
+  /* ========== RESPONSIVE BORDER RADIUS (unchanged) ========== */
+  --radius-responsive-sm: clamp(0.25rem, 0.5cqw, 0.375rem);
+  --radius-responsive-md: clamp(0.375rem, 1cqw, 0.5rem);
+  --radius-responsive-lg: clamp(0.5rem, 1.5cqw, 0.75rem);
+  --radius-responsive-xl: clamp(0.75rem, 2cqw, 1rem);
+  --radius-responsive-2xl: clamp(1rem, 2.5cqw, 1.25rem);
+}
+
+/* Dark / Light overrides remain unchanged */
+[data-theme="dark"] {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #000;
+}
+
+[data-theme="light"] {
+  --bg-primary: #fff;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #000;
+  --text-secondary: rgba(0, 0, 0, 0.7);
+  --text-tertiary: rgba(0, 0, 0, 0.5);
+}

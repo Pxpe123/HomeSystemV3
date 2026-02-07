@@ -1,0 +1,157 @@
+/* Keypad Component - Touch-friendly passcode entry */
+
+.keypad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-2xl);
+  width: 100%;
+  max-width: 320px;
+}
+
+.keypad-container.shake {
+  animation: keypadShake 0.5s ease-in-out;
+}
+
+@keyframes keypadShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+  20%, 40%, 60%, 80% { transform: translateX(8px); }
+}
+
+.keypad-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+}
+
+/* PIN Display */
+.keypad-pin-display {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+}
+
+.pin-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-secondary);
+  transition: all var(--transition-fast);
+}
+
+.pin-dot.required {
+  border-color: var(--border-primary);
+}
+
+.pin-dot.filled {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  transform: scale(1.1);
+}
+
+/* Error Message */
+.keypad-error {
+  color: var(--accent-error);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(255, 107, 157, 0.1);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 107, 157, 0.2);
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keypad Grid */
+.keypad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.keypad-button {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.keypad-button:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  border-color: var(--border-primary);
+  transform: scale(1.02);
+}
+
+.keypad-button:active:not(:disabled) {
+  transform: scale(0.95);
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.keypad-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.keypad-button.action {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+}
+
+.keypad-button.action.submit {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
+}
+
+.keypad-button.action.submit:hover:not(:disabled) {
+  background: var(--accent-secondary);
+  border-color: var(--accent-secondary);
+}
+
+.keypad-button.action.submit:disabled {
+  background: var(--bg-elevated);
+  border-color: var(--border-secondary);
+  color: var(--text-muted);
+}
+
+/* Cancel Button */
+.keypad-cancel {
+  margin-top: var(--space-md);
+  padding: var(--space-md) var(--space-xl);
+  background: transparent;
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.keypad-cancel:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-primary);
+}

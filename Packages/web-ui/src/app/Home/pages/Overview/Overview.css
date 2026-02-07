@@ -1,0 +1,24 @@
+/* Overview Page - Dashboard layout with absolute positioned widgets */
+
+.overview-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Background gradient overlay */
+.overview-page > .page-gradient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* All widgets use their own CSS for absolute positioning:
+   - ClockWidget: top-left, 31% width, 62.5% height
+   - WeatherWidget: top-center (next to clock), 31% width, 62.5% height
+   - SmartHomeWidget: top-right, remaining width, 62.5% height
+   - ActiveApps: bottom-left, 31% width, 30% height
+   - PcManagerWidget: bottom-center, 31% width, 30% height
+*/

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Web UI</title>
+<link rel="stylesheet" href="style.css">
+<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+<script>
+let backend;
+
+document.addEventListener("DOMContentLoaded", function() {
+    new QWebChannel(qt.webChannelTransport, function(channel) {
+        backend = channel.objects.backend;
+    });
+
+    document.getElementById("btnConsole").onclick = function() {
+        backend.openConsole();
+    };
+});
+</script>
+</head>
+<body>
+    <div class="container">
+        <h1>My C++ + Web UI App</h1>
+        <button id="btnConsole">Open App Console</button>
+    </div>
+</body>
+</html>

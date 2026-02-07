@@ -1,0 +1,248 @@
+/* PcManagerApp - Full PC management page */
+
+.pcmanager-app .app-content {
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  overflow-y: auto;
+}
+
+/* Summary */
+.pcmanager-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.summary-item svg {
+  color: var(--text-tertiary);
+}
+
+.summary-item.online svg {
+  color: var(--accent-success);
+  font-size: 8px;
+}
+
+.add-pc-btn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+}
+
+.add-pc-btn:hover {
+  background: var(--accent-secondary);
+}
+
+/* PC Cards */
+.pc-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.pc-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  transition: all var(--transition-fast);
+}
+
+.pc-card.offline {
+  opacity: 0.7;
+}
+
+.pc-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.pc-type-icon {
+  font-size: var(--font-size-2xl);
+  color: var(--accent-primary);
+}
+
+.pc-card.offline .pc-type-icon {
+  color: var(--text-tertiary);
+}
+
+.pc-card-info {
+  flex: 1;
+}
+
+.pc-card-info h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.pc-card-ip {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  font-family: monospace;
+}
+
+.pc-card-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: capitalize;
+}
+
+.pc-card-status.online {
+  background: rgba(var(--accent-success-rgb), 0.2);
+  color: var(--accent-success);
+}
+
+.pc-card-status.online svg {
+  font-size: 8px;
+}
+
+.pc-card-status.offline {
+  background: var(--bg-elevated);
+  color: var(--text-tertiary);
+}
+
+.pc-card-status.offline svg {
+  font-size: 8px;
+}
+
+/* Stats */
+.pc-card-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-md);
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 60px;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.stat-header svg {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+}
+
+.stat-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--border-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  background: var(--accent-primary);
+  border-radius: 3px;
+  transition: width var(--transition-fast);
+}
+
+.stat-value {
+  width: 40px;
+  text-align: right;
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  font-family: monospace;
+}
+
+/* Actions */
+.pc-card-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast);
+}
+
+.action-btn.wake {
+  background: var(--accent-success);
+  color: white;
+}
+
+.action-btn.wake:hover {
+  filter: brightness(1.1);
+}
+
+.action-btn.shutdown {
+  background: var(--accent-error);
+  color: white;
+}
+
+.action-btn.shutdown:hover {
+  filter: brightness(1.1);
+}
+
+.action-btn.delete {
+  margin-left: auto;
+  background: var(--bg-elevated);
+  color: var(--text-tertiary);
+}
+
+.action-btn.delete:hover {
+  background: var(--accent-error);
+  color: white;
+}
+
+/* MAC Address */
+.pc-card-mac {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-family: monospace;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-primary);
+}

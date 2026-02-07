@@ -1,0 +1,68 @@
+.smart-home-widget {
+  position: absolute;
+  top: 2.5%;
+  right: 2%;
+  width: 31%;
+  bottom: 2.5%;
+  padding: var(--space-responsive-lg);
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-responsive-xl);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: var(--z-base);
+  transition: all var(--transition-slow);
+  overflow: hidden;
+  container-type: size;
+}
+
+.smart-home-widget:hover {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-xl);
+}
+
+.smart-home-widget .widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.smart-home-widget .widget-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.smart-home-widget .widget-status {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-tertiary);
+  background: var(--bg-elevated);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-secondary);
+}
+
+.smart-home-widget .widget-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  min-height: 0;
+}
+
+.smart-home-widget .widget-footer {
+  text-align: right;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}

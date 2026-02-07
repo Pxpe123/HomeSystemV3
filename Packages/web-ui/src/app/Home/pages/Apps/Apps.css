@@ -1,0 +1,567 @@
+/* ==================== APPS PAGE ==================== */
+.apps-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-2xl);
+  overflow: hidden;
+  gap: var(--space-lg);
+  user-select: none;
+}
+
+/* ==================== HEADER ==================== */
+.apps-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-primary);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.apps-title-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.apps-icon {
+  font-size: var(--font-size-xl);
+}
+
+.apps-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+}
+
+.apps-edit-btn {
+  padding: var(--space-sm) var(--space-xl);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+}
+
+.apps-edit-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+.apps-edit-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==================== TOOLBAR (EDIT MODE) ==================== */
+.apps-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-primary);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+.toolbar-btn:active {
+  transform: scale(0.95);
+}
+
+.toolbar-btn.done {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #fff;
+  padding: var(--space-sm) var(--space-xl);
+}
+
+.toolbar-btn.done:hover {
+  background: #5aa8ff;
+  border-color: #5aa8ff;
+}
+
+.toolbar-btn.reset {
+  color: var(--accent-warning);
+  border-color: rgba(255, 183, 77, 0.3);
+}
+
+.toolbar-btn.reset:hover {
+  background: rgba(255, 183, 77, 0.1);
+  border-color: rgba(255, 183, 77, 0.5);
+}
+
+/* ==================== GRID CONTAINER ==================== */
+.apps-grid-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  padding: var(--space-md);
+}
+
+.apps-grid-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==================== APP GRID ==================== */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xl);
+  width: 100%;
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-primary);
+}
+
+.apps-grid.editing {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 20px rgba(74, 158, 255, 0.1);
+}
+
+/* ==================== APP SLOT ==================== */
+.app-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-slot:hover {
+  background: var(--bg-elevated);
+}
+
+.app-slot:active {
+  transform: scale(0.95);
+}
+
+.app-slot.editing {
+  animation: wiggle 0.35s ease-in-out infinite alternate;
+}
+
+.app-slot.dragging {
+  opacity: 0.4;
+  transform: scale(0.9);
+}
+
+.app-slot.drag-over {
+  background: rgba(74, 158, 255, 0.15);
+  border: 2px dashed var(--accent-primary);
+  transform: scale(1.05);
+}
+
+.app-slot.unplaced {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.app-slot.unplaced:hover {
+  opacity: 1;
+  background: var(--bg-elevated);
+}
+
+/* ==================== APP ICON ==================== */
+.app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  position: relative;
+  min-width: 80px;
+}
+
+/* ==================== APP ICON CIRCLE ==================== */
+.app-icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-xl);
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+}
+
+.app-slot:hover .app-icon-circle {
+  transform: translateY(-2px);
+}
+
+.app-icon-circle.add {
+  border-style: dashed;
+}
+
+/* ==================== APP ICON EMOJI ==================== */
+.app-icon-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+/* ==================== APP ICON NAME ==================== */
+.app-icon-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==================== REMOVE BUTTON ==================== */
+.app-remove-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: var(--accent-error);
+  color: #fff;
+  border: 3px solid var(--bg-primary);
+  font-size: 16px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: transform var(--transition-base);
+  padding: 0;
+  font-family: var(--font-family-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.app-remove-btn:hover {
+  transform: scale(1.15);
+  background: #ff5277;
+}
+
+.app-remove-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==================== FOLDER ICON ==================== */
+.folder-preview {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-xl);
+  background: var(--bg-elevated);
+  backdrop-filter: blur(var(--blur-lg));
+  border: 2px solid var(--border-primary);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: 8px;
+  gap: 4px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.app-slot:hover .folder-preview {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.folder-preview-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.folder-empty-icon {
+  font-size: 28px;
+  color: var(--text-muted);
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==================== DROP TARGET STATES ==================== */
+.app-slot.drop-target {
+  position: relative;
+}
+
+.app-slot.drop-target.into-folder {
+  background: rgba(29, 185, 84, 0.15);
+  border: 2px dashed var(--accent-success);
+  transform: scale(1.05);
+}
+
+.app-slot.drop-target.into-folder .folder-preview {
+  border-color: var(--accent-success);
+  box-shadow: 0 0 20px rgba(29, 185, 84, 0.3);
+}
+
+.app-slot.drop-target.create-folder {
+  background: rgba(74, 158, 255, 0.15);
+  border: 2px dashed var(--accent-primary);
+  transform: scale(1.05);
+}
+
+.app-slot.drop-target.create-folder .app-icon-circle {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+}
+
+.app-slot.drop-target.reorder {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed var(--border-secondary);
+}
+
+/* ==================== DROP HINT ==================== */
+.drop-hint {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--accent-primary);
+  white-space: nowrap;
+  z-index: 10;
+  animation: hintPop 0.2s ease;
+}
+
+.drop-target.into-folder .drop-hint {
+  color: var(--accent-success);
+  border-color: var(--accent-success);
+}
+
+@keyframes hintPop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* ==================== INLINE FOLDER RENAME ==================== */
+.folder-rename-inline {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-focus);
+  border-radius: var(--radius-md);
+  padding: 2px 8px;
+  outline: none;
+  font-family: var(--font-family-primary);
+  text-align: center;
+  width: 80px;
+}
+
+/* ==================== RENAME HINT ==================== */
+.rename-hint {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ==================== UNPLACED APPS SECTION ==================== */
+.unplaced-apps-section {
+  padding: var(--space-lg);
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-xl);
+  border: 1px dashed var(--border-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.unplaced-header {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+.unplaced-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+}
+
+/* ==================== FOLDER OVERLAY ==================== */
+.folder-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+.folder-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-2xl);
+  padding: var(--space-xl);
+  min-width: 320px;
+  max-width: 480px;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  animation: folderOpen 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.folder-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.folder-panel-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.folder-rename-input {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-focus);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  outline: none;
+  font-family: var(--font-family-primary);
+  flex: 1;
+  min-width: 0;
+}
+
+.folder-close-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-secondary);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+  flex-shrink: 0;
+  padding: 0;
+  font-family: var(--font-family-primary);
+}
+
+.folder-close-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+.folder-close-btn:active {
+  transform: scale(0.95);
+}
+
+.folder-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
+}
+
+.folder-empty-message {
+  text-align: center;
+  padding: var(--space-xl);
+  color: var(--text-muted);
+  font-size: var(--font-size-md);
+}
+
+/* ==================== ANIMATIONS ==================== */
+@keyframes wiggle {
+  0% { transform: rotate(-1deg); }
+  100% { transform: rotate(1deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes folderOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
