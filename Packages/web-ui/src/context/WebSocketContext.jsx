@@ -37,7 +37,8 @@ export function WebSocketProvider({ children }) {
         return
       }
 
-      const requestId = crypto.randomUUID()
+      const requestId = crypto.randomUUID?.() ??
+        `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
 
       // Timeout after 10 seconds
       const timeout = setTimeout(() => {
