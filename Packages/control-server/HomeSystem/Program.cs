@@ -82,6 +82,8 @@ internal class Program
         // External API keys
         var weatherApiKey = Environment.GetEnvironmentVariable("WEATHER_API_KEY") ?? "";
         var webUiUrl = Environment.GetEnvironmentVariable("WebUI_URL") ?? "";
+        
+        Console.WriteLine($"Web UI URL: {webUiUrl}");
 
         return (port, devMode, pcConfig, weatherApiKey, webUiUrl);
     }
@@ -134,14 +136,12 @@ internal class Program
     {
         var ws = new Websocket(app);
 
-        // Register all endpoint modules from EndpointManager
         foreach (var ep in EndpointManager.GetAll())
             ws.RegisterModule(ep.Key, ep.Value);
 
         ws.MapSingleEndpoint("/ws");
         Console.WriteLine($"WebSocket listening at /ws");
 
-        // Print available endpoints in dev mode
         if (devMode)
         {
             Console.WriteLine("Available endpoints:");

@@ -1,0 +1,296 @@
+/* Spotify Success Callback - Full-screen overlay matching app styling */
+
+.spotify-callback {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  background-size: cover;
+  background-position: center;
+  z-index: 9999;
+  padding: var(--space-lg);
+}
+
+.spotify-callback::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(var(--blur-sm));
+}
+
+.spotify-callback-card {
+  position: relative;
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-lg));
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-2xl);
+  padding: var(--space-3xl);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+  text-align: center;
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header with Spotify branding */
+.spotify-callback-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-secondary);
+  width: 100%;
+}
+
+.spotify-callback-header .spotify-icon {
+  color: var(--accent-spotify, #1DB954);
+  font-size: 2.5rem;
+}
+
+.spotify-callback-header .header-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Success icon and message */
+.spotify-callback-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  width: 100%;
+}
+
+.success-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(29, 185, 84, 0.2), rgba(29, 185, 84, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(29, 185, 84, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 15px rgba(29, 185, 84, 0);
+  }
+}
+
+.success-icon-wrapper .success-icon {
+  color: var(--accent-spotify, #1DB954);
+  font-size: 2.5rem;
+}
+
+.success-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.success-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Account info card */
+.account-info {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.account-info-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.account-info-row .info-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: 1px solid var(--border-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  flex-shrink: 0;
+}
+
+.account-info-row .info-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1;
+}
+
+.account-info-row .info-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.account-info-row .info-value {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Divider */
+.account-info-divider {
+  height: 1px;
+  background: var(--border-secondary);
+  width: 100%;
+}
+
+/* Close message */
+.close-message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  background: rgba(74, 158, 255, 0.1);
+  border: 1px solid rgba(74, 158, 255, 0.2);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.close-message .close-icon {
+  color: var(--accent-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .spotify-callback {
+    padding: var(--space-md);
+  }
+
+  .spotify-callback-card {
+    padding: var(--space-xl);
+    gap: var(--space-lg);
+    border-radius: var(--radius-xl);
+  }
+
+  .spotify-callback-header .spotify-icon {
+    font-size: 2rem;
+  }
+
+  .spotify-callback-header .header-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .success-icon-wrapper {
+    width: 64px;
+    height: 64px;
+  }
+
+  .success-icon-wrapper .success-icon {
+    font-size: 2rem;
+  }
+
+  .success-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .account-info {
+    padding: var(--space-md);
+  }
+
+  .account-info-row .info-icon {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-size-xs);
+  }
+
+  .close-message {
+    padding: var(--space-sm) var(--space-md);
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 360px) {
+  .spotify-callback-card {
+    padding: var(--space-lg);
+  }
+
+  .spotify-callback-header {
+    gap: var(--space-sm);
+  }
+
+  .spotify-callback-header .spotify-icon {
+    font-size: 1.75rem;
+  }
+
+  .spotify-callback-header .header-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .success-icon-wrapper {
+    width: 56px;
+    height: 56px;
+  }
+
+  .success-icon-wrapper .success-icon {
+    font-size: 1.75rem;
+  }
+}
+
+/* Tablet and larger */
+@media (min-width: 768px) {
+  .spotify-callback-card {
+    padding: var(--space-4xl);
+  }
+
+  .success-icon-wrapper {
+    width: 96px;
+    height: 96px;
+  }
+
+  .success-icon-wrapper .success-icon {
+    font-size: 3rem;
+  }
+}

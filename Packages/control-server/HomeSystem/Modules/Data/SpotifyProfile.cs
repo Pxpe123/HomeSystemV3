@@ -25,7 +25,9 @@ public class SpotifyProfile
         public string ActiveDevice { get; set; } = "";
         public int ProgressMs { get; set; } = 0;
         public int DurationMs { get; set; } = 0;
-        
+        public bool ShuffleState { get; set; } = false;
+        public string RepeatState { get; set; } = "off";
+
         public List<QueueItem> Queue { get; set; } = new();
 
         public class QueueItem

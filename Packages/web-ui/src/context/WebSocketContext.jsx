@@ -23,6 +23,9 @@ export function WebSocketProvider({ children }) {
   const [location, setLocation] = useState({ city: 'Loading...', lat: 0, lon: 0 })
   const [nextRefreshIn, setNextRefreshIn] = useState(0)
 
+  // Spotify login result (pushed from server after OAuth callback)
+  const [spotifyLoginResult, setSpotifyLoginResult] = useState(null)
+
   /**
    * Sends a request to the server and waits for response.
    * Uses UUID-based request tracking for async responses.
@@ -62,7 +65,8 @@ export function WebSocketProvider({ children }) {
    */
   const fetchAllData = useCallback(async () => {
     try {
-      const weatherData = await request('Weather/GetWeather')
+      const weatherResult = await request('Weather/GetWeather')
+      const weatherData = weatherResult?.data
       if (weatherData) {
         setWeather(weatherData.weather)
         setSunTimes(weatherData.sunTimes || { sunrise: 6, sunset: 18 })
@@ -81,7 +85,8 @@ export function WebSocketProvider({ children }) {
         }
       }
 
-      const forecastData = await request('Weather/GetForecast')
+      const forecastResult = await request('Weather/GetForecast')
+      const forecastData = forecastResult?.data
       if (forecastData) {
         setForecast(Array.isArray(forecastData) ? forecastData : [])
       }
@@ -118,18 +123,38 @@ export function WebSocketProvider({ children }) {
       try {
         const msg = JSON.parse(event.data)
 
+        // Server sends PascalCase, normalize to camelCase
+        const requestId = msg.RequestId || msg.requestId
+        const data = msg.Data || msg.data
+        const type = msg.Type || msg.type
+
+        // Ignore ack messages - wait for actual response
+        if (type === 'ack') {
+          if (G.env.DEBUG) console.log('[WS] Received ack for:', requestId)
+          return
+        }
+
         // Handle response to a previous request
-        if (msg.requestId && requestHandlers.current.has(msg.requestId)) {
-          requestHandlers.current.get(msg.requestId)(msg.data)
-          requestHandlers.current.delete(msg.requestId)
+        if (requestId && requestHandlers.current.has(requestId)) {
+          requestHandlers.current.get(requestId)({ data, type, ...msg })
+          requestHandlers.current.delete(requestId)
           return
         }
 
         // Handle server-initiated push messages
-        if (msg.type === 'weatherUpdate') {
-          setWeather(msg.data?.weather)
-          setSunTimes(msg.data?.sunTimes || { sunrise: 6, sunset: 18 })
-          setNextRefreshIn(msg.data?.secondsUntilRefresh ?? 0)
+        if (type === 'weatherUpdate') {
+          setWeather(data?.weather)
+          setSunTimes(data?.sunTimes || { sunrise: 6, sunset: 18 })
+          setNextRefreshIn(data?.secondsUntilRefresh ?? 0)
+        }
+
+        // Handle Spotify login result (pushed after OAuth callback)
+        if (type === 'Spotify/LoginResult') {
+          console.log('[WS] Spotify login result:', msg)
+          setSpotifyLoginResult({
+            displayName: msg.DisplayName || msg.displayName,
+            userId: msg.UserId || msg.userId
+          })
         }
       } catch (err) {
         if (G.env.DEBUG) console.error('[WS] Parse error:', err)
@@ -183,7 +208,9 @@ export function WebSocketProvider({ children }) {
     location,
     nextRefreshIn,
     request,
-    refresh: fetchAllData
+    refresh: fetchAllData,
+    spotifyLoginResult,
+    clearSpotifyLoginResult: () => setSpotifyLoginResult(null)
   }
 
   return (

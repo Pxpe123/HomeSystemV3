@@ -27,8 +27,10 @@ export function ProfileProvider({ children }) {
     if (!connected) return
     try {
       const result = await request('Profile/GetAll')
-      if (result?.profiles) {
-        setProfiles(result.profiles)
+      // Server sends profiles in data.profiles
+      const profiles = result?.data?.profiles
+      if (profiles) {
+        setProfiles(profiles)
       }
     } catch (err) {
       console.error('[Profile] Failed to fetch:', err)
@@ -50,9 +52,10 @@ export function ProfileProvider({ children }) {
 
     try {
       const result = await request('Profile/GetAll')
-      if (result?.profiles) {
-        setProfiles(result.profiles)
-        const storedProfile = result.profiles.find(p => p.id === storedProfileId)
+      const profiles = result?.data?.profiles
+      if (profiles) {
+        setProfiles(profiles)
+        const storedProfile = profiles.find(p => p.id === storedProfileId)
 
         if (storedProfile) {
           // Profile exists - restore session without passcode
@@ -77,13 +80,16 @@ export function ProfileProvider({ children }) {
     setError(null)
     try {
       const result = await request('Profile/Login', { profileId, passcode })
-      if (result?.success) {
-        setCurrentProfile(result.profile)
+      const success = result?.success || result?.data?.success
+      const profile = result?.data?.profile
+      const error = result?.error || result?.data?.error
+      if (success && profile) {
+        setCurrentProfile(profile)
         localStorage.setItem(STORAGE_KEY, profileId)
         return { success: true }
       } else {
-        setError(result?.error || 'Login failed')
-        return { success: false, error: result?.error }
+        setError(error || 'Login failed')
+        return { success: false, error }
       }
     } catch (err) {
       const errorMsg = err.message || 'Login failed'
@@ -107,17 +113,25 @@ export function ProfileProvider({ children }) {
   const createProfile = useCallback(async (name, passcode) => {
     setError(null)
     try {
+      console.log('[Profile] Creating profile:', name)
       const result = await request('Profile/Create', { name, passcode })
-      if (result?.success) {
+      console.log('[Profile] Create result:', result)
+      // Server sends success at top level, profile in data
+      const success = result?.success || result?.data?.success
+      const profile = result?.data?.profile
+      const error = result?.error || result?.data?.error
+      if (success && profile) {
         await fetchProfiles()
-        setCurrentProfile(result.profile)
-        localStorage.setItem(STORAGE_KEY, result.profile.id)
-        return { success: true, profile: result.profile }
+        setCurrentProfile(profile)
+        localStorage.setItem(STORAGE_KEY, profile.id)
+        return { success: true, profile }
       } else {
-        setError(result?.error || 'Failed to create profile')
-        return { success: false, error: result?.error }
+        console.log('[Profile] Create failed:', error)
+        setError(error || 'Failed to create profile')
+        return { success: false, error }
       }
     } catch (err) {
+      console.error('[Profile] Create exception:', err)
       const errorMsg = err.message || 'Failed to create profile'
       setError(errorMsg)
       return { success: false, error: errorMsg }
@@ -131,14 +145,17 @@ export function ProfileProvider({ children }) {
     setError(null)
     try {
       const result = await request('Profile/Update', { profileId, ...updates })
-      if (result?.success) {
-        if (currentProfile?.id === profileId) {
-          setCurrentProfile(prev => ({ ...prev, ...result.profile }))
+      const success = result?.success || result?.data?.success
+      const profile = result?.data?.profile
+      const error = result?.error || result?.data?.error
+      if (success) {
+        if (currentProfile?.id === profileId && profile) {
+          setCurrentProfile(prev => ({ ...prev, ...profile }))
         }
         await fetchProfiles()
         return { success: true }
       }
-      return { success: false, error: result?.error }
+      return { success: false, error }
     } catch (err) {
       return { success: false, error: err.message }
     }
@@ -150,14 +167,16 @@ export function ProfileProvider({ children }) {
   const deleteProfile = useCallback(async (profileId) => {
     try {
       const result = await request('Profile/Delete', { profileId })
-      if (result?.success) {
+      const success = result?.success || result?.data?.success
+      const error = result?.error || result?.data?.error
+      if (success) {
         if (currentProfile?.id === profileId) {
           logout()
         }
         await fetchProfiles()
         return { success: true }
       }
-      return { success: false, error: result?.error }
+      return { success: false, error }
     } catch (err) {
       return { success: false, error: err.message }
     }

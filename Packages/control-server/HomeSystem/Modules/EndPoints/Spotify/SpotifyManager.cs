@@ -97,6 +97,8 @@ public class SpotifyManager
                         $"?name={Uri.EscapeDataString(profile.DisplayName)}" +
                         $"&email={Uri.EscapeDataString(profile.Email)}";
                     ctx.Response.Redirect(webUiUrl);
+                    
+                    Console.WriteLine("Generated URL: " + webUiUrl);
 
                     if (socket.State == WebSocketState.Open)
                     {
@@ -305,6 +307,8 @@ public class SpotifyManager
                             PlaylistId = playback.Context?.Uri?.Replace("spotify:playlist:", "") ?? "",
                             ProgressMs = playback.ProgressMs,
                             DurationMs = track.DurationMs,
+                            ShuffleState = playback.ShuffleState,
+                            RepeatState = playback.RepeatState ?? "off",
                             Queue = queueResponse?.Queue?
                                 .OfType<FullTrack>()
                                 .Select(q => new SpotifyProfile.PlaybackInfo.QueueItem
@@ -487,6 +491,35 @@ public class SpotifyManager
                     case "pause": await spotify.Player.PausePlayback(); break;
                     case "next": await spotify.Player.SkipNext(); break;
                     case "previous": await spotify.Player.SkipPrevious(); break;
+                    case "shuffle":
+                        var shuffleVal = message.Data.TryGetProperty("value", out var sv) && sv.GetBoolean();
+                        await spotify.Player.SetShuffle(new PlayerShuffleRequest(shuffleVal));
+                        break;
+                    case "repeat":
+                        var repeatMode = message.Data.TryGetProperty("state", out var rm) ? rm.GetString() : "off";
+                        var repeatState = repeatMode switch
+                        {
+                            "track" => PlayerSetRepeatRequest.State.Track,
+                            "context" => PlayerSetRepeatRequest.State.Context,
+                            _ => PlayerSetRepeatRequest.State.Off
+                        };
+                        await spotify.Player.SetRepeat(new PlayerSetRepeatRequest(repeatState));
+                        break;
+                    case "transfer":
+                        var deviceId = message.Data.TryGetProperty("deviceId", out var di) ? di.GetString() : null;
+                        if (string.IsNullOrEmpty(deviceId)) { success = false; errorMsg = "deviceId required"; break; }
+                        await spotify.Player.TransferPlayback(new PlayerTransferPlaybackRequest(new List<string> { deviceId }) { Play = true });
+                        break;
+                    case "playuri":
+                        var uri = message.Data.TryGetProperty("uri", out var u) ? u.GetString() : null;
+                        if (string.IsNullOrEmpty(uri)) { success = false; errorMsg = "uri required"; break; }
+                        await spotify.Player.ResumePlayback(new PlayerResumePlaybackRequest { Uris = new List<string> { uri } });
+                        break;
+                    case "playcontext":
+                        var contextUri = message.Data.TryGetProperty("contextUri", out var cu) ? cu.GetString() : null;
+                        if (string.IsNullOrEmpty(contextUri)) { success = false; errorMsg = "contextUri required"; break; }
+                        await spotify.Player.ResumePlayback(new PlayerResumePlaybackRequest { ContextUri = contextUri });
+                        break;
                     default:
                         success = false;
                         errorMsg = $"Unknown action: {action}";
@@ -516,6 +549,117 @@ public class SpotifyManager
             var json = JsonSerializer.Serialize(response, JsonOptions);
             await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(json)),
                 WebSocketMessageType.Text, true, CancellationToken.None);
+        }
+    }
+
+    public class Search
+    {
+        public static async Task Handle(WebSocket socket, ClientMessage message)
+        {
+            var userId = message.Data.TryGetProperty("userId", out var uid) ? uid.GetString() : null;
+            var query = message.Data.TryGetProperty("query", out var q) ? q.GetString() : null;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(query) ||
+                !Globals.SpotifyProfiles.TryGetValue(userId, out var profile))
+            {
+                var err = new { Type = "Spotify/Search", message.RequestId, Error = "Invalid userId or query" };
+                var errJson = JsonSerializer.Serialize(err, JsonOptions);
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(errJson)),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+                return;
+            }
+
+            try
+            {
+                var spotify = GetClient(profile);
+                var searchRequest = new SearchRequest(SearchRequest.Types.Track, query) { Limit = 20 };
+                var result = await spotify.Search.Item(searchRequest);
+
+                var tracks = result.Tracks?.Items?.Select(t => new
+                {
+                    Id = t.Id ?? "",
+                    Name = t.Name ?? "",
+                    ArtistName = t.Artists != null ? string.Join(", ", t.Artists.Select(a => a.Name)) : "",
+                    Uri = t.Uri ?? "",
+                    DurationMs = t.DurationMs,
+                    ImageUrl = t.Album?.Images?.FirstOrDefault()?.Url ?? ""
+                });
+
+                var response = new
+                {
+                    Type = "Spotify/Search",
+                    message.RequestId,
+                    Data = new { Tracks = tracks }
+                };
+                var json = JsonSerializer.Serialize(response, JsonOptions);
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(json)),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+            catch (APIException ex)
+            {
+                var err = new { Type = "Spotify/Search", message.RequestId, Error = ex.Message };
+                var errJson = JsonSerializer.Serialize(err, JsonOptions);
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(errJson)),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+        }
+    }
+
+    public class GetPlaylistTracks
+    {
+        public static async Task Handle(WebSocket socket, ClientMessage message)
+        {
+            var userId = message.Data.TryGetProperty("userId", out var uid) ? uid.GetString() : null;
+            var playlistId = message.Data.TryGetProperty("playlistId", out var pi) ? pi.GetString() : null;
+
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(playlistId) ||
+                !Globals.SpotifyProfiles.TryGetValue(userId, out var profile))
+            {
+                var err = new { Type = "Spotify/GetPlaylistTracks", message.RequestId, Error = "Invalid userId or playlistId" };
+                var errJson = JsonSerializer.Serialize(err, JsonOptions);
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(errJson)),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+                return;
+            }
+
+            try
+            {
+                var spotify = GetClient(profile);
+                var items = await spotify.Playlists.GetItems(playlistId);
+
+                var tracks = items.Items?
+                    .Where(item => item.Track is FullTrack)
+                    .Select(item =>
+                    {
+                        var t = (FullTrack)item.Track;
+                        return new
+                        {
+                            Id = t.Id ?? "",
+                            Name = t.Name ?? "",
+                            ArtistName = t.Artists != null ? string.Join(", ", t.Artists.Select(a => a.Name)) : "",
+                            Uri = t.Uri ?? "",
+                            DurationMs = t.DurationMs,
+                            ImageUrl = t.Album?.Images?.FirstOrDefault()?.Url ?? ""
+                        };
+                    });
+
+                var response = new
+                {
+                    Type = "Spotify/GetPlaylistTracks",
+                    message.RequestId,
+                    Data = new { Tracks = tracks }
+                };
+                var json = JsonSerializer.Serialize(response, JsonOptions);
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(json)),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+            catch (APIException ex)
+            {
+                var err = new { Type = "Spotify/GetPlaylistTracks", message.RequestId, Error = ex.Message };
+                var errJson = JsonSerializer.Serialize(err, JsonOptions);
+                await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(errJson)),
+                    WebSocketMessageType.Text, true, CancellationToken.None);
+            }
         }
     }
 }

@@ -85,9 +85,12 @@ export default function LoginScreen() {
 
   // Handle new user creation with passcode
   const handleCreatePasscode = async (passcode) => {
+    console.log('Creating profile with name:', newUserName.trim(), 'passcode length:', passcode.length)
     const result = await createProfile(newUserName.trim(), passcode)
+    console.log('Create profile result:', result)
     if (!result.success) {
       // Error is handled by context
+      console.log('Create profile failed, going back to create view')
       setView('create')
     }
   }

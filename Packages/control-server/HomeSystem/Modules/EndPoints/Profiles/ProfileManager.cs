@@ -1,7 +1,6 @@
 /*
  * ProfileManager - User profile WebSocket endpoints
  * Handles all profile-related operations: create, login, update, delete.
- * Profiles are used for personalization and linked account management.
  */
 
 using System.Net.WebSockets;
@@ -12,20 +11,22 @@ using CentralServer.Modules.Data.Messages;
 
 namespace CentralServer.Modules.EndPoints.Profiles;
 
-public class ProfileManager
+public static class ProfileManager
 {
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    /// <summary>
-    /// Sends a JSON response to the client.
-    /// </summary>
-    private static async Task SendResponse(WebSocket socket, object response)
+    // ─────────────────────────────────────────────────────────────────────────
+    // Helpers
+    // ─────────────────────────────────────────────────────────────────────────
+
+    private static async Task Send(WebSocket socket, object payload)
     {
-        var json = JsonSerializer.Serialize(response, JsonOptions);
+        var json = JsonSerializer.Serialize(payload, JsonOptions);
         var bytes = Encoding.UTF8.GetBytes(json);
+
         await socket.SendAsync(
             new ArraySegment<byte>(bytes),
             WebSocketMessageType.Text,
@@ -34,174 +35,176 @@ public class ProfileManager
         );
     }
 
-    /// <summary>
-    /// Extracts a string property from JsonElement data.
-    /// </summary>
+    private static async Task SendError(
+        WebSocket socket,
+        ClientMessage message,
+        string type,
+        string error
+    )
+    {
+        await Send(socket, new
+        {
+            type,
+            requestId = message.RequestId,
+            success = false,
+            error
+        });
+    }
+
     private static string GetString(object? data, string property)
     {
-        if (data is JsonElement json && json.TryGetProperty(property, out var value))
-            return value.GetString() ?? "";
-        return "";
+        if (data is JsonElement json &&
+            json.TryGetProperty(property, out var value) &&
+            value.ValueKind == JsonValueKind.String)
+        {
+            return value.GetString() ?? string.Empty;
+        }
+
+        return string.Empty;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // GetProfiles - Returns all profiles (without passcodes)
+    // GetProfiles
     // ─────────────────────────────────────────────────────────────────────────
 
-    public class GetProfiles
+    public static class GetProfiles
     {
         public static async Task Handle(WebSocket socket, ClientMessage message)
         {
             var profiles = Globals.Profiles.Values.Select(p => new
             {
-                p.Id,
-                p.Name,
-                p.CreatedAt,
-                p.LastLogin,
-                HasSpotify = !string.IsNullOrEmpty(p.SpotifyProfileId)
+                id = p.Id,
+                name = p.Name,
+                createdAt = p.CreatedAt,
+                lastLogin = p.LastLogin,
+                hasSpotify = !string.IsNullOrEmpty(p.SpotifyProfileId)
             }).ToList();
 
-            await SendResponse(socket, new
+            await Send(socket, new
             {
-                Type = "Profile/GetAll",
-                RequestId = message.RequestId,
-                Data = new { Profiles = profiles, Count = profiles.Count }
+                type = "profile.getAll",
+                requestId = message.RequestId,
+                success = true,
+                data = new
+                {
+                    profiles,
+                    count = profiles.Count
+                }
             });
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // CreateProfile - Creates a new user profile
+    // CreateProfile
     // ─────────────────────────────────────────────────────────────────────────
 
-    public class CreateProfile
+    public static class CreateProfile
     {
         public static async Task Handle(WebSocket socket, ClientMessage message)
         {
             var name = GetString(message.Data, "name");
             var passcode = GetString(message.Data, "passcode");
 
-            // Validate name
             if (string.IsNullOrWhiteSpace(name))
             {
-                await SendError(socket, message, "Name is required");
+                await SendError(socket, message, "profile.create", "Name is required");
                 return;
             }
 
-            // Validate passcode length
-            if (string.IsNullOrWhiteSpace(passcode) || passcode.Length < 4 || passcode.Length > 6)
+            if (passcode.Length < 4 || passcode.Length > 6)
             {
-                await SendError(socket, message, "Passcode must be 4-6 digits");
+                await SendError(socket, message, "profile.create", "Passcode must be 4–6 digits");
                 return;
             }
 
-            // Check for duplicate names
-            if (Globals.Profiles.Values.Any(p => p.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+            if (Globals.Profiles.Values.Any(p =>
+                p.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
             {
-                await SendError(socket, message, "A profile with this name already exists");
+                await SendError(socket, message, "profile.create", "Profile name already exists");
                 return;
             }
 
-            // Create and store the profile
             var profile = new Profile
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = name,
                 Passcode = passcode,
+                CreatedAt = DateTime.UtcNow,
                 LastLogin = DateTime.UtcNow
             };
+
             Globals.Profiles[profile.Id] = profile;
 
-            Console.WriteLine($"[Profile] Created: {name}");
-
-            await SendResponse(socket, new
+            await Send(socket, new
             {
-                Type = "Profile/Create",
-                RequestId = message.RequestId,
-                Data = new
+                type = "profile.create",
+                requestId = message.RequestId,
+                success = true,
+                data = new
                 {
-                    Success = true,
-                    Profile = new { profile.Id, profile.Name, profile.CreatedAt, profile.LastLogin }
+                    profile = new
+                    {
+                        id = profile.Id,
+                        name = profile.Name,
+                        createdAt = profile.CreatedAt,
+                        lastLogin = profile.LastLogin
+                    }
                 }
-            });
-        }
-
-        private static async Task SendError(WebSocket socket, ClientMessage message, string error)
-        {
-            await SendResponse(socket, new
-            {
-                Type = "Profile/Create",
-                RequestId = message.RequestId,
-                Data = new { Success = false, Error = error }
             });
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // Login - Authenticates user with passcode
+    // Login
     // ─────────────────────────────────────────────────────────────────────────
 
-    public class Login
+    public static class Login
     {
         public static async Task Handle(WebSocket socket, ClientMessage message)
         {
             var profileId = GetString(message.Data, "profileId");
             var passcode = GetString(message.Data, "passcode");
 
-            // Find the profile
             if (!Globals.Profiles.TryGetValue(profileId, out var profile))
             {
-                await SendError(socket, message, "Profile not found");
+                await SendError(socket, message, "profile.login", "Profile not found");
                 return;
             }
 
-            // Verify passcode
             if (profile.Passcode != passcode)
             {
-                Console.WriteLine($"[Profile] Failed login: {profile.Name}");
-                await SendError(socket, message, "Incorrect passcode");
+                await SendError(socket, message, "profile.login", "Incorrect passcode");
                 return;
             }
 
-            // Update last login timestamp
             profile.LastLogin = DateTime.UtcNow;
-            Console.WriteLine($"[Profile] Login: {profile.Name}");
 
-            await SendResponse(socket, new
+            await Send(socket, new
             {
-                Type = "Profile/Login",
-                RequestId = message.RequestId,
-                Data = new
+                type = "profile.login",
+                requestId = message.RequestId,
+                success = true,
+                data = new
                 {
-                    Success = true,
-                    Profile = new
+                    profile = new
                     {
-                        profile.Id,
-                        profile.Name,
-                        profile.CreatedAt,
-                        profile.LastLogin,
-                        profile.SpotifyProfileId,
-                        profile.Settings
+                        id = profile.Id,
+                        name = profile.Name,
+                        createdAt = profile.CreatedAt,
+                        lastLogin = profile.LastLogin,
+                        spotifyProfileId = profile.SpotifyProfileId,
+                        settings = profile.Settings
                     }
                 }
-            });
-        }
-
-        private static async Task SendError(WebSocket socket, ClientMessage message, string error)
-        {
-            await SendResponse(socket, new
-            {
-                Type = "Profile/Login",
-                RequestId = message.RequestId,
-                Data = new { Success = false, Error = error }
             });
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // UpdateProfile - Updates profile name or passcode
+    // UpdateProfile
     // ─────────────────────────────────────────────────────────────────────────
 
-    public class UpdateProfile
+    public static class UpdateProfile
     {
         public static async Task Handle(WebSocket socket, ClientMessage message)
         {
@@ -209,101 +212,85 @@ public class ProfileManager
             var newName = GetString(message.Data, "name");
             var newPasscode = GetString(message.Data, "passcode");
 
-            // Find the profile
             if (!Globals.Profiles.TryGetValue(profileId, out var profile))
             {
-                await SendError(socket, message, "Profile not found");
+                await SendError(socket, message, "profile.update", "Profile not found");
                 return;
             }
 
-            // Update name if provided
             if (!string.IsNullOrWhiteSpace(newName))
             {
-                var nameExists = Globals.Profiles.Values
-                    .Any(p => p.Id != profileId && p.Name.Equals(newName, StringComparison.OrdinalIgnoreCase));
-
-                if (nameExists)
+                if (Globals.Profiles.Values.Any(p =>
+                    p.Id != profileId &&
+                    p.Name.Equals(newName, StringComparison.OrdinalIgnoreCase)))
                 {
-                    await SendError(socket, message, "A profile with this name already exists");
+                    await SendError(socket, message, "profile.update", "Name already in use");
                     return;
                 }
+
                 profile.Name = newName;
             }
 
-            // Update passcode if provided
             if (!string.IsNullOrWhiteSpace(newPasscode))
             {
                 if (newPasscode.Length < 4 || newPasscode.Length > 6)
                 {
-                    await SendError(socket, message, "Passcode must be 4-6 digits");
+                    await SendError(socket, message, "profile.update", "Passcode must be 4–6 digits");
                     return;
                 }
+
                 profile.Passcode = newPasscode;
             }
 
-            Console.WriteLine($"[Profile] Updated: {profile.Name}");
-
-            await SendResponse(socket, new
+            await Send(socket, new
             {
-                Type = "Profile/Update",
-                RequestId = message.RequestId,
-                Data = new
+                type = "profile.update",
+                requestId = message.RequestId,
+                success = true,
+                data = new
                 {
-                    Success = true,
-                    Profile = new { profile.Id, profile.Name, profile.CreatedAt, profile.LastLogin }
+                    profile = new
+                    {
+                        id = profile.Id,
+                        name = profile.Name,
+                        createdAt = profile.CreatedAt,
+                        lastLogin = profile.LastLogin
+                    }
                 }
-            });
-        }
-
-        private static async Task SendError(WebSocket socket, ClientMessage message, string error)
-        {
-            await SendResponse(socket, new
-            {
-                Type = "Profile/Update",
-                RequestId = message.RequestId,
-                Data = new { Success = false, Error = error }
             });
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // DeleteProfile - Removes a profile
+    // DeleteProfile
     // ─────────────────────────────────────────────────────────────────────────
 
-    public class DeleteProfile
+    public static class DeleteProfile
     {
         public static async Task Handle(WebSocket socket, ClientMessage message)
         {
             var profileId = GetString(message.Data, "profileId");
 
-            if (!Globals.Profiles.TryGetValue(profileId, out var profile))
+            if (!Globals.Profiles.Remove(profileId))
             {
-                await SendResponse(socket, new
-                {
-                    Type = "Profile/Delete",
-                    RequestId = message.RequestId,
-                    Data = new { Success = false, Error = "Profile not found" }
-                });
+                await SendError(socket, message, "profile.delete", "Profile not found");
                 return;
             }
 
-            Globals.Profiles.Remove(profileId);
-            Console.WriteLine($"[Profile] Deleted: {profile.Name}");
-
-            await SendResponse(socket, new
+            await Send(socket, new
             {
-                Type = "Profile/Delete",
-                RequestId = message.RequestId,
-                Data = new { Success = true }
+                type = "profile.delete",
+                requestId = message.RequestId,
+                success = true
             });
         }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
-    // LinkSpotify - Links/unlinks Spotify account to profile
+    // LinkSpotify
     // ─────────────────────────────────────────────────────────────────────────
 
-    public class LinkSpotify
+    public static class LinkSpotify
     {
         public static async Task Handle(WebSocket socket, ClientMessage message)
         {
@@ -312,37 +299,29 @@ public class ProfileManager
 
             if (!Globals.Profiles.TryGetValue(profileId, out var profile))
             {
-                await SendError(socket, message, "Profile not found");
+                await SendError(socket, message, "profile.linkSpotify", "Profile not found");
                 return;
             }
 
-            // Verify Spotify profile exists (if linking)
-            if (!string.IsNullOrEmpty(spotifyProfileId) && !Globals.SpotifyProfiles.ContainsKey(spotifyProfileId))
+            if (!string.IsNullOrEmpty(spotifyProfileId) &&
+                !Globals.SpotifyProfiles.ContainsKey(spotifyProfileId))
             {
-                await SendError(socket, message, "Spotify profile not found");
+                await SendError(socket, message, "profile.linkSpotify", "Spotify profile not found");
                 return;
             }
 
-            // Link or unlink
-            profile.SpotifyProfileId = string.IsNullOrEmpty(spotifyProfileId) ? null : spotifyProfileId;
-            var action = string.IsNullOrEmpty(spotifyProfileId) ? "Unlinked" : "Linked";
-            Console.WriteLine($"[Profile] {action} Spotify: {profile.Name}");
+            profile.SpotifyProfileId =
+                string.IsNullOrEmpty(spotifyProfileId) ? null : spotifyProfileId;
 
-            await SendResponse(socket, new
+            await Send(socket, new
             {
-                Type = "Profile/LinkSpotify",
-                RequestId = message.RequestId,
-                Data = new { Success = true, SpotifyProfileId = profile.SpotifyProfileId }
-            });
-        }
-
-        private static async Task SendError(WebSocket socket, ClientMessage message, string error)
-        {
-            await SendResponse(socket, new
-            {
-                Type = "Profile/LinkSpotify",
-                RequestId = message.RequestId,
-                Data = new { Success = false, Error = error }
+                type = "profile.linkSpotify",
+                requestId = message.RequestId,
+                success = true,
+                data = new
+                {
+                    spotifyProfileId = profile.SpotifyProfileId
+                }
             });
         }
     }

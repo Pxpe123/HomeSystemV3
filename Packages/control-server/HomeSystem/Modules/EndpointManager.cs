@@ -46,6 +46,8 @@ public static class EndpointManager
         { "Spotify/GetState", SpotifyManager.GetState.Handle },
         { "Spotify/GetAllStates", SpotifyManager.GetAllStates.Handle },
         { "Spotify/Playback", SpotifyManager.PlaybackControl.Handle },
+        { "Spotify/Search", SpotifyManager.Search.Handle },
+        { "Spotify/GetPlaylistTracks", SpotifyManager.GetPlaylistTracks.Handle },
 
         // ─────────────────────────────────────────────────────────────
         // User Profiles
