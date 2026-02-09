@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react"
 import PageDots from "../../components/common/PageDots/PageDots"
-import { Overview, Apps, Statistics, Settings } from "./pages/index.js"
+import { Overview, Apps, Statistics } from "./pages/index.js"
+import { SettingsApp } from "../Apps/index.js"
 import "./Home.css"
 
 const STORAGE_KEY = 'hs3-home-active-page'
@@ -10,7 +11,7 @@ export default function Home() {
     <Overview />,
     <Apps />,
     <Statistics />,
-    <Settings />,
+    <SettingsApp />
   ]
 
   // Initialize from sessionStorage to persist across app navigation
