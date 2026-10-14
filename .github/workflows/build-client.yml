@@ -35,6 +35,7 @@ jobs:
           host: windows
           target: desktop
           arch: win64_msvc2022_64
+          modules: qtwebengine
           cache: true
 
       - name: Configure
