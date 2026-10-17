@@ -12,11 +12,18 @@ namespace CentralServer.Modules.EndPoints.Spotify;
 
 public class SpotifyManager
 {
+    private static void LogSpotifyError(string operation, Exception ex)
+    {
+        // Full exception output includes type, stack trace and inner exceptions.
+        // Never log access tokens, refresh tokens or OAuth authorization codes.
+        Console.Error.WriteLine($"[Spotify] {operation} failed: {ex}");
+    }
+
     public static readonly string ClientId =
-        Environment.GetEnvironmentVariable("SpotifyClientID") ?? "19ea12f634f048468ed4f59a69bf6a2b";
+        Environment.GetEnvironmentVariable("SpotifyClientID") ?? throw new InvalidOperationException("SpotifyClientID is not configured");
 
     public static readonly string ClientSecret =
-        Environment.GetEnvironmentVariable("SpotifyClientSecret") ?? "853f6ae8fcb14e32afc557b04e200195";
+        Environment.GetEnvironmentVariable("SpotifyClientSecret") ?? throw new InvalidOperationException("SpotifyClientSecret is not configured");
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -67,8 +74,11 @@ public class SpotifyManager
 
                 try
                 {
+                    Console.WriteLine($"Connecting to {RedirectUri}...");
                     var config = SpotifyClientConfig.CreateDefault();
                     var oAuthClient = new OAuthClient(config);
+                    
+                    Console.WriteLine($"After OAuth to {RedirectUri}...");
 
                     var tokenRequest = new AuthorizationCodeTokenRequest(
                         ClientId, ClientSecret, code, new Uri(RedirectUri)
@@ -100,7 +110,7 @@ public class SpotifyManager
                     Console.WriteLine($"[Spotify] {profile.DisplayName} logged in");
 
                     string webUiUrl =
-                        $"{Globals.WebUiUrl}Spotify/Callback/Success" +
+                        $"{Globals.WebUiUrl.TrimEnd('/')}/Spotify/Callback/Success" +
                         $"?name={Uri.EscapeDataString(profile.DisplayName)}" +
                         $"&email={Uri.EscapeDataString(profile.Email)}";
                     ctx.Response.Redirect(webUiUrl);
@@ -124,9 +134,14 @@ public class SpotifyManager
                     StateUpdater.EnsureRunning();
                     TokenRefresher.EnsureRunning();
                 }
-                catch (APIException ex)
+                catch (Exception ex)
                 {
-                    await ctx.Response.WriteAsync($"Token exchange failed: {ex.Message}");
+                    LogSpotifyError("OAuth callback", ex);
+                    if (!ctx.Response.HasStarted)
+                    {
+                        ctx.Response.StatusCode = StatusCodes.Status502BadGateway;
+                        await ctx.Response.WriteAsync("Spotify authentication failed. Check server logs.");
+                    }
                 }
             });
         }
@@ -199,7 +214,8 @@ public class SpotifyManager
                 while (true)
                 {
                     await Task.Delay(TimeSpan.FromMinutes(30));
-                    await RefreshAllProfiles();
+                    try { await RefreshAllProfiles(); }
+                    catch (Exception ex) { LogSpotifyError("Token refresh loop", ex); }
                 }
             });
 
@@ -231,9 +247,9 @@ public class SpotifyManager
                     if (Globals.DevMode)
                         Console.WriteLine($"[Spotify] Refreshed token for {profile.DisplayName}");
                 }
-                catch (APIException ex)
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"[Spotify] Token refresh failed for {profile.DisplayName}: {ex.Message}");
+                    LogSpotifyError($"Token refresh for {profile.Id}", ex);
                 }
             }
         }
@@ -258,7 +274,8 @@ public class SpotifyManager
                 while (true)
                 {
                     await Task.Delay(TimeSpan.FromSeconds(5));
-                    await UpdatePlaybackForAll();
+                    try { await UpdatePlaybackForAll(); }
+                    catch (Exception ex) { LogSpotifyError("Playback update loop", ex); }
                 }
             });
 
@@ -268,7 +285,8 @@ public class SpotifyManager
                 while (true)
                 {
                     await Task.Delay(TimeSpan.FromSeconds(30));
-                    await UpdateDevicesForAll();
+                    try { await UpdateDevicesForAll(); }
+                    catch (Exception ex) { LogSpotifyError("Devices update loop", ex); }
                 }
             });
 
@@ -278,7 +296,8 @@ public class SpotifyManager
                 while (true)
                 {
                     await Task.Delay(TimeSpan.FromMinutes(5));
-                    await UpdatePlaylistsForAll();
+                    try { await UpdatePlaylistsForAll(); }
+                    catch (Exception ex) { LogSpotifyError("Playlists update loop", ex); }
                 }
             });
 
@@ -291,6 +310,7 @@ public class SpotifyManager
             {
                 if (string.IsNullOrEmpty(profile.AccessToken)) continue;
 
+                var operation = "GetCurrentPlayback";
                 try
                 {
                     var spotify = GetClient(profile);
@@ -298,6 +318,7 @@ public class SpotifyManager
 
                     if (playback?.Item is FullTrack track)
                     {
+                        operation = "GetQueue";
                         var queueResponse = await spotify.Player.GetQueue();
 
                         profile.CurrentPlayback = new SpotifyProfile.PlaybackInfo
@@ -338,7 +359,7 @@ public class SpotifyManager
                             profile.CurrentPlayback.PlaybackState = false;
                     }
                 }
-                catch (APIException) { }
+                catch (Exception ex) { LogSpotifyError($"{operation} for {profile.Id}", ex); }
             }
         }
 
@@ -361,7 +382,7 @@ public class SpotifyManager
                         VolumePercent = d.VolumePercent ?? 0
                     }).ToList() ?? new();
                 }
-                catch (APIException) { }
+                catch (Exception ex) { LogSpotifyError("Device update for " + profile.Id, ex); }
             }
         }
 
@@ -382,7 +403,7 @@ public class SpotifyManager
                     }).ToList() ?? new();
                     profile.ActivePlaylistId = profile.CurrentPlayback?.PlaylistId;
                 }
-                catch (APIException) { }
+                catch (Exception ex) { LogSpotifyError("Playlist update for " + profile.Id, ex); }
             }
         }
     }
@@ -485,12 +506,12 @@ public class SpotifyManager
                 return;
             }
 
-            var spotify = GetClient(profile);
             var success = true;
             var errorMsg = "";
 
             try
             {
+                var spotify = GetClient(profile);
                 switch (action.ToLower())
                 {
                     case "play": await spotify.Player.ResumePlayback(); break;
@@ -539,11 +560,11 @@ public class SpotifyManager
                         Console.WriteLine($"[Spotify] {action} for {profile.DisplayName}");
                 }
             }
-            catch (APIException ex)
+            catch (Exception ex)
             {
                 success = false;
-                errorMsg = ex.Message;
-                Console.WriteLine($"[Spotify] {action} failed for {profile.DisplayName}: {ex.Message}");
+                errorMsg = string.IsNullOrWhiteSpace(ex.Message) ? ex.GetType().Name : ex.Message;
+                LogSpotifyError($"Playback action {action} for {profile.Id}", ex);
             }
 
             var response = new
@@ -603,7 +624,7 @@ public class SpotifyManager
             }
             catch (APIException ex)
             {
-                var err = new { Type = "Spotify/Search", message.RequestId, Error = ex.Message };
+                var err = new { Type = "Spotify/Search", message.RequestId, Error = string.IsNullOrWhiteSpace(ex.Message) ? ex.GetType().Name : ex.Message };
                 var errJson = JsonSerializer.Serialize(err, JsonOptions);
                 await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(errJson)),
                     WebSocketMessageType.Text, true, CancellationToken.None);
@@ -661,7 +682,7 @@ public class SpotifyManager
             }
             catch (APIException ex)
             {
-                var err = new { Type = "Spotify/GetPlaylistTracks", message.RequestId, Error = ex.Message };
+                var err = new { Type = "Spotify/GetPlaylistTracks", message.RequestId, Error = string.IsNullOrWhiteSpace(ex.Message) ? ex.GetType().Name : ex.Message };
                 var errJson = JsonSerializer.Serialize(err, JsonOptions);
                 await socket.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(errJson)),
                     WebSocketMessageType.Text, true, CancellationToken.None);
