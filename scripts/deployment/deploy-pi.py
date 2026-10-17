@@ -29,7 +29,17 @@ def image_for(service):
     return run('docker', 'inspect', '--format', '{{.Image}}', name, capture=True).strip()
 
 
-def verify_health():
+def verify_build_pair(server, web, expected_commit):
+    fields = ('version', 'buildId', 'commit', 'builtAtUtc')
+    if not isinstance(server, dict) or not isinstance(web, dict):
+        raise ValueError('Missing build metadata')
+    if any(not server.get(field) or server.get(field) != web.get(field) for field in fields):
+        raise ValueError('Server and WebUI build identities do not match')
+    if server['commit'] != expected_commit:
+        raise ValueError('Running build does not match the expected Git commit')
+
+
+def verify_health(expected_commit=None):
     for attempt in range(12):
         try:
             for port in (8080, 8088):
@@ -37,6 +47,9 @@ def verify_health():
                     body = json.load(response)
                     if body.get('service') != 'HomeSystem.ControlServer' or body.get('status') != 'ready':
                         raise ValueError('Unexpected health response')
+            if expected_commit:
+                with urllib.request.urlopen('http://127.0.0.1:8088/build-info.json', timeout=5) as response:
+                    verify_build_pair(body.get('build'), json.load(response), expected_commit)
             return
         except (OSError, ValueError):
             if attempt == 11:
@@ -65,7 +78,7 @@ def deploy(repository, commit):
         # Recreate both: nginx must resolve the new server container's address.
         run(*command, 'up', '-d', '--no-build', '--pull', 'never', '--force-recreate',
             '--wait', '--wait-timeout', '180', env=env)
-        verify_health()
+        verify_health(commit)
     except Exception:
         print('Deployment failed; restoring the previous image pair.', flush=True)
         run(*command, 'up', '-d', '--no-build', '--pull', 'never', '--force-recreate',

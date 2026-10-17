@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppTopBar } from "../../../app/Apps/components";
 import { useProfile, useWebSocket } from "../../../context";
@@ -7,6 +7,8 @@ import { runtime, server } from "../../../application/services";
 import { Icon } from "../../../shared/ui/Icon";
 import "../../../app/Apps/AppPage.css";
 import "./SettingsApp.css";
+
+const BuildDetails = lazy(() => import('./BuildDetails.jsx'));
 
 const sections = [
   {
@@ -316,6 +318,9 @@ export default function SettingsApp({ embedded = false }) {
           )}
           {section === "connection" && (
             <>
+              <Suspense fallback={<p className="hs-settings-note" role="status">Loading build details…</p>}>
+                <BuildDetails />
+              </Suspense>
               <div className="hs-setting-card">
                 <div className="hs-setting-row">
                   <span>
@@ -348,10 +353,6 @@ export default function SettingsApp({ embedded = false }) {
               >
                 Reconnect to server
               </button>
-              <p className="hs-settings-note">
-                Timers and saved local preferences remain available without a
-                connection. Connected services need the home server.
-              </p>
               <Link className="hs-settings-action" to="/setup">Set up server connection</Link>
             </>
           )}

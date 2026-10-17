@@ -130,6 +130,7 @@
 }
 .hs-setting-row strong,
 .hs-setting-row small {
+  overflow-wrap: anywhere;
   display: block;
 }
 .hs-setting-row strong {

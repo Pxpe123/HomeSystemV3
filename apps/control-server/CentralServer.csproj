@@ -14,4 +14,5 @@
         <PackageReference Include="SpotifyAPI.Web" Version="7.2.1" />
     </ItemGroup>
 
+    <Import Project="BuildMetadata.targets" />
 </Project>

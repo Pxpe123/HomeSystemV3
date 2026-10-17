@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <HomeSystemDeploymentRoot Condition="'$(HomeSystemDeploymentRoot)' == ''">$(MSBuildThisFileDirectory)../../Deployments/</HomeSystemDeploymentRoot>
+    <HomeSystemApplication>$(MSBuildProjectName)</HomeSystemApplication>
+    <HomeSystemApplication Condition="'$(MSBuildProjectName)' == 'CentralServer'">control-server</HomeSystemApplication>
+    <HomeSystemApplication Condition="'$(MSBuildProjectName)' == 'PcAgent'">desktop-agent</HomeSystemApplication>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../../.local/build/dotnet/$(HomeSystemApplication)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../.local/cache/dotnet/$(HomeSystemApplication)/obj/</BaseIntermediateOutputPath>
+    <DefaultItemExcludes>$(DefaultItemExcludes);bin/**;obj/**</DefaultItemExcludes>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+</Project>

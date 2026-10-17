@@ -32,7 +32,12 @@ internal static class ControlServerHost
         Globals.DevMode = config.DevMode;
         Globals.Pc = config.PcConfig;
         Globals.WebUiUrl = config.WebUiUrl;
-        app.MapGet("/api/health", () => Results.Ok(new { service = "HomeSystem.ControlServer", status = "ready", protocolVersion = 1 }));
+        app.MapGet("/api/health", () => Results.Ok(new { service = "HomeSystem.ControlServer", status = "ready", protocolVersion = 1, build = BuildInfo.Current }));
+        app.MapGet("/api/version", (HttpContext context) =>
+        {
+            context.Response.Headers.CacheControl = "no-store";
+            return Results.Ok(BuildInfo.Current);
+        });
 
         // Register Spotify OAuth callback endpoint
         SpotifyManager.Login.RegisterCallbackEndpoint();
@@ -60,8 +65,8 @@ internal static class ControlServerHost
     /// </summary>
     private static void PrintBuildInfo()
     {
-        var buildTime = File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
-        Console.WriteLine($"Built At: {buildTime:dd/MM/yyyy HH:mm:ss}");
+        var build = BuildInfo.Current;
+        Console.WriteLine($"HomeSystem {build.Version} | Build {build.BuildId} | Commit {build.Commit} | Built UTC {build.BuiltAtUtc}");
     }
 
 

@@ -1,0 +1,20 @@
+<Project>
+  <PropertyGroup>
+    <HomeSystemBuildId Condition="'$(HOMESYSTEM_BUILD_ID)' != ''">$(HOMESYSTEM_BUILD_ID)</HomeSystemBuildId>
+    <HomeSystemBuildId Condition="'$(HomeSystemBuildId)' == ''">local.$([System.DateTime]::UtcNow.ToString('yyyyMMddHHmmssfff'))</HomeSystemBuildId>
+    <HomeSystemBuildVersion Condition="'$(HOMESYSTEM_BUILD_VERSION)' != ''">$(HOMESYSTEM_BUILD_VERSION)</HomeSystemBuildVersion>
+    <HomeSystemBuildVersion Condition="'$(HomeSystemBuildVersion)' == ''">3.0.0-$(HomeSystemBuildId)</HomeSystemBuildVersion>
+    <HomeSystemBuildCommit Condition="'$(HOMESYSTEM_BUILD_COMMIT)' != ''">$(HOMESYSTEM_BUILD_COMMIT)</HomeSystemBuildCommit>
+    <HomeSystemBuildCommit Condition="'$(HomeSystemBuildCommit)' == ''">unknown</HomeSystemBuildCommit>
+    <HomeSystemBuildTimeUtc Condition="'$(HOMESYSTEM_BUILD_TIME_UTC)' != ''">$(HOMESYSTEM_BUILD_TIME_UTC)</HomeSystemBuildTimeUtc>
+    <HomeSystemBuildTimeUtc Condition="'$(HomeSystemBuildTimeUtc)' == ''">$([System.DateTime]::UtcNow.ToString('o'))</HomeSystemBuildTimeUtc>
+    <Version>3.0.0</Version>
+    <InformationalVersion>$(HomeSystemBuildVersion)</InformationalVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <AssemblyMetadata Include="HomeSystem.Version" Value="$(HomeSystemBuildVersion)" />
+    <AssemblyMetadata Include="HomeSystem.BuildId" Value="$(HomeSystemBuildId)" />
+    <AssemblyMetadata Include="HomeSystem.Commit" Value="$(HomeSystemBuildCommit)" />
+    <AssemblyMetadata Include="HomeSystem.BuiltAtUtc" Value="$(HomeSystemBuildTimeUtc)" />
+  </ItemGroup>
+</Project>

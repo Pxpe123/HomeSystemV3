@@ -17,6 +17,11 @@ jobs:
     name: WebUI and .NET checks
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    outputs:
+      version: ${{ steps.identity.outputs.HOMESYSTEM_BUILD_VERSION }}
+      build-id: ${{ steps.identity.outputs.HOMESYSTEM_BUILD_ID }}
+      commit: ${{ steps.identity.outputs.HOMESYSTEM_BUILD_COMMIT }}
+      built-at: ${{ steps.identity.outputs.HOMESYSTEM_BUILD_TIME_UTC }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -30,6 +35,9 @@ jobs:
         with:
           global-json-file: apps/control-server/global.json
       - run: node scripts/check-layout.mjs
+      - name: Stamp one identity for every build artifact
+        id: identity
+        run: node apps/web-ui/scripts/build-info.mjs
       - run: python3 -m unittest discover -s scripts/deployment -p 'test_*.py' -v
       - run: npm ci --prefix apps/web-ui
       - run: npm run verify --prefix apps/web-ui
@@ -66,9 +74,17 @@ jobs:
       - name: Build native Raspberry Pi image
         env:
           APP: ${{ matrix.app }}
+          HOMESYSTEM_BUILD_VERSION: ${{ needs.checks.outputs.version }}
+          HOMESYSTEM_BUILD_ID: ${{ needs.checks.outputs.build-id }}
+          HOMESYSTEM_BUILD_COMMIT: ${{ needs.checks.outputs.commit }}
+          HOMESYSTEM_BUILD_TIME_UTC: ${{ needs.checks.outputs.built-at }}
         run: |
           image="ghcr.io/${GITHUB_REPOSITORY,,}/${APP}:${GITHUB_SHA}"
-          docker build --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+          docker build --build-arg HOMESYSTEM_BUILD_VERSION --build-arg HOMESYSTEM_BUILD_ID \
+            --build-arg HOMESYSTEM_BUILD_COMMIT --build-arg HOMESYSTEM_BUILD_TIME_UTC \
+            --label "org.opencontainers.image.version=${HOMESYSTEM_BUILD_VERSION}" \
+            --label "org.opencontainers.image.created=${HOMESYSTEM_BUILD_TIME_UTC}" \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
             --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
             --tag "$image" "apps/$APP"
       - name: Publish only trusted main builds

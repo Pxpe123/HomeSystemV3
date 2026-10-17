@@ -2,6 +2,11 @@ import { mkdirSync, existsSync, readFileSync, writeFileSync, renameSync, readdir
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { root, deployments, local, staging, run, npm, displayToolchain, buildDisplay } from './deployment-tools.mjs';
+import { createBuildInfo } from '../apps/web-ui/scripts/build-info.mjs';
+
+const build = createBuildInfo();
+Object.assign(process.env, { HOMESYSTEM_BUILD_VERSION: build.version, HOMESYSTEM_BUILD_ID: build.buildId,
+  HOMESYSTEM_BUILD_COMMIT: build.commit, HOMESYSTEM_BUILD_TIME_UTC: build.builtAtUtc });
 
 const id = 'current';
 const includeAndroid = process.argv.includes('--android');
@@ -10,6 +15,7 @@ const previous = path.join(staging, 'previous');
 if (existsSync(release) || existsSync(previous)) throw new Error('An unfinished build remains in .local/staging. Inspect it before rebuilding.');
 const manifest = { schemaVersion: 1, id, createdAt: new Date().toISOString(), platform: process.platform, architecture: process.arch, status: 'building', applications: {}, requirements: ['.NET 9 ASP.NET runtime for server', '.NET 9 runtime and Windows for desktop agent', 'Qt kit target OS and Visual C++ runtime where applicable'] };
 function record() { writeFileSync(path.join(release, 'release.json'), JSON.stringify(manifest, null, 2) + '\n'); }
+manifest.build = build;
 function hashes(directory, prefix = '') {
   return readdirSync(directory).sort().flatMap(name => {
     if (!prefix && name === 'release.json') return [];

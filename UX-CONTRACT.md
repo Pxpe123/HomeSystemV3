@@ -44,4 +44,6 @@ Business evidence: current user request (preserve restored UI; shared app state,
 
 ## Deferred boundaries
 
+Build diagnostics live in Settings → Connection using existing setting-card/row styles. Build metadata is immutable artifact data, not a file modification time or startup time. System/Hello owns the server read, with disconnected/loading/failure/legacy states and reconnect revalidation. A matching status requires non-local version, build ID, commit and UTC timestamp to agree; this is deployment identity, not functional certification. Displayed timestamps use en-GB and Europe/London with a timezone label. The build details chunk loads only when Connection is opened.
+
 Existing authentication, mock smart-home/PC/statistics screens and server database work are not redesigned or represented as complete in this frontend refactor. No permission/security policy is invented. Local display storage is shared by profiles on that display. The server remains the authority for integration state and credentials.

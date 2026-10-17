@@ -12,6 +12,9 @@ const required = [
   'apps/web-ui/package.json', 'apps/web-ui/src/App.jsx',
   'docs/README.md', 'docs/architecture/repository-layout.md',
   'apps/control-server/Dockerfile.artifact', 'apps/web-ui/Dockerfile.artifact',
+  'scripts/build/Directory.Build.props',
+  'scripts/build/Directory.Build.targets',
+  'apps/control-server/BuildMetadata.targets',
 ];
 for (const file of required) {
   await access(path.join(root, file));

@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <PublishDir>$(HomeSystemDeploymentRoot)$(HomeSystemApplication)/</PublishDir>
+  </PropertyGroup>
+</Project>

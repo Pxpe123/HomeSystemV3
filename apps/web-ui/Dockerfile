@@ -5,6 +5,10 @@ WORKDIR /workspace/apps/web-ui
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+ARG HOMESYSTEM_BUILD_VERSION
+ARG HOMESYSTEM_BUILD_ID
+ARG HOMESYSTEM_BUILD_COMMIT
+ARG HOMESYSTEM_BUILD_TIME_UTC
 RUN npm run build
 
 FROM nginx:1.27-alpine AS runtime

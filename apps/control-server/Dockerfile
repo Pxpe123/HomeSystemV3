@@ -8,7 +8,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CentralServer.csproj", "packages.lock.json", "./"]
+COPY ["CentralServer.csproj", "BuildMetadata.targets", "packages.lock.json", "./"]
 RUN dotnet restore "CentralServer.csproj" --locked-mode
 COPY . .
 ENV HomeSystemDeploymentRoot=/app/deployments/
@@ -17,6 +17,10 @@ RUN dotnet build "CentralServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+ARG HOMESYSTEM_BUILD_VERSION
+ARG HOMESYSTEM_BUILD_ID
+ARG HOMESYSTEM_BUILD_COMMIT
+ARG HOMESYSTEM_BUILD_TIME_UTC
 RUN dotnet publish "CentralServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final

@@ -17,6 +17,15 @@ spec.loader.exec_module(deployment)
 
 
 class RolloutTests(unittest.TestCase):
+    def test_build_pair_rejects_stale_or_missing_metadata(self):
+        build = dict(version='3.0.27', buildId='900.1', commit='a' * 40, builtAtUtc='2026-10-17T17:00:00Z')
+        deployment.verify_build_pair(build, dict(build), 'a' * 40)
+        for other in (None, {}, dict(build, buildId='899.1'), dict(build, commit='b' * 40)):
+            with self.assertRaises(ValueError):
+                deployment.verify_build_pair(build, other, 'a' * 40)
+        with self.assertRaises(ValueError):
+            deployment.verify_build_pair(build, dict(build), 'b' * 40)
+
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)
