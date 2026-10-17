@@ -7,7 +7,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-.env.local
+Deployments
+
+.env
+.env.*
+!.env.example
 
 node_modules
 dist
@@ -17,6 +21,8 @@ dist-ssr
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -24,13 +30,18 @@ dist-ssr
 *.njsproj
 *.sw?
 
-Packages/control-server/HomeSystem/obj/
-Packages/control-server/HomeSystem/bin/
+# Generated build output and local editor state, in any application.
+**/bin/
+**/obj/
+**/build/
+**/.qtcreator/
+*.sln.DotSettings.user
+artifacts/
+Deployments/
+.local/
+__pycache__/
+*.pyc
+build.local.json
 
-Packages/HomeSystem.sln.DotSettings.user
-
-Packages/desktop-agent/bin/
-Packages/desktop-agent/obj/
-
-Packages/display-client/build/
-Packages/display-client/build/
+# Protected legacy Qt cache only; no application source belongs here.
+Packages/

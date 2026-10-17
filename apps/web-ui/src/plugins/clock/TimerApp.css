@@ -1,0 +1,13 @@
+.hs-runtime { color:var(--text-primary); }
+.hs-timers { display:grid;grid-template-columns:1fr 1.15fr;gap:20px;overflow-y:auto;flex:1;min-height:0; }
+.hs-timer-panel { min-width:0;align-self:start;padding:24px;border:1px solid var(--border-primary);border-radius:var(--radius-xl);background:var(--bg-card);backdrop-filter:blur(var(--blur-lg)); }
+.hs-timer-panel h2 { font-size:18px;font-weight:600;margin:0 0 20px; }.hs-timer-panel h3 { font-size:14px; }
+.hs-timer-form { display:flex;flex-direction:column;gap:10px; }.hs-timer-form label { font-size:12px;color:var(--text-secondary); }
+.hs-timer-form input { min-height:44px;width:100%;border:1px solid var(--border-primary);border-radius:10px;background:var(--bg-card);color:var(--text-primary);font:14px var(--font-family-primary);padding:12px;user-select:text; }
+.hs-timer-form input:focus { outline:2px solid var(--accent-primary);outline-offset:2px; }
+.hs-timer-form button,.hs-timer-actions button { min-height:44px;border:1px solid var(--border-primary);border-radius:10px;padding:8px 14px;color:var(--text-secondary);background:var(--bg-card);font:12px var(--font-family-primary);cursor:pointer; }
+.hs-timer-form button:hover,.hs-timer-actions button:hover { background:var(--bg-card-hover); }.hs-timer-form button.hs-primary { background:var(--accent-primary);color:#081323;font-weight:600; }
+.hs-presets,.hs-timer-actions { display:flex;gap:8px;flex-wrap:wrap; }.hs-presets>button { flex:1; }
+.hs-helper { display:block;font-size:11px;color:var(--text-tertiary);line-height:1.7;margin-top:14px; }.hs-field-error { color:var(--accent-error);font-size:12px; }
+.hs-timer-list { display:grid;gap:12px; }.hs-timer-card { display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:16px;background:var(--bg-card);border:1px solid var(--border-secondary);border-radius:12px; }.hs-timer-card strong { display:block;font-size:14px; }.hs-timer-card small { display:block;margin-top:4px;font-size:11px;color:var(--text-tertiary);text-transform:capitalize; }.hs-timer-card output,.hs-stopwatch output { font-family:var(--font-family-mono);font-size:30px;color:var(--text-primary); }.hs-timer-card .hs-timer-actions { grid-column:1/-1; }.hs-stopwatch { margin-top:24px;border-top:1px solid var(--border-primary);padding-top:20px; }.hs-stopwatch output { display:block;margin:14px 0; }
+@media(max-width:640px) { .hs-timers { grid-template-columns:1fr; } }

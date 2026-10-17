@@ -1,0 +1,14 @@
+{
+  "id": "pcmanager",
+  "name": "PC Manager",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Computers and wake controls.",
+  "icon": "computer",
+  "color": "#4A9EFF",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": true,
+  "dashboardSlot": "pcmanager",
+  "dependencies": []
+}

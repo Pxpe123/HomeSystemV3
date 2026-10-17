@@ -1,0 +1,1352 @@
+{
+  "date": "2026-10-17",
+  "scope": "Existing maintained source and documentation, excluding generated Deployment/out artifacts and already-deleted files.",
+  "relocationCheckpoint": {
+    "checked": 268,
+    "unchanged": 268,
+    "missing": 0,
+    "note": "Checked immediately after moves, before intentional path/config/documentation edits."
+  },
+  "files": [
+    {
+      "from": ".env.example",
+      "to": ".env.example",
+      "sha256Before": "54A4D692B0E89D50B2CC10AADEBC326C21CB1068D30BFBF4FFED261342466CD0"
+    },
+    {
+      "from": "DESIGN.md",
+      "to": "DESIGN.md",
+      "sha256Before": "20E645E3920EE514E52B2A13D2FD16074A7CCB3F12835CCC537B5A212E5DF75E"
+    },
+    {
+      "from": "Docs/App-exit-and-loading-verification.md",
+      "to": "docs/verification/App-exit-and-loading-verification.md",
+      "sha256Before": "A7D4BD4159C18759F0B5B9EC010DE5FD2B9648324C4BE7F19588EA992B81987E"
+    },
+    {
+      "from": "Docs/Apps-density-verification.md",
+      "to": "docs/verification/Apps-density-verification.md",
+      "sha256Before": "723E5E916AB4E1BC71226179916EA28F47E1B3F75723993135EF14A49FE56692"
+    },
+    {
+      "from": "Docs/Coast-refresh-verification.md",
+      "to": "docs/verification/Coast-refresh-verification.md",
+      "sha256Before": "581B24CB2F45DD36C7736A2B00948E5362FD318E7B32C5CAE36D0B80B79B925B"
+    },
+    {
+      "from": "Docs/Frontend-refactor-verification.md",
+      "to": "docs/verification/Frontend-refactor-verification.md",
+      "sha256Before": "D1069A5C65BF3FEF76B6DCCBF02BDE0CEC12A2F21E9499018BC25B9473661626"
+    },
+    {
+      "from": "Docs/Home-screen-recovery-verification.md",
+      "to": "docs/verification/Home-screen-recovery-verification.md",
+      "sha256Before": "9E6F9009EAC1C34CB3AC1CCD9FEE999515E31AAE4AA4F600555005ADD407E380"
+    },
+    {
+      "from": "Docs/Maintainability-rework-verification.md",
+      "to": "docs/verification/Maintainability-rework-verification.md",
+      "sha256Before": "C30553722B09EC90444859B6FB84E7B3EFAD0D8D269624D2869BBF7ADF616473"
+    },
+    {
+      "from": "Docs/Native-apps-verification.md",
+      "to": "docs/verification/Native-apps-verification.md",
+      "sha256Before": "F1AB60EFCADC18CAD77122DC33E27AC0058E4A2270F11E85D8178D452E67A56C"
+    },
+    {
+      "from": "Docs/Panel-review-verification.md",
+      "to": "docs/verification/Panel-review-verification.md",
+      "sha256Before": "A9CAB9E638DF7BABD10DD5A9B97BDD061AB7BFE673D907C0440797DD8B154FDC"
+    },
+    {
+      "from": "Docs/Run-with-Docker.md",
+      "to": "docs/guides/Run-with-Docker.md",
+      "sha256Before": "CC56D43253DF50BBCC2123FB9699A00025A52667DBF84C422B65B5DBC8A04920"
+    },
+    {
+      "from": "Docs/Swipe-motion-verification.md",
+      "to": "docs/verification/Swipe-motion-verification.md",
+      "sha256Before": "6C2585A4070F7775CB39A7B70B1BA526AA0627FF6116ACA6582655A8F78B07E5"
+    },
+    {
+      "from": "Docs/V4-Product-and-Experience.md",
+      "to": "docs/product/V4-Product-and-Experience.md",
+      "sha256Before": "47802CAEA8607A7AA460DF8C65DACE390890D13AFC57234A6BF36C77AFE7DF8F"
+    },
+    {
+      "from": "Docs/active-widgets-weather-preview.png",
+      "to": "docs/assets/screenshots/active-widgets-weather-preview.png",
+      "sha256Before": "CC06BC76DF7539A061C1F886FAE61DC642EDCA06361244955EEAB7BE08C93F09"
+    },
+    {
+      "from": "Docs/app-gestures-audit.json",
+      "to": "docs/verification/audits/app-gestures-audit.json",
+      "sha256Before": "E2EBB8C99436B56B490293F8DDE2389B0CF223B1DD317054F7D32ED3DA5F4756"
+    },
+    {
+      "from": "Docs/apps-compact-review.png",
+      "to": "docs/assets/screenshots/apps-compact-review.png",
+      "sha256Before": "284AE323DF0AEF19EDE9D2C6B783EAB95BCA6739F5BE89F7C3C7EBFD42DC3A54"
+    },
+    {
+      "from": "Docs/apps-density-audit.json",
+      "to": "docs/verification/audits/apps-density-audit.json",
+      "sha256Before": "E2EBB8C99436B56B490293F8DDE2389B0CF223B1DD317054F7D32ED3DA5F4756"
+    },
+    {
+      "from": "Docs/apps-expanded-review.png",
+      "to": "docs/assets/screenshots/apps-expanded-review.png",
+      "sha256Before": "1E2F66128EFC4B03293C0D57844A9E0FFE87050F2E2F2187647BF193B7DD0EB6"
+    },
+    {
+      "from": "Docs/coast-home-preview.png",
+      "to": "docs/assets/screenshots/coast-home-preview.png",
+      "sha256Before": "3455CE5C95CE1708D49D7D8ADEB4774E221E418926AA755BA57EE4E645F4416C"
+    },
+    {
+      "from": "Docs/coast-launcher-preview.png",
+      "to": "docs/assets/screenshots/coast-launcher-preview.png",
+      "sha256Before": "5FFE8A32A5A6C40F16CD974D32AB8269DC3404754223BC14E6566CE3D82AB25A"
+    },
+    {
+      "from": "Docs/coast-settings-preview.png",
+      "to": "docs/assets/screenshots/coast-settings-preview.png",
+      "sha256Before": "A5B8D574E5DAC4A9A7B7684856CA7B98FCE6EE9812B10838865AE75AEA55D1E6"
+    },
+    {
+      "from": "Docs/coast-shade-preview.png",
+      "to": "docs/assets/screenshots/coast-shade-preview.png",
+      "sha256Before": "B43F3D4ED524B884DD98F0AD0992F1836903EE1B60BC63E6BA7D0D9ABF340C27"
+    },
+    {
+      "from": "Docs/coast-ui-audit.json",
+      "to": "docs/verification/audits/coast-ui-audit.json",
+      "sha256Before": "7A3614E56AE3BDB9683D8AB62327ADE6EAC52D04D402242037A3C676A3858D98"
+    },
+    {
+      "from": "Docs/compact-app-header.png",
+      "to": "docs/assets/screenshots/compact-app-header.png",
+      "sha256Before": "045C83820A63CE45342A3AFF80117847CEA1BB0303AABBAD4ADBF9231C844C9F"
+    },
+    {
+      "from": "Docs/frontend-audit.json",
+      "to": "docs/verification/audits/frontend-audit.json",
+      "sha256Before": "DEDF48F0CA496A913678F81FE5BCBC1898EC48C017585265D5E07E2F7CC4E77F"
+    },
+    {
+      "from": "Docs/home-recovery-verified.png",
+      "to": "docs/assets/screenshots/home-recovery-verified.png",
+      "sha256Before": "94914D04909D1AE4529138FE65168B3A538B9D60DB81EA8418A51E1C1029E6DA"
+    },
+    {
+      "from": "Docs/maintainability-ui-audit.json",
+      "to": "docs/verification/audits/maintainability-ui-audit.json",
+      "sha256Before": "E2EBB8C99436B56B490293F8DDE2389B0CF223B1DD317054F7D32ED3DA5F4756"
+    },
+    {
+      "from": "Docs/native-apps-audit.json",
+      "to": "docs/verification/audits/native-apps-audit.json",
+      "sha256Before": "E2EBB8C99436B56B490293F8DDE2389B0CF223B1DD317054F7D32ED3DA5F4756"
+    },
+    {
+      "from": "Docs/native-notifications-review.png",
+      "to": "docs/assets/screenshots/native-notifications-review.png",
+      "sha256Before": "32361FFE840189FBD533A9377674C9D991DCFB12535AB2C314639D8FCE089A4E"
+    },
+    {
+      "from": "Docs/native-spotify-review.png",
+      "to": "docs/assets/screenshots/native-spotify-review.png",
+      "sha256Before": "4C3F32778A7FBB2CB52ED48ADC79210E855E8A7EFAF00326E351D5DE50E2FAB2"
+    },
+    {
+      "from": "Docs/notification-shade-preview.png",
+      "to": "docs/assets/screenshots/notification-shade-preview.png",
+      "sha256Before": "EA350FBFA973CFC12377078E7A4A39A565CCF1FAA35C50325281D94E98687522"
+    },
+    {
+      "from": "Docs/panel-apps-review.png",
+      "to": "docs/assets/screenshots/panel-apps-review.png",
+      "sha256Before": "BC2DACD7C5B3A872B5C88685D1A53C736C15B2E6A3D4B1309A97DC79729FC660"
+    },
+    {
+      "from": "Docs/panel-home-review.png",
+      "to": "docs/assets/screenshots/panel-home-review.png",
+      "sha256Before": "71AE71BC1ADC1FC2A33DD0E23A287FE1A3BCF99256E08626E16B51364A3A42C0"
+    },
+    {
+      "from": "Docs/panel-review-audit.json",
+      "to": "docs/verification/audits/panel-review-audit.json",
+      "sha256Before": "E2EBB8C99436B56B490293F8DDE2389B0CF223B1DD317054F7D32ED3DA5F4756"
+    },
+    {
+      "from": "Docs/panel-settings-review.png",
+      "to": "docs/assets/screenshots/panel-settings-review.png",
+      "sha256Before": "738EF8633386D752A159514A49583838F447038C43A89D41229B2151AF3826B9"
+    },
+    {
+      "from": "Docs/plugin-library-preview.png",
+      "to": "docs/assets/screenshots/plugin-library-preview.png",
+      "sha256Before": "9A995BB0B2E2D30629BBE2E72A2D12CFCA6B8BC0FE2D62BE02BA16135F51D31D"
+    },
+    {
+      "from": "Docs/quick-timer-preview.png",
+      "to": "docs/assets/screenshots/quick-timer-preview.png",
+      "sha256Before": "A4EF341AE1D538FA7CF85A46697DB235BCC2C3ADBC306B00A19A98CE38ACDC70"
+    },
+    {
+      "from": "Docs/spotify-loading-review.png",
+      "to": "docs/assets/screenshots/spotify-loading-review.png",
+      "sha256Before": "7189198115F32074954E5DDD4F1D661C4B6EF973044F002C075B3724D01F8051"
+    },
+    {
+      "from": "Docs/swipe-motion-audit.json",
+      "to": "docs/verification/audits/swipe-motion-audit.json",
+      "sha256Before": "E2EBB8C99436B56B490293F8DDE2389B0CF223B1DD317054F7D32ED3DA5F4756"
+    },
+    {
+      "from": "Docs/swipe-motion-preview.png",
+      "to": "docs/assets/screenshots/swipe-motion-preview.png",
+      "sha256Before": "87A440841481BB04FCB9F263E9521306532336A4F50748347775861D02F6C5AF"
+    },
+    {
+      "from": "Packages/.vscode/launch.json",
+      "to": ".vscode/launch.json",
+      "sha256Before": "2C3FC64F63FCC3012B3EBA4B008B8DC8CCE0DE952DD2312CCAC93026A8DF9562"
+    },
+    {
+      "from": "Packages/.vscode/settings.json",
+      "to": ".vscode/settings.json",
+      "sha256Before": "08C78F3049E362103C7B69D4BAE815E2343B706BEB2D262741A86CB97DD9E97E"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/V4/HomePlatform.cs",
+      "to": "apps/control-server/src/Platform/HomePlatform.cs",
+      "sha256Before": "850725FEB665FEA25DCEF5B9B00C65CF59E5C77AF285D6EC0CCF77E19678BC97"
+    },
+    {
+      "from": "Packages/desktop-agent/Config.cs",
+      "to": "apps/desktop-agent/src/Config.cs",
+      "sha256Before": "D955D3F0DF05538F0A011FC2EE53BD4F0B4E3BFD4870259FDB2DCD5DEDE115E9"
+    },
+    {
+      "from": "Packages/desktop-agent/ServerConnection.cs",
+      "to": "apps/desktop-agent/src/ServerConnection.cs",
+      "sha256Before": "A81964F85EC8370E48C6635879A6302A39AB0EB18C7566D2C8DBB71807EB30E8"
+    },
+    {
+      "from": "Packages/desktop-agent/SystemMonitor.cs",
+      "to": "apps/desktop-agent/src/SystemMonitor.cs",
+      "sha256Before": "EF70B272D61CB053E4EAD7B16E81719DF335D1B695B8B88D29AB2C66DAF74721"
+    },
+    {
+      "from": "Packages/display-client/.vscode/launch.json",
+      "to": "apps/display-client/.vscode/launch.json",
+      "sha256Before": "E6BFD18BB1F6E68C2161BF8EA4AD315FC3DCF75E4D7DA4FD354D9289FF986354"
+    },
+    {
+      "from": "Packages/display-client/android/AndroidManifest.xml",
+      "to": "apps/display-client/android/AndroidManifest.xml",
+      "sha256Before": "DC5D8DC6184ED053445D09500A4A3D3FD5CF7257968A09C890531B04F16FA44A"
+    },
+    {
+      "from": "Packages/display-client/android/build.gradle",
+      "to": "apps/display-client/android/build.gradle",
+      "sha256Before": "D2FB49A2633D9C4FB5626036FC7D804063F32A8DA7949671F02F06A444F01F9B"
+    },
+    {
+      "from": "Packages/display-client/android/res/values/libs.xml",
+      "to": "apps/display-client/android/res/values/libs.xml",
+      "sha256Before": "61E3ED8FA30353AB9E98DF31C41AC92D459C926F8CEB9AFA0F747586203055E1"
+    },
+    {
+      "from": "Packages/display-client/android/res/xml/qtprovider_paths.xml",
+      "to": "apps/display-client/android/res/xml/qtprovider_paths.xml",
+      "sha256Before": "F06EC3AB4DFDCA82DF035968958C7C64CBC6EC87ECE102ADA2B7D7E86C76EDCD"
+    },
+    {
+      "from": "Packages/display-client/qml/Main.qml",
+      "to": "apps/display-client/qml/Main.qml",
+      "sha256Before": "33F6BC8FA2B9DE866F60A43B6B664974777A3278D0E1848C407379318E3160F8"
+    },
+    {
+      "from": "Packages/display-client/src/main_android.cpp",
+      "to": "apps/display-client/src/main_android.cpp",
+      "sha256Before": "F0A843084DB861C929906B6A46CFC99334E2D84DDC7655F195375C49FF395467"
+    },
+    {
+      "from": "Packages/web-ui/.dockerignore",
+      "to": "apps/web-ui/.dockerignore",
+      "sha256Before": "296E56BE1BDA890ED89D0E660AD84C112680D80CC5A6FB682E80729725EAECD0"
+    },
+    {
+      "from": "Packages/web-ui/Dockerfile",
+      "to": "apps/web-ui/Dockerfile",
+      "sha256Before": "D544527266DDC02EAFBE63AD9EC3CA2B634752C5E748AA7BA5E9E5AAC4BA0FAF"
+    },
+    {
+      "from": "Packages/web-ui/PLUGIN-API.md",
+      "to": "apps/web-ui/docs/plugins.md",
+      "sha256Before": "E534490C87C071F036D2C77346803A845E33C8F9C7E3CB5965B7578DD52B3644"
+    },
+    {
+      "from": "Packages/web-ui/README-architecture.md",
+      "to": "apps/web-ui/docs/architecture.md",
+      "sha256Before": "D18C6C8959E75301AAA4ADDD31FF00657464D0C2C33EDC996C84EEE05B7CA5A0"
+    },
+    {
+      "from": "Packages/web-ui/nginx.conf",
+      "to": "apps/web-ui/nginx.conf",
+      "sha256Before": "586FD8D8EFFB1A34A5F7842B71EAD38F119489F57BB78C115CB6F2FA2DAE1461"
+    },
+    {
+      "from": "Packages/web-ui/scripts/verify-build.mjs",
+      "to": "apps/web-ui/scripts/verify-build.mjs",
+      "sha256Before": "5E69DFBA9C3DFF4C79CCAA556529756B338FE118752266B33B1AC7DBD03DF2F4"
+    },
+    {
+      "from": "Packages/web-ui/src/application/PluginHost.jsx",
+      "to": "apps/web-ui/src/application/PluginHost.jsx",
+      "sha256Before": "00F1892ED10B36D5BF64CC23EE51B8C58771EF97B9D6B2EF3241410A5653E182"
+    },
+    {
+      "from": "Packages/web-ui/src/application/PluginRoutePage.jsx",
+      "to": "apps/web-ui/src/application/PluginRoutePage.jsx",
+      "sha256Before": "DF29D4928D693C44DD29E5AE8FE320D892A705AAD165F64E4FC7CE33D0AEC34E"
+    },
+    {
+      "from": "Packages/web-ui/src/application/RuntimeProvider.jsx",
+      "to": "apps/web-ui/src/application/RuntimeProvider.jsx",
+      "sha256Before": "DE14D230F50BB3EA2401A72E44665E6C968F1055178D37462F378DC6423A708D"
+    },
+    {
+      "from": "Packages/web-ui/src/application/lazyApp.js",
+      "to": "apps/web-ui/src/application/lazyApp.js",
+      "sha256Before": "65D0C0B6A4BA9E2C6C0FDD197308311873D8D4188881BB5D06D99B9EB2353EFB"
+    },
+    {
+      "from": "Packages/web-ui/src/application/plugins.js",
+      "to": "apps/web-ui/src/application/plugins.js",
+      "sha256Before": "FE4EEB79EB9EDE750089E0E71F2DA02E976E0544C8DBA3858330398DDA937890"
+    },
+    {
+      "from": "Packages/web-ui/src/application/services.js",
+      "to": "apps/web-ui/src/application/services.js",
+      "sha256Before": "93943EFB794CBE5F0A67E3997128CB754844375F22661F7B92C0C4A417A812CB"
+    },
+    {
+      "from": "Packages/web-ui/src/application/useAppState.js",
+      "to": "apps/web-ui/src/application/useAppState.js",
+      "sha256Before": "03FA8EDCE2AA5EB0EAFADEE4FEC4241FE7597AF91BB43F130E198CB7C89C4B07"
+    },
+    {
+      "from": "Packages/web-ui/src/application/useHome.js",
+      "to": "apps/web-ui/src/application/useHome.js",
+      "sha256Before": "F360100E20E1D86E4683D792D9ABF13EAD859EF5B725A2159B13231C9EBAE8EC"
+    },
+    {
+      "from": "Packages/web-ui/src/application/usePlugins.js",
+      "to": "apps/web-ui/src/application/usePlugins.js",
+      "sha256Before": "EC2AB837DF6AC213118DA350D0DE601081FDAEDE766AC830DE94DE0B24D7B7C5"
+    },
+    {
+      "from": "Packages/web-ui/src/components/common/ActiveApps/ActiveAppWidgets.css",
+      "to": "apps/web-ui/src/components/common/ActiveApps/ActiveAppWidgets.css",
+      "sha256Before": "AB623A96C993A18758B6D9EFACCBFC394A60A5E4654E928785B4BB71068320A7"
+    },
+    {
+      "from": "Packages/web-ui/src/core/AppRegistry.js",
+      "to": "apps/web-ui/src/core/AppRegistry.js",
+      "sha256Before": "1E8154F1D590D04F5DF12B80ED920B52325CD34CB4A1EBBA09D876C71732C5C8"
+    },
+    {
+      "from": "Packages/web-ui/src/core/ClockStore.js",
+      "to": "apps/web-ui/src/core/ClockStore.js",
+      "sha256Before": "BACE793C455DBDA659C6A41A75C527E02C2925B69FD7121497A8BD4AD34CE72B"
+    },
+    {
+      "from": "Packages/web-ui/src/core/HomeRuntime.js",
+      "to": "apps/web-ui/src/core/HomeRuntime.js",
+      "sha256Before": "1090B2DCCF7C3900921FF06935AD713D4A6A36BCEAAC211D0C3C8AF512094E04"
+    },
+    {
+      "from": "Packages/web-ui/src/core/LauncherLayout.js",
+      "to": "apps/web-ui/src/core/LauncherLayout.js",
+      "sha256Before": "492874FCFE06DF3C915A2D7ECE6EE3ADD62C840C04F1AADEEAB68576006D0688"
+    },
+    {
+      "from": "Packages/web-ui/src/core/ModuleLoader.js",
+      "to": "apps/web-ui/src/core/ModuleLoader.js",
+      "sha256Before": "2D77337033F6933A69F6D232DA09D1F8C8B3D2778DD5FA42FEA74AB6487C62BF"
+    },
+    {
+      "from": "Packages/web-ui/src/core/ObservableStore.js",
+      "to": "apps/web-ui/src/core/ObservableStore.js",
+      "sha256Before": "29E62A167C02704333A730F4D781FAA6D13FEF0E2B6B0FDCA717C108B9153959"
+    },
+    {
+      "from": "Packages/web-ui/src/core/PluginManager.js",
+      "to": "apps/web-ui/src/core/PluginManager.js",
+      "sha256Before": "999BD792A2F35F17556EC8C06D196EE9DF1D2F4985515F06AFC8FF36F4C64FB1"
+    },
+    {
+      "from": "Packages/web-ui/src/core/RuntimeState.js",
+      "to": "apps/web-ui/src/core/RuntimeState.js",
+      "sha256Before": "54D9734327602645E1209CEB59EE10B7804A263AFD04FFED6CB6547D799929DF"
+    },
+    {
+      "from": "Packages/web-ui/src/core/ServerClient.js",
+      "to": "apps/web-ui/src/core/ServerClient.js",
+      "sha256Before": "DAD17F137528F68BDAE26F07244F1479B5D9438312E57FBC41E04ED2969900B5"
+    },
+    {
+      "from": "Packages/web-ui/src/core/SolarTimes.js",
+      "to": "apps/web-ui/src/core/SolarTimes.js",
+      "sha256Before": "603DBEC91A8A808B1395A184F623370606D2191B87FF7D28EBA6D2B9A3269207"
+    },
+    {
+      "from": "Packages/web-ui/src/core/StorageRepository.js",
+      "to": "apps/web-ui/src/core/StorageRepository.js",
+      "sha256Before": "D570728FDF15F538F9F463C6B9A44973548F51CEC53739BA7E50747CE8AFE1BF"
+    },
+    {
+      "from": "Packages/web-ui/src/core/SwipeGesture.js",
+      "to": "apps/web-ui/src/core/SwipeGesture.js",
+      "sha256Before": "AE967F88E003638ED033EB8D4DC43CFC06447B38A7F1598631E92A215DACAEBB"
+    },
+    {
+      "from": "Packages/web-ui/src/features/app-library/AppLibrary.css",
+      "to": "apps/web-ui/src/features/app-library/AppLibrary.css",
+      "sha256Before": "E600E628DC68A6B147FAD9A31D21C8A368EA7399D43D4CF25B743248C730578C"
+    },
+    {
+      "from": "Packages/web-ui/src/features/app-library/AppLibrary.jsx",
+      "to": "apps/web-ui/src/features/app-library/AppLibrary.jsx",
+      "sha256Before": "46FD5AC581B6AC101A1BF020601BA0BF147BD9AFDDAF5DAF759A7164D9D01E7E"
+    },
+    {
+      "from": "Packages/web-ui/src/features/notifications/NotificationFeedback.js",
+      "to": "apps/web-ui/src/features/notifications/NotificationFeedback.js",
+      "sha256Before": "C7EA0B0DCCB2CF01FD700304F2318248AE1D4FA9D0E43094065537BC9DE3745A"
+    },
+    {
+      "from": "Packages/web-ui/src/features/notifications/NotificationList.jsx",
+      "to": "apps/web-ui/src/features/notifications/NotificationList.jsx",
+      "sha256Before": "F9FACC4E503A26F4A7922CD36C27C7B60325AFF0F38B89AA3600743A7EC24C06"
+    },
+    {
+      "from": "Packages/web-ui/src/features/notifications/NotificationShade.jsx",
+      "to": "apps/web-ui/src/features/notifications/NotificationShade.jsx",
+      "sha256Before": "6838E061545F89E3BAE4C684BC604FF2D80AF5CB289BE79FAF9C84BDAC51BAC7"
+    },
+    {
+      "from": "Packages/web-ui/src/features/notifications/runtime.css",
+      "to": "apps/web-ui/src/features/notifications/runtime.css",
+      "sha256Before": "56ABCF2D738D678351227C7BBBDCADA8E4B4EF52DD7D9496548F3BA05F089AF6"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/cameras/manifest.json",
+      "to": "apps/web-ui/src/plugins/cameras/manifest.json",
+      "sha256Before": "1C4A34EBD1985C35CAE51E84090E4C6163BA230599C4BA49E9CCE11A47A14F82"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/cameras/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/cameras/plugin.jsx",
+      "sha256Before": "040D3EC0B39BD61E3BF6F1D5DF7B313C0A027B0B60BDFAB8CDABF64D74E9CDC3"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/cameras/ui/CamerasApp.jsx",
+      "to": "apps/web-ui/src/plugins/cameras/ui/CamerasApp.jsx",
+      "sha256Before": "629AECDE259F158292844789893CBD66ED5CADF3B68EE771AE64A920766AFA45"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/cameras/ui/index.js",
+      "to": "apps/web-ui/src/plugins/cameras/ui/index.js",
+      "sha256Before": "C1B28F7E924EF6525D3184A61685962035FE85CCD73BA2676EE310279C557279"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/ActiveWidgets.jsx",
+      "to": "apps/web-ui/src/plugins/clock/ActiveWidgets.jsx",
+      "sha256Before": "FD1DF1F6E9C252DB7218F307A3C5928070E2BC796B04F4856F86B720B3DF02F2"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/QuickTimer.css",
+      "to": "apps/web-ui/src/plugins/clock/QuickTimer.css",
+      "sha256Before": "F3C3B1A51DF07E52FE3564D110B0E722374DF485EFDE2DCFAD49EFDE27D951CF"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/QuickTimer.jsx",
+      "to": "apps/web-ui/src/plugins/clock/QuickTimer.jsx",
+      "sha256Before": "C497F0E772A747BCD2138B00E6AC3D2E175285FC685F638CF3836769EFE1B82E"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/TimerApp.css",
+      "to": "apps/web-ui/src/plugins/clock/TimerApp.css",
+      "sha256Before": "37DF11D613D4E1AED748DAB4E17D8D0D993D59FE0FE75BA5327A456DF8985674"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/TimerApp.jsx",
+      "to": "apps/web-ui/src/plugins/clock/TimerApp.jsx",
+      "sha256Before": "7CD90E500F131C172F6A217D514DA863252C306835F466B7955E405F1BBF8BF7"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/manifest.json",
+      "to": "apps/web-ui/src/plugins/clock/manifest.json",
+      "sha256Before": "04884806268108BF2E91BDBC54302FC2E3EC76D944C3B731775ECB298F7614D0"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/clock/plugin.jsx",
+      "sha256Before": "ACC82B802D54465F95ED697C495A6DB89079C3F5254CC8B99C533C4F9C9D643F"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/timer.js",
+      "to": "apps/web-ui/src/plugins/clock/timer.js",
+      "sha256Before": "025462903936F72D056315C5001154C9698BC5D90885341752DC1ADACDCB2456"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/ui/ClockWidget.css",
+      "to": "apps/web-ui/src/plugins/clock/ui/ClockWidget.css",
+      "sha256Before": "246208541675BAA5ECF4B8B4D196C5FECB44D5AD4A4C38BE617DBA7451D98FB0"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/ui/ClockWidget.jsx",
+      "to": "apps/web-ui/src/plugins/clock/ui/ClockWidget.jsx",
+      "sha256Before": "52C6D15210BBD889BA50C95FCD6A51A34E4A33FD4521C5F57955F79C3D520D2D"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/clock/ui/index.js",
+      "to": "apps/web-ui/src/plugins/clock/ui/index.js",
+      "sha256Before": "9FA502433FDB65E722D7F91712C59D7B65E3C40072AA6706FADB81F7A292EFDA"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/notifications/manifest.json",
+      "to": "apps/web-ui/src/plugins/notifications/manifest.json",
+      "sha256Before": "8E0D9C31E10A728F85D43A72A6994E1949E9270AD62FC18BF0038205733C5417"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/notifications/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/notifications/plugin.jsx",
+      "sha256Before": "E72938265E66C954E01509B278367DA4255AEC4232BF8048D1D1963B05B7C648"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/notifications/ui/NotificationsApp.css",
+      "to": "apps/web-ui/src/plugins/notifications/ui/NotificationsApp.css",
+      "sha256Before": "B56D8677A0278073A04545CCD845570F6E9A31F19A272DB68AEC128C373B27B7"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/notifications/ui/NotificationsApp.jsx",
+      "to": "apps/web-ui/src/plugins/notifications/ui/NotificationsApp.jsx",
+      "sha256Before": "22C4C1763ACB2F8FD301C173EDCBC335463C4EE863E0088834D30424A8A22DF5"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/notifications/ui/index.js",
+      "to": "apps/web-ui/src/plugins/notifications/ui/index.js",
+      "sha256Before": "23D44B31508B9F5757157F357E51EE65F4F299CFECE0CE04635B360C03C15E8B"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/pcmanager/manifest.json",
+      "to": "apps/web-ui/src/plugins/pcmanager/manifest.json",
+      "sha256Before": "9D450365BC359EBD84E9A68FD4A09AC64D4BC59A4550AEE00A2B40B09214EB0B"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/pcmanager/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/pcmanager/plugin.jsx",
+      "sha256Before": "1CD24C696364616F95A341BB90F5F404D53FE31CDBC2E2EFBE96DC6F38565A95"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/pcmanager/ui/PcManagerApp.jsx",
+      "to": "apps/web-ui/src/plugins/pcmanager/ui/PcManagerApp.jsx",
+      "sha256Before": "3F602A6527F0348BB0FB4C93E634B5D2E8F31EA627CCFF84B7AA650A31959E53"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/pcmanager/ui/PcManagerWidget.css",
+      "to": "apps/web-ui/src/plugins/pcmanager/ui/PcManagerWidget.css",
+      "sha256Before": "B15E5C51053BB1DA8E682FAD98AFA55373A7C5ED0E2512F60A3F2C801EFF7BE7"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/pcmanager/ui/PcManagerWidget.jsx",
+      "to": "apps/web-ui/src/plugins/pcmanager/ui/PcManagerWidget.jsx",
+      "sha256Before": "9158B5B64CB28445572B19E921E41C27FDF794B43AEFEF051A6AD223F2E493FB"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/pcmanager/ui/index.js",
+      "to": "apps/web-ui/src/plugins/pcmanager/ui/index.js",
+      "sha256Before": "3889FF074D6BBEE023F24FDB4C5AC05DD69AB0E8E3CD959333ABC5706E42CC14"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/settings/manifest.json",
+      "to": "apps/web-ui/src/plugins/settings/manifest.json",
+      "sha256Before": "38DBD611CB3F450B42F0874CF621DFDE46A174747CD0F86EC4FF9417E85A29C5"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/settings/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/settings/plugin.jsx",
+      "sha256Before": "4C7429FFF8F4A5D1CA6F86C464EBD856335FA582D9D7B433EE2CB30A03DBCF0B"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/settings/ui/SettingsApp.css",
+      "to": "apps/web-ui/src/plugins/settings/ui/SettingsApp.css",
+      "sha256Before": "DF26DD56E5759E334CB8707A15AC257F2E1831816DB7BAD567032807E5928B7A"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/settings/ui/SettingsApp.jsx",
+      "to": "apps/web-ui/src/plugins/settings/ui/SettingsApp.jsx",
+      "sha256Before": "C8F5FE703FDC8A10ECEC017ADB1220382451E54694026AC4A29A308CBF44F808"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/settings/ui/index.js",
+      "to": "apps/web-ui/src/plugins/settings/ui/index.js",
+      "sha256Before": "A3B8F3B728991BF8B30C7E65AA2A1653D37E0769F7A0AD080E3C5CC3F49F792F"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/smarthome/manifest.json",
+      "to": "apps/web-ui/src/plugins/smarthome/manifest.json",
+      "sha256Before": "AD8260970CBB852528A69F7BD149847E8D3FD5578A4B32F81BD0599BEE954D82"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/smarthome/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/smarthome/plugin.jsx",
+      "sha256Before": "7D36752212B7A76F4F9EBE2FF2136EB88C57404A723874DDE8F297983FBFDC18"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/smarthome/ui/SmartHomeApp.jsx",
+      "to": "apps/web-ui/src/plugins/smarthome/ui/SmartHomeApp.jsx",
+      "sha256Before": "BB56A400608E81C730A2BBB777C920BD9517FBFB19B00D15228E2668CCAFDB0E"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/smarthome/ui/SmartHomeWidget.css",
+      "to": "apps/web-ui/src/plugins/smarthome/ui/SmartHomeWidget.css",
+      "sha256Before": "705F74788F74308EE154FF7E9A939E74937C7824EA2B6563656F6B8EF8E25725"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/smarthome/ui/SmartHomeWidget.jsx",
+      "to": "apps/web-ui/src/plugins/smarthome/ui/SmartHomeWidget.jsx",
+      "sha256Before": "F180AAAC141F91912749839F72178A78D7C22107467DB3D53A67AEF71F7ED9B4"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/smarthome/ui/index.js",
+      "to": "apps/web-ui/src/plugins/smarthome/ui/index.js",
+      "sha256Before": "746DBEC79C0BE26E7BD9C43A5689698121DE808C7696503B34F46F4DE2ED913D"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/ActiveWidget.jsx",
+      "to": "apps/web-ui/src/plugins/spotify/ActiveWidget.jsx",
+      "sha256Before": "5E0311EE5CC7C334FCB53E0ACF4E75C826C0FCA3506BB0D3AF0572301CDC8415"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/Controller.jsx",
+      "to": "apps/web-ui/src/plugins/spotify/Controller.jsx",
+      "sha256Before": "27314D28ACD9834C09D6D7D56E7FA6A0C22638495E3DE8F5979599C2C2092994"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/MusicService.js",
+      "to": "apps/web-ui/src/plugins/spotify/MusicService.js",
+      "sha256Before": "AB2BCE56E259ECA8C48F97B5A47B1D8C9BC2115AB4958327101BAF869E8FF0EF"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/manifest.json",
+      "to": "apps/web-ui/src/plugins/spotify/manifest.json",
+      "sha256Before": "35D998E64F92BF335EB6EB6EE6EBD17A6596599B5C8D385DBBEDB700143CD8E4"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/music.js",
+      "to": "apps/web-ui/src/plugins/spotify/music.js",
+      "sha256Before": "3C8E31AE711B06C267EB58F5DA0731D964756F11C91CAD704E267DD82FA28244"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/spotify/plugin.jsx",
+      "sha256Before": "E784ED095A6F6AE8B340273F154F4B8B1B2FB9E2EF9418676991A885E782BCA5"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/ui/SpotifyApp.css",
+      "to": "apps/web-ui/src/plugins/spotify/ui/SpotifyApp.css",
+      "sha256Before": "BDA22A8D96966491709AD6C062B222FD4BF55A001D04071A6E5F4269ABEE38AA"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/ui/SpotifyApp.jsx",
+      "to": "apps/web-ui/src/plugins/spotify/ui/SpotifyApp.jsx",
+      "sha256Before": "FCE619E4A4DC1F96DD3C907EAF206EBDE170737069B69B7FF97BCFAAB6EBE7B4"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/ui/index.js",
+      "to": "apps/web-ui/src/plugins/spotify/ui/index.js",
+      "sha256Before": "C1AFC9ED6D9EA6C6CFF1D749A92EABEA924C839678D2E46A86E01D3A65266607"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/spotify/useSpotifyApp.js",
+      "to": "apps/web-ui/src/plugins/spotify/useSpotifyApp.js",
+      "sha256Before": "3F0500741E2201D1A06A0CAAA299AF42773E9B5C8EF89C8FEE7A59DB807A1E18"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/statistics/manifest.json",
+      "to": "apps/web-ui/src/plugins/statistics/manifest.json",
+      "sha256Before": "02B0FD363E58D88536ECC5D19FFEE0EB961D07AAC0B914DF0BE078C8F1AA04EF"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/statistics/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/statistics/plugin.jsx",
+      "sha256Before": "8593122407602F43259182E4A002F3450037EEDD360946B0B10B2E58EDB64457"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/statistics/ui/StatisticsApp.css",
+      "to": "apps/web-ui/src/plugins/statistics/ui/StatisticsApp.css",
+      "sha256Before": "FA458B8356CFB328FB8226910B1015C37E1113B2800379367149ECA83C54C544"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/statistics/ui/StatisticsApp.jsx",
+      "to": "apps/web-ui/src/plugins/statistics/ui/StatisticsApp.jsx",
+      "sha256Before": "97877F24687D555E1CBC1EDDBE270B61E4ED5E6EC151C3B0B2F92A4EE802DFCE"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/statistics/ui/index.js",
+      "to": "apps/web-ui/src/plugins/statistics/ui/index.js",
+      "sha256Before": "B3007D8A725E80B011D081FF3B92F04F31A8DB20D82E6026DECE16225B6FF66F"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/Controller.jsx",
+      "to": "apps/web-ui/src/plugins/weather/Controller.jsx",
+      "sha256Before": "F6D3EB2539370D6E6DFC4E09CF19E3B367C712BE96F34646271F967605364370"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/WeatherService.js",
+      "to": "apps/web-ui/src/plugins/weather/WeatherService.js",
+      "sha256Before": "24663B4C1422E37564BA66F9ACCA4551BB8846E6B320C8053C8FE20BF38CCF0C"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/manifest.json",
+      "to": "apps/web-ui/src/plugins/weather/manifest.json",
+      "sha256Before": "A9EA03248C87CDCDC4C73C3BA5AAE307AB3ABF1B0DAA436CF7B5AC5D6CC2A09E"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/plugin.jsx",
+      "to": "apps/web-ui/src/plugins/weather/plugin.jsx",
+      "sha256Before": "39010A15DD270D202CBB31046001E405B0C42A201C84A95A98F030A65C6B6E76"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/ui/WeatherApp.css",
+      "to": "apps/web-ui/src/plugins/weather/ui/WeatherApp.css",
+      "sha256Before": "802F80BCC298762F78251E611C420ACD4987AE60A23916ED318D5D45B2214765"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/ui/WeatherApp.jsx",
+      "to": "apps/web-ui/src/plugins/weather/ui/WeatherApp.jsx",
+      "sha256Before": "D5C0BC621740616DEAD13954775E293AEEDC48E4CEE77DAD0D329901EBB11D09"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/ui/WeatherWidget.css",
+      "to": "apps/web-ui/src/plugins/weather/ui/WeatherWidget.css",
+      "sha256Before": "7BC30AC81553376C54E779B77D1231E81872C7D9D0AC844B5F6EA0AFC37DC20C"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/ui/WeatherWidget.jsx",
+      "to": "apps/web-ui/src/plugins/weather/ui/WeatherWidget.jsx",
+      "sha256Before": "0345C910C66E901C1D5F378DF517FEBBAF65BE3B3C6E1D3811F8019AA6251F1F"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/ui/index.js",
+      "to": "apps/web-ui/src/plugins/weather/ui/index.js",
+      "sha256Before": "54DC99637E62BA3A125D35F5052A9BF5AE4741F18DF7904D31491CD1528AA529"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/useWeather.js",
+      "to": "apps/web-ui/src/plugins/weather/useWeather.js",
+      "sha256Before": "D3F7D4976D6C30423711F525CC5DD68036B6A8E16F735280E9B06FF5B9438258"
+    },
+    {
+      "from": "Packages/web-ui/src/plugins/weather/weather.js",
+      "to": "apps/web-ui/src/plugins/weather/weather.js",
+      "sha256Before": "9A06DC0C6DB21A920B65C6C0840753E742A6B000C07033304A2F86CDC79D79B9"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/format.js",
+      "to": "apps/web-ui/src/shared/format.js",
+      "sha256Before": "0C00F368DA49BB8CCC1EC246F86C4BD4EDA97F6BD8ABD860B77F57FFEECFE4E7"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/hooks/useClock.js",
+      "to": "apps/web-ui/src/shared/hooks/useClock.js",
+      "sha256Before": "1A3E1CF9625DAD773E2487BD83F8B99838CA71909209C8A2F034603BD106EDDB"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/hooks/useSwipeNavigation.js",
+      "to": "apps/web-ui/src/shared/hooks/useSwipeNavigation.js",
+      "sha256Before": "300297885B35EF0BFF2F75E59915B3E18F63BF0941F04A74D9F850612FB08C46"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/AppState.jsx",
+      "to": "apps/web-ui/src/shared/ui/AppState.jsx",
+      "sha256Before": "7C8A57963AD3CE2D5F74608A967D56DEF5C6CA9EF3F2E13C09815F0B0AF4DAC1"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/AppSurface.css",
+      "to": "apps/web-ui/src/shared/ui/AppSurface.css",
+      "sha256Before": "51F8AE8D2F19B9DE301087709D5E5391835794F2C4AF6C3975BAFB3E76ED5D12"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/AppSurface.jsx",
+      "to": "apps/web-ui/src/shared/ui/AppSurface.jsx",
+      "sha256Before": "46BDC214D66F8EF8AD4C9EBF1D0CE2207239C799DA9C618AC83580E251B763DF"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/Icon.jsx",
+      "to": "apps/web-ui/src/shared/ui/Icon.jsx",
+      "sha256Before": "BB541699435F3D34E9A0CF78C6595099AA720D95B167C31A19175725C635D705"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/IntegrationPage.jsx",
+      "to": "apps/web-ui/src/shared/ui/IntegrationPage.jsx",
+      "sha256Before": "A0903A289D989803D59AFE7DB3057DE45547FA6511AEDC8DA87E6449034CEF10"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/IntegrationWidget.jsx",
+      "to": "apps/web-ui/src/shared/ui/IntegrationWidget.jsx",
+      "sha256Before": "73A24A60E83C0DF718DF69623BBF4E12F20B2454C8C4FE9B16767B09DD95C75C"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/Modal.jsx",
+      "to": "apps/web-ui/src/shared/ui/Modal.jsx",
+      "sha256Before": "810FDFCCDEA6A57A681EF92FB449FCA7DFC69C32B8DFA723442BE6DE2125367D"
+    },
+    {
+      "from": "Packages/web-ui/src/shared/ui/primitives.css",
+      "to": "apps/web-ui/src/shared/ui/primitives.css",
+      "sha256Before": "BA23441092545AD9C0259996136F80FDBA42714A65E22EE435C41A665AFC985D"
+    },
+    {
+      "from": "Packages/web-ui/tests/app-exit.test.js",
+      "to": "apps/web-ui/tests/app-exit.test.js",
+      "sha256Before": "18DC05B9E923EF65EE13E27F32EF8AABDFFAD271930FE343E9F0A18C3049C612"
+    },
+    {
+      "from": "Packages/web-ui/tests/fixture-server.mjs",
+      "to": "apps/web-ui/tests/fixture-server.mjs",
+      "sha256Before": "F55B7868C0BAC09159256D39FF06802454899F5A6B0997535831EA42938B8FCC"
+    },
+    {
+      "from": "Packages/web-ui/tests/foundations.test.js",
+      "to": "apps/web-ui/tests/foundations.test.js",
+      "sha256Before": "D25609C617204FFCCE6AAC93D48198296AA0AA586705B7F0C94099EF0DB96520"
+    },
+    {
+      "from": "Packages/web-ui/tests/loading-preview.html",
+      "to": "apps/web-ui/tests/loading-preview.html",
+      "sha256Before": "4BE9B99FFB38E291AAD96A7238636076B3B46029FAE954299ACC6740B827348E"
+    },
+    {
+      "from": "Packages/web-ui/tests/loading-preview.jsx",
+      "to": "apps/web-ui/tests/loading-preview.jsx",
+      "sha256Before": "0428ECEC270BC8DAD205301D6B9897CAD1B2315A2551631031B1C944C7BEC2C9"
+    },
+    {
+      "from": "Packages/web-ui/tests/module-loader.test.js",
+      "to": "apps/web-ui/tests/module-loader.test.js",
+      "sha256Before": "1860D45AFE43B3A401545A39BE210912B76E4F5247AD2F866FE55B04DA515EE8"
+    },
+    {
+      "from": "Packages/web-ui/tests/plugins.test.js",
+      "to": "apps/web-ui/tests/plugins.test.js",
+      "sha256Before": "5C9BFDF4C7EB07493522A27F88E9883B9607AF2975D327BD07F6CC3C856C0122"
+    },
+    {
+      "from": "Packages/web-ui/tests/runtime.test.js",
+      "to": "apps/web-ui/tests/runtime.test.js",
+      "sha256Before": "46C306AD0F2E9FFB5288ABD250804988863E5FE9BEC8797F852F57D13B9EF0A7"
+    },
+    {
+      "from": "Packages/web-ui/tests/solar.test.js",
+      "to": "apps/web-ui/tests/solar.test.js",
+      "sha256Before": "F774EAF4F1A4B86E5EAF739651C45DFEB5CB0844AEEA374DBD11616C1688A9B6"
+    },
+    {
+      "from": "Packages/web-ui/tests/weather.test.js",
+      "to": "apps/web-ui/tests/weather.test.js",
+      "sha256Before": "F9BF36546BC093D63BEE46BB67CA51D2AA3C049DC6F2BE76387EF4079CE952FD"
+    },
+    {
+      "from": "UX-CONTRACT.md",
+      "to": "UX-CONTRACT.md",
+      "sha256Before": "6C75529A63936C2FD23ABF64E22D30F9A1F4FE3B58A4C124BE1D567C29D90D0E"
+    },
+    {
+      "from": "compose.yaml",
+      "to": "compose.yaml",
+      "sha256Before": "D2F10E430C381467DBC26304F593AFA2E35E1244916024E25A3D889E6126FECD"
+    },
+    {
+      "from": ".claude/settings.local.json",
+      "to": ".claude/settings.local.json",
+      "sha256Before": "0A6169988AE636CC3DAC8FA5E2CF259EDCF396F5E4470D9D5748647478E9FE07"
+    },
+    {
+      "from": ".gitignore",
+      "to": ".gitignore",
+      "sha256Before": "17633510F003F0A0FCA7C6E0138071FC8A23982956C4E0B8FCA5511D5C088AFC"
+    },
+    {
+      "from": "Packages/HomeSystem.sln",
+      "to": "HomeSystem.sln",
+      "sha256Before": "DBDEA219D3222E4FE766F519D34B1DAF08DB9D7A7046FCF6FB158F1D59C6816D"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/.dockerignore",
+      "to": "apps/control-server/.dockerignore",
+      "sha256Before": "83365C3F303A3958BC233602699F5730AE309D95FCA7013243B53731BE94E4A0"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/CentralServer.csproj",
+      "to": "apps/control-server/CentralServer.csproj",
+      "sha256Before": "AD132F0CB24CCD796D9B1969E3E38D7C5552988B13E567657D3F0AA2450E4030"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Dockerfile",
+      "to": "apps/control-server/Dockerfile",
+      "sha256Before": "92F72AA84EC651C09C2AD5DE2ECD283CDE943BD99266767FC882DA8047239D2C"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Device/Device.cs",
+      "to": "apps/control-server/src/Domain/Models/Device/Device.cs",
+      "sha256Before": "F172A3A1FE42A633F94366FE0A0C055360DA6523272234B3BB0DE556959EBE87"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Device/DeviceSettings.cs",
+      "to": "apps/control-server/src/Domain/Models/Device/DeviceSettings.cs",
+      "sha256Before": "E04453B59527D8A8AD89371F0FA94C606AA6B3CC0C672B8C6BF71B2471AAAEC6"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Device/DeviceStatus.cs",
+      "to": "apps/control-server/src/Domain/Models/Device/DeviceStatus.cs",
+      "sha256Before": "B97DD414A8B0C53554CF44DD5492A7ED1506F7CB9DA8FD59826B38AD4762A0D0"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Globals.cs",
+      "to": "apps/control-server/src/Domain/Models/Globals.cs",
+      "sha256Before": "A3782CA8B3C82E1DC3EB83C6C707034246A4F472F3C80EC46534993DA64669B8"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/IpInfo.cs",
+      "to": "apps/control-server/src/Domain/Models/IpInfo.cs",
+      "sha256Before": "1D5B5392D1936373D710E8F877CF7AD8032550829CB9C8EBA5F500A419C009CF"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Messages.cs",
+      "to": "apps/control-server/src/Domain/Models/Messages.cs",
+      "sha256Before": "4CAAE5F91BF5B52AF83BC311949C19299BC3597ADEEACBA19CA48F1B7B93E73D"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Notification.cs",
+      "to": "apps/control-server/src/Domain/Models/Notification.cs",
+      "sha256Before": "1650C8986DF6BAC4F10F0AD4F730FCF7B1A42FC73C8469A1F649D4F44115B1D9"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/PCAgent/PcAgent.cs",
+      "to": "apps/control-server/src/Domain/Models/PCAgent/PcAgent.cs",
+      "sha256Before": "2BB2C83184A9A6FB897C8561169A0A67F0C24B8B7494440FF733DD50F31F12B5"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/PCAgent/PcAgentSettings.cs",
+      "to": "apps/control-server/src/Domain/Models/PCAgent/PcAgentSettings.cs",
+      "sha256Before": "6B1E657F1CC8950F7F2FBF164DA687ABF2404BD932D11A59BF95F31E04DC4EF3"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/PCAgent/PcAgentStates.cs",
+      "to": "apps/control-server/src/Domain/Models/PCAgent/PcAgentStates.cs",
+      "sha256Before": "B745E9680F1ABA55A8E1389FDEC28727C387E8D57BD7BC2D1FF66B9644C7EF64"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/PCConfig.cs",
+      "to": "apps/control-server/src/Domain/Models/PCConfig.cs",
+      "sha256Before": "C54CAE4791DF9F6E69F2A39CF0FFC3B1C825B82BAB1D039C6A0D1505F86CA06C"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Profile.cs",
+      "to": "apps/control-server/src/Domain/Models/Profile.cs",
+      "sha256Before": "EA2C3AB690DE70A7B3C1836187A64890CA42F3F11F911E00476097975F77B458"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/SpotifyProfile.cs",
+      "to": "apps/control-server/src/Domain/Models/SpotifyProfile.cs",
+      "sha256Before": "26357A3BC58E3050E1D0C51731406C4AAEDB1DA0A94B89A401E1272B69221B54"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Data/Weather/WeatherData.cs",
+      "to": "apps/control-server/src/Domain/Models/Weather/WeatherData.cs",
+      "sha256Before": "E0A9536542CBFB9DD936DF871E4D25524B14E4A17AFA9A030A9B18AD074B7147"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/DbManager.cs",
+      "to": "apps/control-server/src/Persistence/DbManager.cs",
+      "sha256Before": "DE62CDE625DB2D4780F9D5B1C7C6E5F7F8C3F674A557650AB8AD258D68DD5AFC"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/EndPoints/Apps/PCManager.cs",
+      "to": "apps/control-server/src/Endpoints/Apps/PCManager.cs",
+      "sha256Before": "ADCC5AB0238E45AAD301BBC0C7B889F6B110E51324B852F21B5DEAB75A7378EA"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/EndPoints/Apps/WeatherManager.cs",
+      "to": "apps/control-server/src/Endpoints/Apps/WeatherManager.cs",
+      "sha256Before": "3CCDCED7AAF4A7B59443039899DB15FBCD03F08DBE4EC613E5786A17B1CC2A46"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/EndPoints/Profiles/ProfileManager.cs",
+      "to": "apps/control-server/src/Endpoints/Profiles/ProfileManager.cs",
+      "sha256Before": "950BB9059C1214F18788C7AA54DCD921D8DA57F954ABA4BE379076F23221CDB4"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/EndPoints/ServerHelpers.cs",
+      "to": "apps/control-server/src/Endpoints/ServerHelpers.cs",
+      "sha256Before": "A53B5F02D1F21717333B6F6E0779B08A9563B5C47CA35F679BC8B0F6AC130A37"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/EndPoints/Spotify/SpotifyManager.cs",
+      "to": "apps/control-server/src/Endpoints/Spotify/SpotifyManager.cs",
+      "sha256Before": "A4E3553DAE6521E721842EBAA4C1B30A70B240F150395F310443193EAF11A3E5"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/EndpointManager.cs",
+      "to": "apps/control-server/src/Transport/EndpointManager.cs",
+      "sha256Before": "7520FEE219C23D844538E99B57DBE7778EBD6B95BCC75E1F33CC2EF0DB00EAD1"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/PcManager.cs",
+      "to": "apps/control-server/src/Services/PcManager.cs",
+      "sha256Before": "4CF0DC1960D2E7732C4E211CA82ED4B096B041643F0AB80FD78731BB3EC40430"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Modules/Services/WeatherService.cs",
+      "to": "apps/control-server/src/Services/WeatherService.cs",
+      "sha256Before": "07F7DE90F6ABA13D33300662C9D487C27BE35A45E6C85FA82881EE2DF1BA64F4"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/Program.cs",
+      "to": "apps/control-server/src/Program.cs",
+      "sha256Before": "6CBD12F05EE3EE26D5423177BC074EEE400F024D201FD2F3AA079D5956A646ED"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/compose.yaml",
+      "to": "infra/docker/compose.legacy-server.yaml",
+      "sha256Before": "A57BCF424A98C56F5299D1FFD8FD1B0D95B47B8719A3CFAC2B5AAE076E6EF957"
+    },
+    {
+      "from": "Packages/control-server/HomeSystem/websocket.cs",
+      "to": "apps/control-server/src/Transport/WebSocketServer.cs",
+      "sha256Before": "4B3BA3260911B17E37B582A0315166128DBA43F8A0B730365646D704BC895F4D"
+    },
+    {
+      "from": "Packages/desktop-agent/Models/PcAgentStates.cs",
+      "to": "apps/desktop-agent/src/Models/PcAgentStates.cs",
+      "sha256Before": "56F619575004781F03E8AD6B30642C161AE81E0CADF2092766182A99E5582FC0"
+    },
+    {
+      "from": "Packages/desktop-agent/PcAgent.csproj",
+      "to": "apps/desktop-agent/PcAgent.csproj",
+      "sha256Before": "512290A1369AD600E7C1B919561CB903C37C228885B3A2787DB0490814E2AC11"
+    },
+    {
+      "from": "Packages/desktop-agent/Program.cs",
+      "to": "apps/desktop-agent/src/Program.cs",
+      "sha256Before": "364D34372D4AC276350B1B9AFF352C2F036F2EF838C04DEBDC08BA66901A44D7"
+    },
+    {
+      "from": "Packages/devops/.env.example",
+      "to": "scripts/operations/.env.example",
+      "sha256Before": "8CF9142B9DAF68824D157DDABF0CE528B03B0DF600DFDF74CE1533F72945EA27"
+    },
+    {
+      "from": "Packages/devops/Ha1.ps1",
+      "to": "scripts/operations/Ha1.ps1",
+      "sha256Before": "47A07D0D798C90783EF11C78717E3F94887E063396B537C343B2382CAE3A4583"
+    },
+    {
+      "from": "Packages/devops/SSH-Pi.ps1",
+      "to": "scripts/operations/SSH-Pi.ps1",
+      "sha256Before": "F8C56CBC29DFFCBA6A7CF92ABF497FC0F90AA348000CD66177DD5B7EF704BFAC"
+    },
+    {
+      "from": "Packages/display-client/.qtcreator/CMakeLists.txt.user",
+      "to": "apps/display-client/.qtcreator/CMakeLists.txt.user",
+      "sha256Before": "0E6D72B8E821D0AA9CF5D593F5514082D7A0EB5DC7BB12B64DA83AD7CA34DE9D"
+    },
+    {
+      "from": "Packages/display-client/CMakeLists.txt",
+      "to": "apps/display-client/CMakeLists.txt",
+      "sha256Before": "6A9B77F2281B638FC11EF8D56DBF0A5C44995649527C3E913B74292FDD2B68E6"
+    },
+    {
+      "from": "Packages/display-client/src/backend.cpp",
+      "to": "apps/display-client/src/backend.cpp",
+      "sha256Before": "86D1F5796900C90174511EB86FFF5B682A73E2D724AE0B42181EA7EB3C8CCE1B"
+    },
+    {
+      "from": "Packages/display-client/src/backend.h",
+      "to": "apps/display-client/src/backend.h",
+      "sha256Before": "D923F7B63E0898BF7DAE663E2F14F4B767661C38CCFB8A4DBDC3C6794B18F598"
+    },
+    {
+      "from": "Packages/display-client/src/main.cpp",
+      "to": "apps/display-client/src/main.cpp",
+      "sha256Before": "E51889325111DA303879895DAFD5ABD57A79FF6B6C6B8D887EB10E8CD91E6215"
+    },
+    {
+      "from": "Packages/display-client/web/data.qrc",
+      "to": "apps/display-client/web/data.qrc",
+      "sha256Before": "570BE357243B19E7D5D15530647F171BF772210CBA5B01A7EEC8510D5BC3D416"
+    },
+    {
+      "from": "Packages/display-client/web/index.html",
+      "to": "apps/display-client/web/index.html",
+      "sha256Before": "F22A42634409B78AA0FAF501ABA881209F24DB5BCA7BECCA3B0CC5FF38BEBFF7"
+    },
+    {
+      "from": "Packages/display-client/web/style.css",
+      "to": "apps/display-client/web/style.css",
+      "sha256Before": "2317DEC5E159F652DF51AD034299E858DB28FAD7DF470D4E13AA54792CC1C201"
+    },
+    {
+      "from": "Packages/web-ui/.env.example",
+      "to": "apps/web-ui/.env.example",
+      "sha256Before": "ABE80ED3B3B744487FBA6E462FB722A5C661560E985CCAA6ABFCB0E0082C9FA2"
+    },
+    {
+      "from": "Packages/web-ui/.gitignore",
+      "to": "apps/web-ui/.gitignore",
+      "sha256Before": "2C888EEF32415B9EACBF08E6726E529A6C9D81DE36A2E8E7EE23CE457A62D74D"
+    },
+    {
+      "from": "Packages/web-ui/README.md",
+      "to": "apps/web-ui/README.md",
+      "sha256Before": "0592A648101D2FB3057915284295C2C8B4CB794AD2E7FCB87CAA2B67A6BBB0D3"
+    },
+    {
+      "from": "Packages/web-ui/eslint.config.js",
+      "to": "apps/web-ui/eslint.config.js",
+      "sha256Before": "EC2A7866FCBFA4080A9B41E2F7A28DB5DBB079344CE89622840B00CBB1878FF6"
+    },
+    {
+      "from": "Packages/web-ui/index.html",
+      "to": "apps/web-ui/index.html",
+      "sha256Before": "8A829B4E1F02D3906FF7024B6E1C6635D7DAFA8AF822CA8F64961D0A151A5559"
+    },
+    {
+      "from": "Packages/web-ui/package-lock.json",
+      "to": "apps/web-ui/package-lock.json",
+      "sha256Before": "111553928F5D6D04098555EBCEC688602FAFB9DB4E6A16C71031F08E9E02AB41"
+    },
+    {
+      "from": "Packages/web-ui/package.json",
+      "to": "apps/web-ui/package.json",
+      "sha256Before": "F73E4E17501D827D50DAAA7AAF580033C4EC5C9F1F02FAEA778AB7C693A25347"
+    },
+    {
+      "from": "Packages/web-ui/src/App.jsx",
+      "to": "apps/web-ui/src/App.jsx",
+      "sha256Before": "A7991739380DA93F1B9FCC904D221FCFC4E2C2E13EF3C853D1003A3225244322"
+    },
+    {
+      "from": "Packages/web-ui/src/Globals.js",
+      "to": "apps/web-ui/src/Globals.js",
+      "sha256Before": "C1525D4C51C45C42E1DE505D63C922AACAEADC40C1C5307BEA875E420D485EE1"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Apps/AppPage.css",
+      "to": "apps/web-ui/src/app/Apps/AppPage.css",
+      "sha256Before": "F69903DD35F00419F2AB247AE53993176C1D865E9724D27D261110DADEEB834F"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Apps/components/AppTopBar.css",
+      "to": "apps/web-ui/src/app/Apps/components/AppTopBar.css",
+      "sha256Before": "3498F78B4F7759EDE9A64E05BEE0551870DC9EBEE0A368BC9F725676688AE910"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Apps/components/AppTopBar.jsx",
+      "to": "apps/web-ui/src/app/Apps/components/AppTopBar.jsx",
+      "sha256Before": "9E9968CEBC76FDA640A719CA5E42783188A66A18D59BE195B7B6CAA7C189A44D"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Apps/components/index.js",
+      "to": "apps/web-ui/src/app/Apps/components/index.js",
+      "sha256Before": "6E3AE01C754E6C70BF380ED08709266617E7E4161FA3EE64FCCB63883772499E"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Apps/index.js",
+      "to": "apps/web-ui/src/app/Apps/index.js",
+      "sha256Before": "46417AC69A2F0EB6B4E93C31C0E92889603BE99EDEADA2C16DB2EEE073BFBC54"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/Home.css",
+      "to": "apps/web-ui/src/app/Home/Home.css",
+      "sha256Before": "BDB83A3FC94C9E58D0F42E04599B90F8AE7A920CCE97F6C9B997A6763BA8F1F9"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/Home.jsx",
+      "to": "apps/web-ui/src/app/Home/Home.jsx",
+      "sha256Before": "AB352A14FAAC4129D2A98ACC3BEB20F08AAF488C0056045DC7A9C7D9994A38B5"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/pages/Apps/Apps.css",
+      "to": "apps/web-ui/src/app/Home/pages/Apps/Apps.css",
+      "sha256Before": "258A69FCA8A9F886E423D632526EED27981C234CA5B379E69E8F9E500228F5F4"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/pages/Apps/Apps.jsx",
+      "to": "apps/web-ui/src/app/Home/pages/Apps/Apps.jsx",
+      "sha256Before": "382BA8081E4387A0E924837077A247BB3585330492A867B5E50C444DB041EC31"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/pages/Overview/Overview.css",
+      "to": "apps/web-ui/src/app/Home/pages/Overview/Overview.css",
+      "sha256Before": "6A6C5D6E8F528C5807E35D68C052CCB999A81E1E89470EDAE632E19AF5435BB3"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/pages/Overview/Overview.jsx",
+      "to": "apps/web-ui/src/app/Home/pages/Overview/Overview.jsx",
+      "sha256Before": "5C5E51F070F6A676C9C51829EF08C9BC7368753E2CFDBEF6DD280E84208D53F3"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/pages/Statistics/Statistics.css",
+      "to": "apps/web-ui/src/app/Home/pages/Statistics/Statistics.css",
+      "sha256Before": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/pages/Statistics/Statistics.jsx",
+      "to": "apps/web-ui/src/app/Home/pages/Statistics/Statistics.jsx",
+      "sha256Before": "038BEB7AF6C0A59CA8765175D97B595E0CCF16B1AEA15EA4BABA8A60B0BE5FB9"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Home/pages/index.js",
+      "to": "apps/web-ui/src/app/Home/pages/index.js",
+      "sha256Before": "CE087D8696965565F3EB9AB64BC1FEE58BB8C74D9D487541617BDBCC1CA06D26"
+    },
+    {
+      "from": "Packages/web-ui/src/app/Index.js",
+      "to": "apps/web-ui/src/app/Index.js",
+      "sha256Before": "89223D067C970FBCC35BCA41481F6CCABD7F40B7DDA8FFEEE509D43402A81018"
+    },
+    {
+      "from": "Packages/web-ui/src/assets/background.jpg",
+      "to": "apps/web-ui/src/assets/background.jpg",
+      "sha256Before": "980029252265C515B3888F98E02E609A81EF08D007E9710123655B0A341ADF73"
+    },
+    {
+      "from": "Packages/web-ui/src/assets/background_alt.jpg",
+      "to": "apps/web-ui/src/assets/background_alt.jpg",
+      "sha256Before": "96EC1668F3F6618DC9C12DDF43CA61236F7FFB50976B80E73A98D7D9DF1CA57B"
+    },
+    {
+      "from": "Packages/web-ui/src/callbacks/Spotify/Success.css",
+      "to": "apps/web-ui/src/callbacks/Spotify/Success.css",
+      "sha256Before": "FDD84E2A0BEB084335E2C19F7E2902D69CD309EE496686481B49DF27C1EAD8E3"
+    },
+    {
+      "from": "Packages/web-ui/src/callbacks/Spotify/Success.jsx",
+      "to": "apps/web-ui/src/callbacks/Spotify/Success.jsx",
+      "sha256Before": "45C292CB611402D31139E9E27D5520DBE82C7F53035DAD143F5AECFFB5ABBF86"
+    },
+    {
+      "from": "Packages/web-ui/src/callbacks/index.js",
+      "to": "apps/web-ui/src/callbacks/index.js",
+      "sha256Before": "7415C14E1D42087A3ACB56624AC0D8E5E38967863BCF7794DBD950952E1FE57F"
+    },
+    {
+      "from": "Packages/web-ui/src/components/Login/Keypad.css",
+      "to": "apps/web-ui/src/components/Login/Keypad.css",
+      "sha256Before": "163A6DFEE78DCA0095A86F7F52D49499600AD3302A0762F2D85A94A0CD4DA38A"
+    },
+    {
+      "from": "Packages/web-ui/src/components/Login/Keypad.jsx",
+      "to": "apps/web-ui/src/components/Login/Keypad.jsx",
+      "sha256Before": "3D8C00343AF9DD2E960EC7BE06BEE0E43B746E9BA96671C90910132D45D9CD1B"
+    },
+    {
+      "from": "Packages/web-ui/src/components/Login/LoginScreen.css",
+      "to": "apps/web-ui/src/components/Login/LoginScreen.css",
+      "sha256Before": "22B44B99C24351259EC952C71C1BD9A5BA3F8E8A7E5C5F3C2BC972BC971A5C95"
+    },
+    {
+      "from": "Packages/web-ui/src/components/Login/LoginScreen.jsx",
+      "to": "apps/web-ui/src/components/Login/LoginScreen.jsx",
+      "sha256Before": "F22F85CB3D2A23AD6627BDFF034AF8E2377C9700D99A7B99C6D2793118A55422"
+    },
+    {
+      "from": "Packages/web-ui/src/components/Login/ProfileSelector.jsx",
+      "to": "apps/web-ui/src/components/Login/ProfileSelector.jsx",
+      "sha256Before": "7D1B6C70478C9362FF9E1D5AA4E8359CD4BA72E8475CB34976267CEF9F189CEF"
+    },
+    {
+      "from": "Packages/web-ui/src/components/Login/index.js",
+      "to": "apps/web-ui/src/components/Login/index.js",
+      "sha256Before": "1E04A5097FF832CBF2B92EB822C5AF380A816182EDE9AA79152978A2518103B4"
+    },
+    {
+      "from": "Packages/web-ui/src/components/common/ActiveApps/ActiveApps.css",
+      "to": "apps/web-ui/src/components/common/ActiveApps/ActiveApps.css",
+      "sha256Before": "B302322D707069B97F1489DC082543F7054D06902D302C2F0F047016A0B7AF69"
+    },
+    {
+      "from": "Packages/web-ui/src/components/common/ActiveApps/ActiveApps.jsx",
+      "to": "apps/web-ui/src/components/common/ActiveApps/ActiveApps.jsx",
+      "sha256Before": "BDD5FDDA628B08EF776845032579F03743FEC624F38DB4F822BBED5310E4D316"
+    },
+    {
+      "from": "Packages/web-ui/src/components/common/PageDots/PageDots.css",
+      "to": "apps/web-ui/src/components/common/PageDots/PageDots.css",
+      "sha256Before": "A70A7E8BD0BF3621BF0B557A5FEE441C0E9A81F88A10B8AA1B3E2E07643942C4"
+    },
+    {
+      "from": "Packages/web-ui/src/components/common/PageDots/PageDots.jsx",
+      "to": "apps/web-ui/src/components/common/PageDots/PageDots.jsx",
+      "sha256Before": "917AA929B55B4768EE46AD488E2D22F84CF581645C05461EF1915B9ACA77F006"
+    },
+    {
+      "from": "Packages/web-ui/src/components/index.js",
+      "to": "apps/web-ui/src/components/index.js",
+      "sha256Before": "544B72EB1D3BAF2C9314975A56B138A93E0431E4A634ABDB3A402D943153C927"
+    },
+    {
+      "from": "Packages/web-ui/src/components/layout/ErrorBoundary/ErrorBoundary.jsx",
+      "to": "apps/web-ui/src/components/layout/ErrorBoundary/ErrorBoundary.jsx",
+      "sha256Before": "8DAF6BC8816E31FF625D2F92F758E2AB01A5A282551A253F7E2B942B002D3D2C"
+    },
+    {
+      "from": "Packages/web-ui/src/context/ProfileContext.jsx",
+      "to": "apps/web-ui/src/context/ProfileContext.jsx",
+      "sha256Before": "1F3E7A2E4ECCE45329BEE10932F46E47F2A8D4FF4BCEEBB95E54BDD5CA64B040"
+    },
+    {
+      "from": "Packages/web-ui/src/context/WebSocketContext.jsx",
+      "to": "apps/web-ui/src/context/WebSocketContext.jsx",
+      "sha256Before": "1E7BE41EC8C7AB6318D55C74CC3E6DDBF20F8BE871EC8C32FBD33E909D1FF858"
+    },
+    {
+      "from": "Packages/web-ui/src/context/index.js",
+      "to": "apps/web-ui/src/context/index.js",
+      "sha256Before": "8C2103C0C20677F1D48873BAAE65F1EA0E74458062DA9BC01FEB4A8034566A15"
+    },
+    {
+      "from": "Packages/web-ui/src/index.css",
+      "to": "apps/web-ui/src/index.css",
+      "sha256Before": "7521DF23251547D426BBD53F83F52E1ED4D4B7F79CA549AB338BE66389B9F1AC"
+    },
+    {
+      "from": "Packages/web-ui/src/main.jsx",
+      "to": "apps/web-ui/src/main.jsx",
+      "sha256Before": "E80CF3ED85D8A95546A717128B57692E0738890D00F5004DDAA5FC3AA3702503"
+    },
+    {
+      "from": "Packages/web-ui/src/vars.css",
+      "to": "apps/web-ui/src/vars.css",
+      "sha256Before": "9075E20E121E80AFB00AB9E7AF74969C2B5BA8EB2A3B02AA8CAE8C6BED700175"
+    },
+    {
+      "from": "Packages/web-ui/vite.config.js",
+      "to": "apps/web-ui/vite.config.js",
+      "sha256Before": "5CABB639B6B62E19064337ABC9F5B4FDA0F83E50A47396CA9A3BBA388ABFDD13"
+    },
+    {
+      "from": "ReadMe.md",
+      "to": "README.md",
+      "sha256Before": "F7D79350793FFD1211E0C74ADBEB3AFE29DCED08A55DE620B7365C7094DBA801"
+    }
+  ]
+}

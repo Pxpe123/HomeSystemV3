@@ -1,0 +1,12 @@
+{
+  "qtPrefix": "E:/Qt/6.7.3/msvc2022_64",
+  "cmake": "E:/Qt/Tools/CMake_64/bin/cmake.exe",
+  "ninja": "E:/Qt/Tools/Ninja/ninja.exe",
+  "vcvars": "E:/VisualStudio/VC/Auxiliary/Build/vcvars64.bat",
+  "android": {
+    "qt": "E:/Qt/6.10.1/android_arm64_v8a",
+    "hostQt": "E:/Qt/6.10.1/mingw_64",
+    "sdk": "C:/Users/YOU/AppData/Local/Android/Sdk",
+    "java": "C:/path/to/jdk-17"
+  }
+}

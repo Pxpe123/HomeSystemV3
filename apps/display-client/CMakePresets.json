@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "desktop-debug",
+      "displayName": "Desktop debug (local Qt kit)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/../../.local/build/display-client/debug",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    }
+  ],
+  "buildPresets": [{ "name": "desktop-debug", "configurePreset": "desktop-debug" }]
+}

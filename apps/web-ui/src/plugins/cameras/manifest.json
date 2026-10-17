@@ -1,0 +1,14 @@
+{
+  "id": "cameras",
+  "name": "Cameras",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Camera feeds and security views.",
+  "icon": "camera",
+  "color": "#A7B0C6",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": true,
+  "dashboardSlot": null,
+  "dependencies": []
+}

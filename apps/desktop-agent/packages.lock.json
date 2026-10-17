@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net9.0": {
+      "System.Diagnostics.PerformanceCounter": {
+        "type": "Direct",
+        "requested": "[10.0.0-rc.1.25451.107, )",
+        "resolved": "10.0.0-rc.1.25451.107",
+        "contentHash": "il831UulADpERCRc+XXRcrCB/9Rao/wLT/BMo1x3xLLgJ1/iIr8kX5nPk/gMyDGzX3+qd7hDHEs4hTX+BA4ZRQ==",
+        "dependencies": {
+          "System.Configuration.ConfigurationManager": "10.0.0-rc.1.25451.107",
+          "System.Threading.AccessControl": "10.0.0-rc.1.25451.107"
+        }
+      },
+      "System.Management": {
+        "type": "Direct",
+        "requested": "[10.0.0-rc.1.25451.107, )",
+        "resolved": "10.0.0-rc.1.25451.107",
+        "contentHash": "PmKytBRH0ulIUJbPqMMYNQAoBprssHWmty8xc4si9xeCja4noScqfcoNA4jMTLnVfUYogs/ehlI6iwmoTldgbg==",
+        "dependencies": {
+          "System.CodeDom": "10.0.0-rc.1.25451.107"
+        }
+      },
+      "System.CodeDom": {
+        "type": "Transitive",
+        "resolved": "10.0.0-rc.1.25451.107",
+        "contentHash": "BYvRtT5CaxlnEkWEfoztQkLMlrMpt1n8hIf1AkBgq7TkGXLfZGegDKPLTbxOxVLaJuSgovjrj4Dfsr3C9jNZLg=="
+      },
+      "System.Configuration.ConfigurationManager": {
+        "type": "Transitive",
+        "resolved": "10.0.0-rc.1.25451.107",
+        "contentHash": "DFYOb4eSHwTm6SXLgIi0B3fyj/dTIMJaIBe8BaYnnPjxEFXlXGcoksZkwmT6Fpeat8S1U+/ZXn10x8V033lZSQ==",
+        "dependencies": {
+          "System.Diagnostics.EventLog": "10.0.0-rc.1.25451.107",
+          "System.Security.Cryptography.ProtectedData": "10.0.0-rc.1.25451.107"
+        }
+      },
+      "System.Diagnostics.EventLog": {
+        "type": "Transitive",
+        "resolved": "10.0.0-rc.1.25451.107",
+        "contentHash": "rwQ/QDgOb3qLSOs8UbLBFigL8ewMCETOmrQwVbksRXLt3c/kizzljOdBf+KdXKCS3XmrKqMeOLOkZZM8WQDcTw=="
+      },
+      "System.Security.Cryptography.ProtectedData": {
+        "type": "Transitive",
+        "resolved": "10.0.0-rc.1.25451.107",
+        "contentHash": "LpcKni5+D2oYGdZEh/rdBscUtYIDyaCoVnkYkO/EjmN6bHOpj/9b9bAOl4a7fS16s78SvHDO206LpXc6I+k1mA=="
+      },
+      "System.Threading.AccessControl": {
+        "type": "Transitive",
+        "resolved": "10.0.0-rc.1.25451.107",
+        "contentHash": "IrQ1AEn2ENLP90qyJtQvpJANntmkxAGTSHy8pwuX44RXsKLMvc0/m84EBv+0XLDKcogADRq/c4O0Iv9Qd7wFHA=="
+      }
+    }
+  }
+}

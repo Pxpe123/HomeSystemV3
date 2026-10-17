@@ -1,0 +1,45 @@
+{
+  "name": "web-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "verify": "npm run lint && npm test && npm run build && node scripts/verify-build.mjs",
+    "lint:runtime": "eslint src/core src/application src/features src/shared src/context/WebSocketContext.jsx src/components/common/ActiveApps/ActiveApps.jsx src/Globals.js src/plugins/*/plugin.jsx src/plugins/clock/*.jsx src/plugins/spotify/*.js src/plugins/spotify/*.jsx src/plugins/notifications/ui/NotificationsApp.jsx src/app/Home/Home.jsx src/app/Home/pages/Apps/Apps.jsx src/App.jsx",
+    "dev": "vite",
+    "dev:isolated": "cross-env VITE_WS_URL=ws://127.0.0.1:8499/ws vite --host 127.0.0.1 --port 5174 --strictPort",
+    "devHost": "vite --host",
+    "build": "cross-env VITE_WS_URL= VITE_DEBUG=false vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
+    "@fortawesome/free-regular-svg-icons": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.2.0",
+    "framer-motion": "^12.29.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.13.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "cross-env": "^10.1.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "prettier": "^3.9.10",
+    "vite": "npm:rolldown-vite@7.2.5",
+    "ws": "^8.22.0"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
+  }
+}

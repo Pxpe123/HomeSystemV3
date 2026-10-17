@@ -1,0 +1,1 @@
+<Project><Import Project="../../scripts/build/Directory.Build.targets" /></Project>

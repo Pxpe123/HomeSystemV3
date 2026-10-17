@@ -1,0 +1,9 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+RUN mkdir -p /var/lib/homesystem && chown app:app /var/lib/homesystem
+WORKDIR /app
+COPY control-server/ ./
+USER $APP_UID
+ENV PORT=8080 HOMESYSTEM_DATA=/var/lib/homesystem
+ENTRYPOINT ["dotnet", "CentralServer.dll"]

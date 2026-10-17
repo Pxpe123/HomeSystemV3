@@ -1,0 +1,4 @@
+{
+  "cmake.sourceDirectory": "${workspaceFolder}/apps/display-client",
+  "cmake.buildDirectory": "${workspaceFolder}/.local/build/display-client"
+}

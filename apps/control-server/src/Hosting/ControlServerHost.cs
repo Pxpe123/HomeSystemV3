@@ -1,0 +1,180 @@
+/*
+ * HomeSystem V3 - Control Server
+ * Main entry point for the WebSocket-based home automation server.
+ * Handles device management, weather data, Spotify integration, and user profiles.
+ */
+
+using System.Reflection;
+using System.Text.Json;
+using System.Net;
+using System.Text;
+using CentralServer;
+using CentralServer.Modules;
+using CentralServer.Modules.Data;
+using CentralServer.Modules.EndPoints.Spotify;
+using CentralServer.Modules.Services;
+
+namespace CentralServer.Hosting;
+
+/// <summary>Composition root for the existing integration modules.</summary>
+internal static class ControlServerHost
+{
+    public static async Task RunAsync(string[] args)
+    {
+        PrintBuildInfo();
+
+        // Load configuration from environment
+        var config = ServerOptions.FromEnvironment();
+
+        // Initialize the web application
+        var app = BuildWebApplication(args, config.Port);
+        Globals.App = app;
+        Globals.DevMode = config.DevMode;
+        Globals.Pc = config.PcConfig;
+        Globals.WebUiUrl = config.WebUiUrl;
+        app.MapGet("/api/health", () => Results.Ok(new { service = "HomeSystem.ControlServer", status = "ready", protocolVersion = 1 }));
+
+        // Register Spotify OAuth callback endpoint
+        SpotifyManager.Login.RegisterCallbackEndpoint();
+
+        // Setup WebSocket server with all endpoint modules
+        var ws = SetupWebSocket(app, config.DevMode);
+        Globals.Ws = ws;
+
+        // Fetch geolocation data for weather services
+        await FetchIpInfoAsync();
+
+        // Start background services
+        await WeatherService.StartAsync(config.WeatherApiKey);
+        StartPcStatusMonitor(config.PcConfig.Ip);
+
+        // Store WebUI URL for OAuth redirects
+        Globals.WebUiUrl = config.WebUiUrl;
+
+        Console.WriteLine($"Server ready on port {config.Port}");
+        await app.RunAsync();
+    }
+
+    /// <summary>
+    /// Prints build timestamp for debugging deployments.
+    /// </summary>
+    private static void PrintBuildInfo()
+    {
+        var buildTime = File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location);
+        Console.WriteLine($"Built At: {buildTime:dd/MM/yyyy HH:mm:ss}");
+    }
+
+
+    /// <summary>
+    /// Creates and configures the ASP.NET Core web application.
+    /// </summary>
+    private static WebApplication BuildWebApplication(string[] args, int port)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+        builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(port));
+        return builder.Build();
+    }
+
+    /// <summary>
+    /// Initializes WebSocket server and registers all endpoint handlers.
+    /// </summary>
+    private static Websocket SetupWebSocket(WebApplication app, bool devMode)
+    {
+        var ws = new Websocket(app);
+
+        foreach (var ep in EndpointManager.GetAll())
+            ws.RegisterModule(ep.Key, ep.Value);
+
+        ws.MapSingleEndpoint("/ws");
+        Console.WriteLine($"WebSocket listening at /ws");
+
+        if (devMode)
+        {
+            Console.WriteLine("Available endpoints:");
+            foreach (var endpoint in ws.GetModules.Keys)
+                Console.WriteLine($"  - {endpoint}");
+        }
+
+        return ws;
+    }
+
+    /// <summary>
+    /// Fetches public IP and geolocation data from ipapi.co
+    /// Used for weather services and location display.
+    /// </summary>
+    private static async Task FetchIpInfoAsync()
+    {
+        // A household display uses its configured location rather than the
+        // internet provider's IP location. Liverpool is this home's default.
+        if ((Environment.GetEnvironmentVariable("WEATHER_LOCATION") ?? "Liverpool")
+            .Equals("Liverpool", StringComparison.OrdinalIgnoreCase))
+        {
+            Globals.IpInfo = new IpInfo
+            {
+                City = "Liverpool", Region = "England", Country = "GB",
+                CountryName = "United Kingdom", Timezone = "Europe/London",
+                Latitude = 53.4084f, Longitude = -2.9916f
+            };
+            return;
+        }
+        try
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            var request = (HttpWebRequest)WebRequest.Create("https://ipapi.co/json/");
+            request.UserAgent = "HomeSystemV3/1.0";
+            request.Timeout = 10_000;
+
+            using var response = (HttpWebResponse)await request.GetResponseAsync();
+            using var stream = response.GetResponseStream();
+            using var reader = new StreamReader(stream!, Encoding.UTF8);
+
+            var json = await reader.ReadToEndAsync();
+            var ipInfo = JsonSerializer.Deserialize<IpInfo>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            if (ipInfo == null || ipInfo.Latitude == 0 || ipInfo.Longitude == 0)
+            {
+                Console.WriteLine("[Location] Invalid response from ipapi.co");
+                return;
+            }
+
+            Globals.IpInfo = ipInfo;
+            Console.WriteLine($"[Location] {ipInfo.City}, {ipInfo.Region} ({ipInfo.Latitude}, {ipInfo.Longitude})");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[Location] Failed to fetch: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Starts background thread to monitor PC online status.
+    /// Logs when status changes (online/offline).
+    /// </summary>
+    private static void StartPcStatusMonitor(string pcIp)
+    {
+        if (string.IsNullOrEmpty(pcIp))
+            return;
+
+        var thread = new Thread(() =>
+        {
+            bool lastStatus = false;
+            while (true)
+            {
+                bool currentStatus = PcManager.PcStatus(pcIp);
+                if (lastStatus != currentStatus)
+                {
+                    Console.WriteLine($"[PC] Status changed: {(currentStatus ? "Online" : "Offline")}");
+                    lastStatus = currentStatus;
+                }
+                Thread.Sleep(2500);
+            }
+        });
+
+        thread.IsBackground = true;
+        thread.Start();
+    }
+}

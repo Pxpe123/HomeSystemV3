@@ -1,0 +1,14 @@
+{
+  "id": "smarthome",
+  "name": "Smart Home",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Connected rooms and devices.",
+  "icon": "home",
+  "color": "#FF9800",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": true,
+  "dashboardSlot": "smarthome",
+  "dependencies": []
+}

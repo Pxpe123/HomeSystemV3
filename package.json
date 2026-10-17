@@ -1,0 +1,24 @@
+{
+  "name": "homesystem",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-release.mjs --android",
+    "build:desktop-only": "node scripts/build-release.mjs",
+    "build:display": "node scripts/build-display.mjs",
+    "verify:release": "node scripts/verify-release.mjs",
+    "dev": "npm --prefix apps/web-ui run dev:isolated",
+    "dev:connected": "node apps/web-ui/node_modules/vite/bin/vite.js --config apps/web-ui/vite.config.js apps/web-ui --host 127.0.0.1 --port 5175 --strictPort",
+    "dev:server": "dotnet watch --project apps/control-server/CentralServer.csproj run --no-restore",
+    "dev:fixture": "node apps/web-ui/tests/fixture-server.mjs",
+    "build:web": "npm --prefix apps/web-ui run build",
+    "verify:web": "npm --prefix apps/web-ui run verify",
+    "check:layout": "node scripts/check-layout.mjs",
+    "verify": "npm run check:layout && npm run verify:web",
+    "build:server": "node scripts/build-dotnet.mjs control-server",
+    "build:agent": "node scripts/build-dotnet.mjs desktop-agent",
+    "android:check": "node scripts/build-android.mjs --check",
+    "build:android": "node scripts/build-android.mjs",
+    "docker:config": "docker compose -f scripts/deployment/compose.yaml config --quiet",
+    "docker:up": "docker compose -f scripts/deployment/compose.yaml up --build -d"
+  }
+}

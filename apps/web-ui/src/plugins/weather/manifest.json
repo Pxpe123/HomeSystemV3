@@ -1,0 +1,14 @@
+{
+  "id": "weather",
+  "name": "Weather",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Liverpool conditions and forecast.",
+  "icon": "weather",
+  "color": "#4FC3F7",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": true,
+  "dashboardSlot": "weather",
+  "dependencies": []
+}

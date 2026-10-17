@@ -1,0 +1,14 @@
+{
+  "id": "statistics",
+  "name": "Statistics",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Home system statistics.",
+  "icon": "activity",
+  "color": "#6B5CFF",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": false,
+  "dashboardSlot": null,
+  "dependencies": []
+}

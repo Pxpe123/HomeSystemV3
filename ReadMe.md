@@ -1,15 +1,46 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React 19" />
-  <img src="https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET 9" />
-  <img src="https://img.shields.io/badge/WebSocket-Real--time-010101?style=for-the-badge&logo=socket.io&logoColor=white" alt="WebSocket" />
-  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License" />
-</p>
+# HomeSystem V3
 
-<h1 align="center">
-  <br>
-  🏠 HomeSystem V3
-  <br>
-</h1>
+[![Build](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/build.yml)
+[![Deploy Pi](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/deploy.yml/badge.svg)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/deploy.yml)
 
-<h4 align="center">A modern, real-time home automation dashboard built for touchscreens and wall-mounted displays.</h4>
+Pushes run WebUI checks, .NET builds and ARM64 Docker builds. Successful `main` builds publish a matched image pair and automatically deploy to the Pi once its runner is registered. Click the badges for live job progress and failure logs. See [automatic deployment setup](docs/guides/GitHub-Deployment.md).
+
+Touch-first home display: React WebUI, C# ControlServer, Windows desktop agent and Qt display wrappers for desktop / Android.
+
+## Where to work
+
+- `apps/`: each application's source, project files and build configuration.
+- `scripts/`: shared checks, build orchestration, deployment and operations.
+- `docs/`: architecture, setup and dated verification.
+- `Deployments/`: current built applications directly in their app folders—no timestamps or release/archive nesting.
+- `.local/`: ignored build caches, tools and temporary packaging files.
+
+Open `apps/control-server/HomeSystem.sln` for the .NET projects. Qt opens from `apps/display-client/CMakeLists.txt`. Root files are shared repository contracts/tooling only.
+
+## Try the isolated UI
+
+Run these in separate terminals from the repository root:
+
+```powershell
+node apps/web-ui/tests/fixture-server.mjs
+npm run dev
+```
+
+Open http://127.0.0.1:5174/. First-run setup verifies the test server; choose Continue. Fixture profile: UI Test, PIN 1234. Preview weather and playback are sample data, not real integrations.
+
+## Build and run
+
+```powershell
+npm run verify
+npm run android:check
+npm run build
+npm run verify:release
+```
+
+Configure your Qt/Android paths in ignored `apps/display-client/build.local.json` using its adjacent example. Full builds replace the current app folders directly under `Deployments/` after all applications succeed. `Deployments/release.json` records build checksums; no timestamp folders or latest pointer are needed. Android output is a debug-signed ARM64 test APK, not a production-signed release.
+
+For the connected server/UI container stack, see [Docker setup](docs/guides/Run-with-Docker.md). For live development and the proposed automatic rollout, see [deployment flow](docs/guides/Development-and-Deployment.md).
+
+[Repository layout](docs/architecture/repository-layout.md) · [Android setup](apps/display-client/README.md) · [Verification](docs/verification/2026-10-17-setup-android.md)
+
+The refactor establishes project ownership and build/setup foundations; it is not a claim that all legacy server code is modernised. Persistent server profiles/auth hardening, integration service migration and production signing remain explicit work.

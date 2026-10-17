@@ -1,0 +1,14 @@
+{
+  "id": "clock",
+  "name": "Timers",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Quick timers and a shared stopwatch.",
+  "icon": "timer",
+  "color": "#FFB74D",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": true,
+  "dashboardSlot": "clock",
+  "dependencies": []
+}

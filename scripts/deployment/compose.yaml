@@ -1,0 +1,50 @@
+name: homesystem
+
+services:
+  homesystem-server:
+    image: homesystem/control-server:${HOMESYSTEM_RELEASE_TAG:-dev}
+    build:
+      context: ../../apps/control-server
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      PORT: "8080"
+      HOMESYSTEM_DATA: /var/lib/homesystem
+      # Optional integrations belong in a local .env file, never in source.
+      WEATHER_API_KEY: ${WEATHER_API_KEY:-}
+      SpotifyClientID: ${SPOTIFY_CLIENT_ID:-}
+      SpotifyClientSecret: ${SPOTIFY_CLIENT_SECRET:-}
+      WebUI_URL: ${HOMESYSTEM_PUBLIC_URL:-http://localhost:8088}
+    volumes:
+      - homesystem-data:/var/lib/homesystem
+    networks:
+      - homesystem
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://127.0.0.1:8080/api/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+
+  homesystem-ui:
+    image: homesystem/web-ui:${HOMESYSTEM_RELEASE_TAG:-dev}
+    build:
+      context: ../../apps/web-ui
+      dockerfile: Dockerfile
+    ports:
+      - "${HOMESYSTEM_PORT:-8088}:80"
+    depends_on:
+      homesystem-server:
+        condition: service_healthy
+    networks:
+      - homesystem
+    restart: unless-stopped
+
+networks:
+  homesystem:
+    name: homesystem
+
+volumes:
+  homesystem-data:
+    name: homesystem-data

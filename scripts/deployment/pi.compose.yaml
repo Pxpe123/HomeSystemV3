@@ -1,0 +1,40 @@
+name: homesystem-v3
+
+services:
+  homesystem-server:
+    image: homesystem/control-server:current
+    build:
+      context: ./bundle
+      dockerfile: infra/Dockerfile.server
+    env_file: .server.env
+    ports: ["8080:8080"]
+    volumes:
+      - homesystem-data:/var/lib/homesystem
+    restart: unless-stopped
+    networks: [homesystem]
+    healthcheck:
+      test: [CMD-SHELL, "curl --fail --silent http://127.0.0.1:8080/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+
+  homesystem-ui:
+    image: homesystem/web-ui:current
+    build:
+      context: ./bundle
+      dockerfile: infra/Dockerfile.ui
+    ports: ["8088:80"]
+    restart: unless-stopped
+    networks: [homesystem]
+    depends_on:
+      homesystem-server:
+        condition: service_healthy
+
+networks:
+  homesystem:
+    name: homesystem
+
+volumes:
+  homesystem-data:
+    name: homesystem-data

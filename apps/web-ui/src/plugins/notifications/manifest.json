@@ -1,0 +1,14 @@
+{
+  "id": "notifications",
+  "name": "Alerts",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Your saved notification history.",
+  "icon": "bell",
+  "color": "#FF6B9D",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": true,
+  "dashboardSlot": null,
+  "dependencies": []
+}

@@ -1,0 +1,15 @@
+{
+  "id": "spotify",
+  "name": "Spotify",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Playback, library and connected speakers.",
+  "icon": "music",
+  "color": "#1DB954",
+  "required": false,
+  "defaultInstalled": true,
+  "launcher": true,
+  "dashboardSlot": null,
+  "dependencies": [],
+  "extraRoutes": ["/Spotify/Callback/Success"]
+}

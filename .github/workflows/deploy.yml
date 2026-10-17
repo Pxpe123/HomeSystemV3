@@ -1,0 +1,47 @@
+name: Deploy Pi
+
+on:
+  workflow_run:
+    workflows: [Build]
+    branches: [main]
+    types: [completed]
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: homesystem-pi-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event != 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: [self-hosted, Linux, ARM64, homesystem-pi]
+    environment: homesystem-pi
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Deploy exact successful commit (skip superseded builds)
+        env:
+          DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_CONFIG: ${{ runner.temp }}/homesystem-docker
+        run: |
+          set -euo pipefail
+          if [ "$(git rev-parse origin/main)" != "$DEPLOY_SHA" ]; then
+            echo 'Build superseded by a newer main commit; no deployment.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          mkdir -p "$DOCKER_CONFIG"
+          trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          python3 scripts/deployment/deploy-pi.py --repository "$GITHUB_REPOSITORY" --commit "$DEPLOY_SHA"
+          echo "Deployed commit $DEPLOY_SHA. Server :8080, WebUI :8088; health gates passed." >> "$GITHUB_STEP_SUMMARY"

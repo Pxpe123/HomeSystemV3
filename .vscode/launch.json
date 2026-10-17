@@ -1,0 +1,28 @@
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Web UI",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "dev"],
+            "cwd": "${workspaceFolder}/apps/web-ui",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        }
+    ],
+    "compounds": [
+    {
+        "name": "Launch All Apps",
+        "configurations": [
+            "Web UI"
+        ],
+        "stopAll": true
+    }
+]
+}

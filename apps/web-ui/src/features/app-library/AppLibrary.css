@@ -1,0 +1,102 @@
+.hs-app-library {
+  color: var(--text-primary);
+}
+.hs-library-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px 8px;
+}
+.hs-library-intro,
+.hs-library-note {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.hs-library-note {
+  margin-top: 24px;
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+.hs-library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(140px, 1fr));
+  min-height: calc(100% - 120px);
+  gap: 14px;
+}
+.hs-library-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(var(--blur-lg));
+  flex-wrap: wrap;
+}
+.hs-library-card > div:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.hs-library-card h2 {
+  font-size: 15px;
+}
+.hs-library-card p {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 5px 0;
+}
+.hs-library-card small {
+  font-size: 10px;
+  color: var(--text-tertiary);
+}
+.hs-library-app-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--bg-card-hover);
+  font-size: 23px;
+  flex-shrink: 0;
+}
+.hs-library-card button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-primary);
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font: 12px var(--font-family-primary);
+}
+.hs-library-card button.install {
+  background: color-mix(in srgb, var(--accent-primary) 12%, transparent);
+  border-color: var(--border-focus);
+  color: var(--accent-primary);
+}
+.hs-library-card button:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+}
+.hs-library-card button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.hs-library-error {
+  color: var(--accent-error);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.hs-app-library button:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .hs-library-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "settings",
+  "name": "Settings",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "description": "Profiles and display settings.",
+  "icon": "settings",
+  "color": "#A7B0C6",
+  "required": true,
+  "defaultInstalled": true,
+  "launcher": false,
+  "dashboardSlot": null,
+  "dependencies": []
+}
