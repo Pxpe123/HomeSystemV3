@@ -2,6 +2,7 @@
 
 [![Build](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/build.yml)
 [![Deploy Pi](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/deploy.yml/badge.svg)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/deploy.yml)
+[![CodeQL Advanced](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/codeql.yml/badge.svg)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/codeql.yml)
 
 Pushes run WebUI checks, .NET builds and ARM64 Docker builds. Successful `main` builds publish a matched image pair and automatically deploy to the Pi once its runner is registered. Click the badges for live job progress and failure logs. See [automatic deployment setup](docs/guides/GitHub-Deployment.md).
 
