@@ -73,11 +73,15 @@ public class SpotifyManager
                     var tokenRequest = new AuthorizationCodeTokenRequest(
                         ClientId, ClientSecret, code, new Uri(RedirectUri)
                     );
+                    
+                    Console.WriteLine("[SPOTIFY] After Token Request");
 
                     var tokenResponse = await oAuthClient.RequestToken(tokenRequest);
 
                     var spotify = new SpotifyClient(tokenResponse.AccessToken);
                     var me = await spotify.UserProfile.Current();
+                    
+                    Console.WriteLine("[SPOTIFY] After User Profile Request");
 
                     var profile = new SpotifyProfile
                     {
@@ -87,9 +91,12 @@ public class SpotifyManager
                         AccessToken = tokenResponse.AccessToken,
                         RefreshToken = tokenResponse.RefreshToken
                     };
+                    
                     Globals.SpotifyProfiles[profile.Id] = profile;
                     InvalidateClient(profile.Id);
 
+                    Console.WriteLine("[SPOTIFY] After Register");
+                    
                     Console.WriteLine($"[Spotify] {profile.DisplayName} logged in");
 
                     string webUiUrl =
@@ -98,7 +105,7 @@ public class SpotifyManager
                         $"&email={Uri.EscapeDataString(profile.Email)}";
                     ctx.Response.Redirect(webUiUrl);
                     
-                    Console.WriteLine("Generated URL: " + webUiUrl);
+                    Console.WriteLine("[SPOTIFY] Generated URL: " + webUiUrl);
 
                     if (socket.State == WebSocketState.Open)
                     {
@@ -114,7 +121,6 @@ public class SpotifyManager
                             WebSocketMessageType.Text, true, CancellationToken.None);
                     }
 
-                    // Start background services if not already running
                     StateUpdater.EnsureRunning();
                     TokenRefresher.EnsureRunning();
                 }
