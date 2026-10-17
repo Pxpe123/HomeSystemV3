@@ -3,11 +3,11 @@
  */
 
 // Layout components
-export { default as ErrorBoundary } from './layout/ErrorBoundary/ErrorBoundary'
+export { default as ErrorBoundary } from "./layout/ErrorBoundary/ErrorBoundary";
 
 // Common components
-export { default as PageDots } from './common/PageDots/PageDots'
-export { default as ActiveApps } from './common/ActiveApps/ActiveApps'
+export { default as PageDots } from "./common/PageDots/PageDots";
+export { default as ActiveApps } from "./common/ActiveApps/ActiveApps";
 
 // Login components
-export { LoginScreen, Keypad, ProfileSelector } from './Login'
+export { LoginScreen, ProfileSelector } from "./Login";

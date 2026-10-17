@@ -1,1 +1,1 @@
-export { default as NotificationsApp } from './NotificationsApp'
+export { default as NotificationsApp } from "./NotificationsApp";

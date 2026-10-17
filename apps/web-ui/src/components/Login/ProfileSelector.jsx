@@ -1,6 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUserPlus, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import './LoginScreen.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faUserPlus,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import "./LoginScreen.css";
 
 /**
  * Displays list of existing profiles for selection
@@ -10,25 +14,29 @@ export default function ProfileSelector({
   profiles,
   onSelect,
   onCreate,
-  storedProfileId
+  storedProfileId,
+  busy = false,
 }) {
-  const hasProfiles = profiles && profiles.length > 0
+  const hasProfiles = profiles && profiles.length > 0;
 
   return (
     <div className="profile-selector">
       <h2 className="selector-title">
-        {hasProfiles ? 'Welcome Back' : 'Get Started'}
+        {hasProfiles ? "Welcome Back" : "Get Started"}
       </h2>
       <p className="selector-subtitle">
-        {hasProfiles ? 'Select your profile to continue' : 'Create your first profile'}
+        {hasProfiles
+          ? "Select your profile to continue"
+          : "Create your first profile"}
       </p>
 
       {hasProfiles && (
         <div className="profile-list">
-          {profiles.map(profile => (
+          {profiles.map((profile) => (
             <button
               key={profile.id}
-              className={`profile-item ${profile.id === storedProfileId ? 'last-used' : ''}`}
+              disabled={busy}
+              className={`profile-item ${profile.id === storedProfileId ? "last-used" : ""}`}
               onClick={() => onSelect(profile)}
             >
               <div className="profile-avatar">
@@ -40,16 +48,19 @@ export default function ProfileSelector({
                   <span className="profile-badge">Last used</span>
                 )}
               </div>
-              <FontAwesomeIcon icon={faChevronRight} className="profile-arrow" />
+              <FontAwesomeIcon
+                icon={faChevronRight}
+                className="profile-arrow"
+              />
             </button>
           ))}
         </div>
       )}
 
-      <button className="create-user-button" onClick={onCreate}>
+      <button className="create-user-button" disabled={busy} onClick={onCreate}>
         <FontAwesomeIcon icon={faUserPlus} />
         <span>Create New User</span>
       </button>
     </div>
-  )
+  );
 }

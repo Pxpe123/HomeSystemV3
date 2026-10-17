@@ -8,7 +8,8 @@ import { Icon } from "../../../shared/ui/Icon";
 import "../../../app/Apps/AppPage.css";
 import "./SettingsApp.css";
 
-const BuildDetails = lazy(() => import('./BuildDetails.jsx'));
+const BuildDetails = lazy(() => import("./BuildDetails.jsx"));
+const ResetUserData = lazy(() => import("./ResetUserData.jsx"));
 
 const sections = [
   {
@@ -60,7 +61,6 @@ export default function SettingsApp({ embedded = false }) {
   const [section, setSection] = useState("display");
   const [adding, setAdding] = useState(false);
   const [name, setName] = useState("");
-  const [passcode, setPasscode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const active = sections.find((item) => item.id === section);
@@ -71,18 +71,13 @@ export default function SettingsApp({ embedded = false }) {
       setError("Enter a name for this profile.");
       return;
     }
-    if (passcode && !/^\d{4,6}$/.test(passcode)) {
-      setError("Use 4 to 6 digits for the passcode, or leave it empty.");
-      return;
-    }
     setBusy(true);
     setError("");
     try {
-      const result = await createProfile(name.trim(), passcode || null);
+      const result = await createProfile(name.trim());
       if (result?.success === false)
         throw new Error(result.error || "Could not create the profile.");
       setName("");
-      setPasscode("");
       setAdding(false);
       runtime.notify({
         title: "Profile created",
@@ -263,17 +258,7 @@ export default function SettingsApp({ embedded = false }) {
                     value={name}
                     maxLength={60}
                     onChange={(event) => setName(event.target.value)}
-                    aria-invalid={!!error && !name.trim()}
-                  />
-                  <label htmlFor="household-pin">Passcode · optional</label>
-                  <input
-                    id="household-pin"
-                    type="password"
-                    inputMode="numeric"
-                    autoComplete="new-password"
-                    maxLength={6}
-                    value={passcode}
-                    onChange={(event) => setPasscode(event.target.value)}
+                    aria-invalid={!!error}
                     aria-describedby={error ? "profile-error" : undefined}
                   />
                   {error && (
@@ -290,7 +275,6 @@ export default function SettingsApp({ embedded = false }) {
                       disabled={busy}
                       onClick={() => {
                         setAdding(false);
-                        setPasscode("");
                         setError("");
                       }}
                     >
@@ -311,14 +295,20 @@ export default function SettingsApp({ embedded = false }) {
                 Switch profile
               </button>
               <p className="hs-settings-note">
-                Passcode protection is managed by the home server. This screen
-                does not change security settings.
+                Household profiles are saved on the home server. No passwords:
+                anyone with access to this display can choose a profile.
               </p>
             </>
           )}
           {section === "connection" && (
             <>
-              <Suspense fallback={<p className="hs-settings-note" role="status">Loading build details…</p>}>
+              <Suspense
+                fallback={
+                  <p className="hs-settings-note" role="status">
+                    Loading build details…
+                  </p>
+                }
+              >
                 <BuildDetails />
               </Suspense>
               <div className="hs-setting-card">
@@ -353,7 +343,16 @@ export default function SettingsApp({ embedded = false }) {
               >
                 Reconnect to server
               </button>
-              <Link className="hs-settings-action" to="/setup">Set up server connection</Link>
+              <Link className="hs-settings-action" to="/setup">
+                Set up server connection
+              </Link>
+              <Suspense
+                fallback={
+                  <p className="hs-settings-note">Checking testing controls…</p>
+                }
+              >
+                <ResetUserData />
+              </Suspense>
             </>
           )}
         </section>

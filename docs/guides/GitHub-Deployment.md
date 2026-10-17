@@ -33,7 +33,7 @@ README badges link to Build and Deploy Pi. Opening them shows queued/running job
 
 Only ControlServer and WebUI belong in the Pi Docker stack. Windows agent output is a downloadable build artifact, not a Linux container. Qt Windows/Android native binaries still use the existing local build pipeline; this workflow does not build, install or automatically update those binaries. Their hosted WebUI updates on reload without reinstalling the wrapper. An app already open may need a reload. Native client changes and production-signed Android delivery require a separate platform-specific distribution pipeline.
 
-Container recreation restarts the server: existing in-memory profiles/OAuth sessions can be lost. Health-based image rollback does not restore memory or undo data migrations; add durable profile storage and migration/backup policies before relying on this for production data. There will be a brief update interruption, not zero-downtime deployment.
+Container recreation restarts the server: pending OAuth attempts expire, but profiles and encrypted Spotify credentials now persist in `homesystem-data` when created by the persistent account implementation. Older process-only accounts require a migration/recreation plan before their first upgrade; see [account storage](Accounts-and-Spotify.md). Health-based image rollback does not undo data migrations. There will be a brief update interruption, not zero-downtime deployment.
 
 The first automated rollout saves the registry compose configuration and image references to `/opt/stacks/homesystem-v3/compose.yaml` and `.env`. Existing operations commands continue to work from the stack directory. Do not use the old local-build compose to start a second stack.
 

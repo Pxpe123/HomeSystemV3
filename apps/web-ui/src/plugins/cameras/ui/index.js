@@ -1,1 +1,1 @@
-export { default as CamerasApp } from './CamerasApp'
+export { default as CamerasApp } from "./CamerasApp";

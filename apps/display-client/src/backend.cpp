@@ -1,6 +1,6 @@
 #include "backend.h"
-#include <iostream>
 #include <QDebug>
+#include <iostream>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -8,8 +8,9 @@
 
 void Backend::openConsole() {
 #ifdef _WIN32
-    if (!AllocConsole()) return;
-    FILE* fp;
+    if (!AllocConsole())
+        return;
+    FILE *fp;
     freopen_s(&fp, "CONOUT$", "w", stdout);
     freopen_s(&fp, "CONOUT$", "w", stderr);
     std::cout << "Windows Console Allocated!" << std::endl;
@@ -20,7 +21,7 @@ void Backend::openConsole() {
 #endif
 }
 
-void Backend::receiveData(const QString& data) {
+void Backend::receiveData(const QString &data) {
     qDebug() << "Received from JavaScript:" << data;
     std::cout << "JS sent: " << data.toStdString() << std::endl;
 

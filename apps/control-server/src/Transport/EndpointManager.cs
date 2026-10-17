@@ -27,6 +27,8 @@ public static class EndpointManager
         // ─────────────────────────────────────────────────────────────
         { "getEndpoints", GetEndpoints.Handle },
         { "System/Hello", SystemHello.Handle },
+        { "System/GetDataPolicy", UserDataEndpoints.Policy },
+        { "System/DeleteAllUserData", UserDataEndpoints.DeleteAll },
         { "getConnectedUsers", GetConnectedUsers.Handle },
         { "getDevMode", GetDevModeState.Handle },
         { "getServerUptime", GetServerUptime.Handle },

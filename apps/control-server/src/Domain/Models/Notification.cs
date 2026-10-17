@@ -1,4 +1,4 @@
-﻿namespace CentralServer.Modules.Data;
+namespace CentralServer.Modules.Data;
 
 public class Notification
 {

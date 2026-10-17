@@ -6,7 +6,7 @@ The browser renders state and sends HomeSystem commands through the one ServerCl
 
 - Weather/GetWeather and Weather/GetForecast already request the server; matching handlers exist in the server endpoint registry.
 - Spotify linking, polling, playback, search and playlist tracks already request the server; matching handlers exist. No Spotify browser SDK or browser OAuth token exchange is present.
-- Profiles/household flows also use the shared server transport. The callback page reads server-supplied display parameters and does not exchange credentials with Spotify.
+- Profiles/household flows also use the shared server transport. The scanning phone's confirmed callback receipt is server-rendered and requires no WebUI setup. Only the server exchanges and persists provider credentials; the display receives a profile-bound completion event without tokens.
 - SolarTimes is local arithmetic, not an API call. Source-attribution links are user navigation, not background provider requests.
 - React/Qt bundled static resources do not use external API fetches. The Qt webchannel script is a bundled qrc resource.
 - Spotify artwork fields previously rendered provider-hosted URLs directly, bypassing the desired server-only resource boundary. Those URLs now render the existing artwork placeholders instead.

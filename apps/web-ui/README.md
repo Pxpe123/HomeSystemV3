@@ -6,7 +6,7 @@ React wall-display interface with a shared runtime and self-contained app plugin
 
 Run `npm ci`, then `npm run dev` from this directory, or use the repository root convenience commands. The isolated preview uses `npm run dev:fixture` and `npm run dev` from the root in separate terminals; it stays on port 5174.
 
-`npm run verify` runs lint, unit tests, production build and bundle/plugin-boundary checks. Build output stays in ignored dist/ and dependencies in ignored node_modules/.
+`npm run verify` runs lint, unit tests, production build and bundle/plugin-boundary checks. Build output is `Deployments/web-ui/` at the repository root; dependencies remain in ignored `node_modules/`.
 
 ## Ownership
 
@@ -18,5 +18,7 @@ Run `npm ci`, then `npm run dev` from this directory, or use the repository root
 - src/app, components, context: display composition and remaining established adapters.
 - tests: unit tests, isolated backend and Vite-only loading visual fixture.
 - scripts: package build/import-boundary verification.
+
+`ProfileContext` is a server-backed household selector, with no PIN/password handling. Only the last selected profile ID is remembered on the display. Spotify account links come from the server, never browser-cached credentials. Settings → Connection contains build identity and the guarded testing reset. OAuth's confirmed success page is served by ControlServer directly on the scanning phone, without WebUI setup/login.
 
 See [architecture](docs/architecture.md), [plugin API](docs/plugins.md) and the [repository documentation](../../docs/README.md). Root DESIGN.md and UX-CONTRACT.md remain the maintained UI contracts.

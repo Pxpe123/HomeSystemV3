@@ -39,7 +39,8 @@ export class ServerClient extends ObservableStore {
       if (this.socket === socket) this.receive(event.data);
     };
     socket.onerror = () => {
-      if (this.socket === socket) this.update({ error: "The home server could not be reached." });
+      if (this.socket === socket)
+        this.update({ error: "The home server could not be reached." });
     };
     socket.onclose = () => {
       if (this.socket !== socket) return;

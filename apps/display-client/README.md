@@ -4,7 +4,7 @@ One configured WebUI address; UI changes do not require rebuilding the native wr
 
 ## Desktop
 
-Qt Widgets + WebEngine. Open CMakeLists.txt with the desktop Qt kit, or run `npm run build:display` from the repo root. Pass `--url http://YOUR-SERVER:8088` or HOMESYSTEM_UI_URL to the executable. Build caches and outputs live under Deployments.
+Qt Widgets + WebEngine. Open CMakeLists.txt with the desktop Qt kit, or run `npm run build:display` from the repo root. Pass `--url http://YOUR-SERVER:8088` or HOMESYSTEM_UI_URL to the executable. Build caches live under `.local/`; packaged output is `Deployments/display-client/`.
 
 ## Android / S24 FE
 
@@ -16,7 +16,7 @@ Verified on this build machine:
 - Qt WebView installed through Qt Maintenance Tool.
 - SDK platform 36, build-tools 36.0.0, platform-tools and NDK 27.2.12479018.
 - Temurin JDK 17, checksum verified, under ignored .local/tools/java17.
-- Gradle 8.14.3 / AGP 8.10.1 from the Qt-provided template. The obsolete custom Gradle file is archived.
+- Gradle 8.14.3 / AGP 8.10.1 from the Qt-provided template; no custom Gradle fork is maintained.
 
 These versions follow [Qt 6.10 Android requirements](https://doc.qt.io/qt-6.10/android.html) and [prerequisites](https://doc.qt.io/qt-6.10/android-getting-started.html).
 

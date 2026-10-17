@@ -1,9 +1,12 @@
 :root {
   /* ========== LAYOUT ========== */
-  --app-width: 1280px;     /* OLD 960px */
-  --app-height: 800px;   /* OLD 540px */
+  --app-width: 1280px; /* OLD 960px */
+  --app-height: 800px; /* OLD 540px */
   --app-border-radius: 0.5rem;
-  --bg-image: radial-gradient(ellipse at 8% 12%, #235b6966 0%, transparent 52%), radial-gradient(ellipse at 92% 80%, #39518466 0%, transparent 56%), linear-gradient(145deg, #142b39, #101c30 54%, #17263c);
+  --bg-image:
+    radial-gradient(ellipse at 8% 12%, #235b6966 0%, transparent 52%),
+    radial-gradient(ellipse at 92% 80%, #39518466 0%, transparent 56%),
+    linear-gradient(145deg, #142b39, #101c30 54%, #17263c);
 
   /* ========== COLORS - BACKGROUNDS ========== */
   --bg-primary: #101c30;
@@ -23,16 +26,20 @@
   /* ========== COLORS - ACCENTS ========== */
   --accent-primary: #89dbd0;
   --accent-secondary: #9daef1;
-  --accent-success: #00D9A3;
-  --accent-warning: #FFB74D;
-  --accent-error: #FF6B9D;
-  --accent-spotify: #1DB954;
+  --accent-success: #00d9a3;
+  --accent-warning: #ffb74d;
+  --accent-error: #ff6b9d;
+  --accent-spotify: #1db954;
 
   /* ========== COLORS - BORDERS ========== */
   --border-primary: rgba(255, 255, 255, 0.1);
   --border-secondary: rgba(255, 255, 255, 0.06);
   --border-focus: rgba(137, 219, 208, 0.65);
-  --surface-glass: linear-gradient(135deg, rgba(211,236,246,.085), rgba(163,191,221,.025));
+  --surface-glass: linear-gradient(
+    135deg,
+    rgba(211, 236, 246, 0.085),
+    rgba(163, 191, 221, 0.025)
+  );
   --surface-solid: #17283c;
   --scrollbar-thumb: #738b9e;
   --scrollbar-track: transparent;
@@ -56,7 +63,8 @@
   --radius-full: 9999px;
 
   /* ========== TYPOGRAPHY ========== */
-  --font-family-primary: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-primary:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-family-mono: "SF Mono", "Consolas", "Monaco", monospace;
 
   /* Static font sizes */
@@ -111,11 +119,11 @@
   --line-height-loose: 2;
 
   /* Letter spacing (px → em) */
-  --letter-spacing-tight: -0.03125em;   /* -0.5px */
+  --letter-spacing-tight: -0.03125em; /* -0.5px */
   --letter-spacing-normal: 0;
-  --letter-spacing-wide: 0.03125em;     /* 0.5px */
-  --letter-spacing-wider: 0.0625em;     /* 1px */
-  --letter-spacing-widest: 0.09375em;   /* 1.5px */
+  --letter-spacing-wide: 0.03125em; /* 0.5px */
+  --letter-spacing-wider: 0.0625em; /* 1px */
+  --letter-spacing-widest: 0.09375em; /* 1.5px */
 
   /* ========== SHADOWS ========== */
   --shadow-sm: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
@@ -161,12 +169,12 @@
   --blur-xl: 2.5rem;
 
   /* ========== RESPONSIVE BREAKPOINTS ========== */
-  --breakpoint-xs: 30rem;   /* 480px */
-  --breakpoint-sm: 40rem;   /* 640px */
-  --breakpoint-md: 48rem;   /* 768px */
-  --breakpoint-lg: 64rem;   /* 1024px */
-  --breakpoint-xl: 80rem;   /* 1280px */
-  --breakpoint-2xl: 96rem;  /* 1536px */
+  --breakpoint-xs: 30rem; /* 480px */
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 96rem; /* 1536px */
 
   /* ========== RESPONSIVE SPACING (unchanged) ========== */
   --space-responsive-xs: clamp(0.25rem, 1cqw, 0.5rem);

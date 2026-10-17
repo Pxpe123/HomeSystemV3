@@ -14,6 +14,7 @@
     "verify:web": "npm --prefix apps/web-ui run verify",
     "check:layout": "node scripts/check-layout.mjs",
     "verify": "npm run check:layout && npm run verify:web",
+    "verify:accounts": "node scripts/verify-accounts.mjs",
     "build:server": "node scripts/build-dotnet.mjs control-server",
     "build:agent": "node scripts/build-dotnet.mjs desktop-agent",
     "android:check": "node scripts/build-android.mjs --check",

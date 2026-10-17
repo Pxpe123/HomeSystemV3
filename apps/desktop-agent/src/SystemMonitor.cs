@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using PcAgent.Models;
+using System.Runtime.Versioning;
 
 namespace PcAgent;
 
@@ -11,6 +12,7 @@ namespace PcAgent;
 /// Collects system hardware stats (CPU, RAM, disk, network).
 /// Uses WMI and performance counters on Windows.
 /// </summary>
+[SupportedOSPlatform("windows")]
 public class SystemMonitor
 {
     private PerformanceCounter? _cpuCounter;

@@ -4,13 +4,16 @@ import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const output = process.env.HOMESYSTEM_WEB_OUT_DIR || path.resolve(root, "../../Deployments/web-ui");
+const output =
+  process.env.HOMESYSTEM_WEB_OUT_DIR ||
+  path.resolve(root, "../../Deployments/web-ui");
 const assets = path.join(output, "assets");
 const entries = await readdir(assets);
 const entry = entries.find((name) => /^index-.*\.js$/.test(name));
 if (!entry) throw new Error("Build the UI before verifying its budget.");
 const script = await readFile(path.join(assets, entry));
-if (script.includes(Buffer.from('ws://127.0.0.1:8499'))) throw new Error('Production bundle contains the isolated fixture URL.');
+if (script.includes(Buffer.from("ws://127.0.0.1:8499")))
+  throw new Error("Production bundle contains the isolated fixture URL.");
 const cssEntries = entries.filter((name) => /^index-.*\.css$/.test(name));
 const cssBytes = (
   await Promise.all(cssEntries.map((name) => stat(path.join(assets, name))))

@@ -53,6 +53,8 @@ Use existing radius variables on app panels and controls. The shade rounds its b
 
 ## Components
 
+Profiles retain the existing glass selector and Settings rows, but use name-only creation and one-touch household selection. They are explicitly not password-protected accounts. The destructive testing reset reuses shared Modal/button/input styles, with a typed confirmation and initial focus on the safe action. Spotify's standalone phone receipt is server-rendered in the same navy/aqua/system-font language so it can confirm a saved link without loading the home display UI; it is not an app panel or a new theme.
+
 First-run setup uses one centred glass surface with existing aqua actions, system typography and the same radius/border tokens. Connection state lives inline; it does not introduce a separate theme or hide profile authentication behind a fake connected state. All setup colours consume vars.css (accent-primary, text-primary, border-primary and surface-glass); no new colour tokens.
 
 App exit is a left-edge rightward swipe with a quiet vertical aqua cue; Home remains the accessible fallback. Loading identity comes from plugin icons/colours (Spotify logo, notification bell, timer clock) in a softly pulsing glass emblem, not a generic spinning retry symbol. Do not force loading animations when content is already ready.

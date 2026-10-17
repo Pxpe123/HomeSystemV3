@@ -6,7 +6,7 @@ import { registry } from "../../core/AppRegistry";
 
 /** Both the shade and Notifications app render this same state and actions. */
 export function NotificationList({ filter = "all", onNavigate }) {
-  const notifications = useHome(state => state.notifications);
+  const notifications = useHome((state) => state.notifications);
   const visible = notifications.filter(
     (item) => filter === "all" || (filter === "read" ? item.read : !item.read),
   );

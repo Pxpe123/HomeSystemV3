@@ -393,4 +393,7 @@
     overflow: visible;
   }
 }
-.hs-settings-note a {color:var(--accent-primary);text-underline-offset:3px;}
+.hs-settings-note a {
+  color: var(--accent-primary);
+  text-underline-offset: 3px;
+}

@@ -1,20 +1,9 @@
-import { useSearchParams } from 'react-router-dom'
-import { useEffect } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSpotify } from '@fortawesome/free-brands-svg-icons'
-import { faCircleCheck, faUser, faEnvelope, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
-import './Success.css'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpotify } from "@fortawesome/free-brands-svg-icons";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import "./Success.css";
 
 export default function SpotifySuccess() {
-  const [params] = useSearchParams()
-
-  const name = params.get('name') ?? 'Unknown User'
-  const email = params.get('email') ?? 'test@email.com'
-
-  useEffect(() => {
-    window.history.replaceState({}, '', '/Spotify/Callback/Success')
-  }, [])
-
   return (
     <div className="spotify-callback">
       <div className="spotify-callback-card">
@@ -27,39 +16,14 @@ export default function SpotifySuccess() {
         {/* Success Content */}
         <div className="spotify-callback-content">
           <div className="success-icon-wrapper">
-            <FontAwesomeIcon icon={faCircleCheck} className="success-icon" />
+            <FontAwesomeIcon icon={faSpotify} className="success-icon" />
           </div>
 
-          <h2 className="success-title">Connected Successfully!</h2>
-          <p className="success-subtitle">Your Spotify account has been linked</p>
-
-          {/* Account Info */}
-          <div className="account-info">
-            <div className="account-info-row">
-              <div className="info-icon">
-                <FontAwesomeIcon icon={faUser} />
-              </div>
-              <div className="info-content">
-                <span className="info-label">Name</span>
-                <span className="info-value">{name}</span>
-              </div>
-            </div>
-
-            {email && (
-              <>
-                <div className="account-info-divider" />
-                <div className="account-info-row">
-                  <div className="info-icon">
-                    <FontAwesomeIcon icon={faEnvelope} />
-                  </div>
-                  <div className="info-content">
-                    <span className="info-label">Email</span>
-                    <span className="info-value">{email}</span>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+          <h2 className="success-title">Check your home display</h2>
+          <p className="success-subtitle">
+            Spotify connections are confirmed on the phone that completes the
+            link. This legacy address does not verify a connection.
+          </p>
 
           {/* Close Message */}
           <div className="close-message">
@@ -69,5 +33,5 @@ export default function SpotifySuccess() {
         </div>
       </div>
     </div>
-  )
+  );
 }

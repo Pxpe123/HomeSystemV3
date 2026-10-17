@@ -1,1 +1,1 @@
-export { default as SpotifyApp } from './SpotifyApp'
+export { default as SpotifyApp } from "./SpotifyApp";

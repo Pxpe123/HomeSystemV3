@@ -1,28 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Simple Web UI</title>
-<link rel="stylesheet" href="style.css">
-<script src="qrc:///qtwebchannel/qwebchannel.js"></script>
-<script>
-let backend;
+  <head>
+    <meta charset="UTF-8" />
+    <title>HomeSystem display diagnostics</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script>
+      let backend;
 
-document.addEventListener("DOMContentLoaded", function() {
-    new QWebChannel(qt.webChannelTransport, function(channel) {
-        backend = channel.objects.backend;
-    });
-
-    document.getElementById("btnConsole").onclick = function() {
-        backend.openConsole();
-    };
-});
-</script>
-</head>
-<body>
+      document.addEventListener("DOMContentLoaded", function () {
+        new QWebChannel(qt.webChannelTransport, function (channel) {
+          backend = channel.objects.backend;
+          document.getElementById("btnConsole").disabled = false;
+        });
+      });
+    </script>
+  </head>
+  <body>
     <div class="container">
-        <h1>My C++ + Web UI App</h1>
-        <button id="btnConsole">Open App Console</button>
+      <h1>HomeSystem display diagnostics</h1>
+      <button id="btnConsole" disabled onclick="backend.openConsole()">
+        Open diagnostic console
+      </button>
     </div>
-</body>
+  </body>
 </html>

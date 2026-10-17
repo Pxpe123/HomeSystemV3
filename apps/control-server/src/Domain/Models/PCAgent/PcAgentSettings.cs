@@ -1,4 +1,4 @@
-﻿namespace CentralServer.Modules.Data.PcAgent;
+namespace CentralServer.Modules.Data.PcAgent;
 
 public class PcAgentSettings
 {

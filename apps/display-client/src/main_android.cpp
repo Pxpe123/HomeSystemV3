@@ -1,15 +1,14 @@
 
+#include <QCoreApplication>
+#include <QDebug>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QCoreApplication>
-#include <QDebug>
 
-#include <QtWebView/QtWebView>
 #include "DisplaySettings.h"
+#include <QtWebView/QtWebView>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QtWebView::initialize();
     QGuiApplication app(argc, argv);
 
@@ -19,19 +18,11 @@ int main(int argc, char *argv[])
     DisplaySettings settings;
     QQmlApplicationEngine engine;
 
-    engine.rootContext()->setContextProperty(
-        "displaySettings", &settings
-        );
+    engine.rootContext()->setContextProperty("displaySettings", &settings);
 
     QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() {
-            QCoreApplication::exit(EXIT_FAILURE);
-        },
-        Qt::QueuedConnection
-        );
+        &engine, &QQmlApplicationEngine::objectCreationFailed, &app,
+        []() { QCoreApplication::exit(EXIT_FAILURE); }, Qt::QueuedConnection);
 
     engine.loadFromModule("HomeSystemV3", "Main");
 

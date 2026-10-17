@@ -68,11 +68,11 @@ export default function App() {
   return (
     <WebSocketProvider>
       <SetupGate>
-      <ProfileProvider>
-        <RuntimeProvider>
-          <ApplicationRoutes />
-        </RuntimeProvider>
-      </ProfileProvider>
+        <ProfileProvider>
+          <RuntimeProvider>
+            <ApplicationRoutes />
+          </RuntimeProvider>
+        </ProfileProvider>
       </SetupGate>
     </WebSocketProvider>
   );

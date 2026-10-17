@@ -20,7 +20,7 @@ Stop with the same Compose file and `down`. Keep the named homesystem-data volum
 
 `npm run build` assembles current app outputs directly under Deployments, including an ARM64 Android test APK. Run `npm run verify:release` to verify Deployments/release.json. Copy the contents of Deployments to the target host and follow its README, using infra/compose.yaml to build images from the completed server and WebUI outputs. No timestamp directory or latest pointer is created; previous outputs are replaced only after all builds succeed.
 
-The shared volume exists as a future persistence boundary, not proof that all legacy data is saved. Existing profile state is still in-memory and needs a persistence migration before unattended server restarts can preserve a household.
+The shared volume stores profiles, account links and encrypted Spotify credentials. Keep `accounts.json` and `keys/` together in protected backups. Earlier process-only profiles/tokens need a first-upgrade migration/recreation plan; see [account storage](Accounts-and-Spotify.md). Playback caches and pending OAuth sessions are intentionally not durable.
 
 ## Verified vs pending
 

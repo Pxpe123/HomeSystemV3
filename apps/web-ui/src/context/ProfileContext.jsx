@@ -1,230 +1,231 @@
-/*
- * ProfileContext - User authentication and profile management
- * Handles login, logout, profile creation, and session persistence.
- * Uses localStorage to remember the last logged-in user per device.
- */
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useWebSocket } from "./WebSocketContext";
+import { runtime } from "../application/services";
 
-import { createContext, useContext, useEffect, useState, useCallback } from 'react'
-import { useWebSocket } from './WebSocketContext'
+const Context = createContext(null);
+const STORAGE_KEY = "homeSystem_profileId";
+function remember(id) {
+  try {
+    if (id) localStorage.setItem(STORAGE_KEY, id);
+    else localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    /* Selection still works without device storage. */
+  }
+}
+function remembered() {
+  try {
+    return localStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+function syncGeneration(value) {
+  if (!value) return false;
+  try {
+    const previous = localStorage.getItem("homeSystem_dataGeneration");
+    const changed = !!previous && previous !== value;
+    if (changed) {
+      runtime.resetUserData();
+      remember(null);
+    }
+    localStorage.setItem("homeSystem_dataGeneration", value);
+    return changed;
+  } catch {
+    return false;
+  }
+}
 
-const ProfileContext = createContext(null)
-const STORAGE_KEY = 'homeSystem_profileId'
-
+/** Server-owned household profiles. This selector deliberately does not authenticate people. */
 export function ProfileProvider({ children }) {
-  const { connected, request } = useWebSocket()
-
-  // Profile state
-  const [profiles, setProfiles] = useState([])
-  const [currentProfile, setCurrentProfile] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  /**
-   * Fetches all profiles from the server.
-   * Called on connect and after profile changes.
-   */
+  const { connected, request, serverUrl } = useWebSocket();
+  const [profiles, setProfiles] = useState([]);
+  const [currentProfile, setCurrentProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const epoch = useRef(0);
+  const invalidate = useCallback(() => ++epoch.current, []);
+  const busy = useRef(false);
   const fetchProfiles = useCallback(async () => {
-    if (!connected) return
-    try {
-      const result = await request('Profile/GetAll')
-      // Server sends profiles in data.profiles
-      const profiles = result?.data?.profiles
-      if (profiles) {
-        setProfiles(profiles)
-      }
-    } catch (err) {
-      console.error('[Profile] Failed to fetch:', err)
-    }
-  }, [connected, request])
+    if (!connected) return;
+    const generation = epoch.current;
+    const result = await request("Profile/GetAll");
+    if (generation !== epoch.current) return;
+    const values = result.data?.profiles || [];
+    const reset = syncGeneration(result.data?.dataGeneration);
+    setProfiles(values);
+    setCurrentProfile((previous) =>
+      !reset && previous
+        ? values.find((profile) => profile.id === previous.id) || null
+        : null,
+    );
+    return values;
+  }, [connected, request]);
 
-  /**
-   * Restores session from localStorage if a valid profile is stored.
-   * Auto-logs in without requiring passcode (device is trusted).
-   */
-  const tryAutoLogin = useCallback(async () => {
-    if (!connected) return
-
-    const storedProfileId = localStorage.getItem(STORAGE_KEY)
-    if (!storedProfileId) {
-      setIsLoading(false)
-      return
-    }
-
-    try {
-      const result = await request('Profile/GetAll')
-      const profiles = result?.data?.profiles
-      if (profiles) {
-        setProfiles(profiles)
-        const storedProfile = profiles.find(p => p.id === storedProfileId)
-
-        if (storedProfile) {
-          // Profile exists - restore session without passcode
-          setCurrentProfile(storedProfile)
-        } else {
-          // Profile was deleted - clear stored ID
-          localStorage.removeItem(STORAGE_KEY)
-        }
-      }
-    } catch (err) {
-      console.error('[Profile] Auto-login failed:', err)
-    }
-
-    setIsLoading(false)
-  }, [connected, request])
-
-  /**
-   * Authenticates user with profile ID and passcode.
-   * Stores profile ID in localStorage on success.
-   */
-  const login = useCallback(async (profileId, passcode) => {
-    setError(null)
-    try {
-      const result = await request('Profile/Login', { profileId, passcode })
-      const success = result?.success || result?.data?.success
-      const profile = result?.data?.profile
-      const error = result?.error || result?.data?.error
-      if (success && profile) {
-        setCurrentProfile(profile)
-        localStorage.setItem(STORAGE_KEY, profileId)
-        return { success: true }
-      } else {
-        setError(error || 'Login failed')
-        return { success: false, error }
-      }
-    } catch (err) {
-      const errorMsg = err.message || 'Login failed'
-      setError(errorMsg)
-      return { success: false, error: errorMsg }
-    }
-  }, [request])
-
-  /**
-   * Logs out the current user and clears stored session.
-   */
-  const logout = useCallback(() => {
-    setCurrentProfile(null)
-    localStorage.removeItem(STORAGE_KEY)
-    setError(null)
-  }, [])
-
-  /**
-   * Creates a new profile and auto-logs in.
-   */
-  const createProfile = useCallback(async (name, passcode) => {
-    setError(null)
-    try {
-      console.log('[Profile] Creating profile:', name)
-      const result = await request('Profile/Create', { name, passcode })
-      console.log('[Profile] Create result:', result)
-      // Server sends success at top level, profile in data
-      const success = result?.success || result?.data?.success
-      const profile = result?.data?.profile
-      const error = result?.error || result?.data?.error
-      if (success && profile) {
-        await fetchProfiles()
-        setCurrentProfile(profile)
-        localStorage.setItem(STORAGE_KEY, profile.id)
-        return { success: true, profile }
-      } else {
-        console.log('[Profile] Create failed:', error)
-        setError(error || 'Failed to create profile')
-        return { success: false, error }
-      }
-    } catch (err) {
-      console.error('[Profile] Create exception:', err)
-      const errorMsg = err.message || 'Failed to create profile'
-      setError(errorMsg)
-      return { success: false, error: errorMsg }
-    }
-  }, [request, fetchProfiles])
-
-  /**
-   * Updates a profile's name or passcode.
-   */
-  const updateProfile = useCallback(async (profileId, updates) => {
-    setError(null)
-    try {
-      const result = await request('Profile/Update', { profileId, ...updates })
-      const success = result?.success || result?.data?.success
-      const profile = result?.data?.profile
-      const error = result?.error || result?.data?.error
-      if (success) {
-        if (currentProfile?.id === profileId && profile) {
-          setCurrentProfile(prev => ({ ...prev, ...profile }))
-        }
-        await fetchProfiles()
-        return { success: true }
-      }
-      return { success: false, error }
-    } catch (err) {
-      return { success: false, error: err.message }
-    }
-  }, [request, currentProfile, fetchProfiles])
-
-  /**
-   * Deletes a profile. Logs out if deleting current user.
-   */
-  const deleteProfile = useCallback(async (profileId) => {
-    try {
-      const result = await request('Profile/Delete', { profileId })
-      const success = result?.success || result?.data?.success
-      const error = result?.error || result?.data?.error
-      if (success) {
-        if (currentProfile?.id === profileId) {
-          logout()
-        }
-        await fetchProfiles()
-        return { success: true }
-      }
-      return { success: false, error }
-    } catch (err) {
-      return { success: false, error: err.message }
-    }
-  }, [request, currentProfile, logout, fetchProfiles])
-
-  // Check for stored session on connect
   useEffect(() => {
-    if (!connected) return
-    const task = setTimeout(tryAutoLogin, 0)
-    return () => clearTimeout(task)
-  }, [connected, tryAutoLogin])
+    const generation = invalidate();
+    const task = setTimeout(async () => {
+      setCurrentProfile(null);
+      if (!connected) {
+        setIsLoading(false);
+        return;
+      }
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await request("Profile/GetAll");
+        if (generation !== epoch.current) return;
+        const values = result.data?.profiles || [];
+        syncGeneration(result.data?.dataGeneration);
+        setProfiles(values);
+        const id = remembered();
+        if (values.some((profile) => profile.id === id)) {
+          const selected = await request("Profile/Login", { profileId: id });
+          if (generation === epoch.current)
+            setCurrentProfile(selected.data.profile);
+        } else if (id) remember(null);
+      } catch {
+        if (generation === epoch.current)
+          setError(
+            "Could not load profiles from the server. Reconnect to try again.",
+          );
+      } finally {
+        if (generation === epoch.current) setIsLoading(false);
+      }
+    }, 0);
+    return () => {
+      clearTimeout(task);
+      invalidate();
+    };
+  }, [connected, serverUrl, request, invalidate]);
 
-  const storedProfileId = localStorage.getItem(STORAGE_KEY)
-
-  const value = {
-    profiles,
-    currentProfile,
-    isLoading,
-    error,
-    isLoggedIn: !!currentProfile,
-    storedProfileId,
-    login,
-    logout,
-    createProfile,
-    updateProfile,
-    deleteProfile,
-    fetchProfiles,
-    clearError: () => setError(null)
-  }
-
+  const select = useCallback(
+    async (type, data) => {
+      if (busy.current)
+        return {
+          success: false,
+          error: "A profile change is already in progress.",
+        };
+      busy.current = true;
+      const generation = epoch.current;
+      setError(null);
+      try {
+        const result = await request(type, data);
+        if (generation !== epoch.current)
+          return {
+            success: false,
+            error: "The connection changed. Try again.",
+          };
+        const profile = result.data?.profile;
+        if (!profile)
+          throw new Error("The server did not return a saved profile.");
+        setCurrentProfile(profile);
+        remember(profile.id);
+        setProfiles((previous) => [
+          ...previous.filter((item) => item.id !== profile.id),
+          profile,
+        ]);
+        return { success: true, profile };
+      } catch (failure) {
+        if (generation === epoch.current) setError(failure.message);
+        return { success: false, error: failure.message };
+      } finally {
+        busy.current = false;
+      }
+    },
+    [request],
+  );
+  const login = useCallback(
+    (id) => select("Profile/Login", { profileId: id }),
+    [select],
+  );
+  const createProfile = useCallback(
+    (name) => select("Profile/Create", { name }),
+    [select],
+  );
+  const logout = useCallback(() => {
+    epoch.current++;
+    setCurrentProfile(null);
+    remember(null);
+    setError(null);
+  }, []);
+  const deleteAllUserData = useCallback(async () => {
+    const result = await request("System/DeleteAllUserData", {
+      confirmation: "DELETE ALL USER DATA",
+    });
+    syncGeneration(result.data?.dataGeneration);
+    const cleared = runtime.resetUserData();
+    try {
+      sessionStorage.removeItem("hs3-home-active-page");
+    } catch {
+      /* In-memory selection is reset below. */
+    }
+    setProfiles([]);
+    logout();
+    if (!cleared)
+      setError(
+        "Server data was deleted, but this browser could not clear its saved data. Clear site data in browser settings.",
+      );
+    return { localDataCleared: cleared };
+  }, [request, logout]);
+  const updateProfile = useCallback(
+    async (profileId, updates) => {
+      try {
+        await request("Profile/Update", { profileId, name: updates.name });
+        await fetchProfiles();
+        return { success: true };
+      } catch (failure) {
+        return { success: false, error: failure.message };
+      }
+    },
+    [request, fetchProfiles],
+  );
+  const deleteProfile = useCallback(
+    async (profileId) => {
+      try {
+        await request("Profile/Delete", { profileId });
+        if (currentProfile?.id === profileId) logout();
+        await fetchProfiles();
+        return { success: true };
+      } catch (failure) {
+        return { success: false, error: failure.message };
+      }
+    },
+    [request, currentProfile?.id, logout, fetchProfiles],
+  );
   return (
-    <ProfileContext.Provider value={value}>
+    <Context.Provider
+      value={{
+        profiles,
+        currentProfile,
+        isLoading,
+        error,
+        isLoggedIn: !!currentProfile,
+        storedProfileId: remembered(),
+        login,
+        logout,
+        createProfile,
+        updateProfile,
+        deleteProfile,
+        deleteAllUserData,
+        fetchProfiles,
+        clearError: () => setError(null),
+      }}
+    >
       {children}
-    </ProfileContext.Provider>
-  )
+    </Context.Provider>
+  );
 }
-
-/**
- * Hook to access profile context.
- * Must be used within a ProfileProvider.
- */
-// eslint-disable-next-line react-refresh/only-export-components -- Existing paired provider/hook compatibility API.
+// eslint-disable-next-line react-refresh/only-export-components
 export function useProfile() {
-  const context = useContext(ProfileContext)
-  if (!context) {
-    throw new Error('useProfile must be used within a ProfileProvider')
-  }
-  return context
+  const value = useContext(Context);
+  if (!value) throw new Error("useProfile requires ProfileProvider");
+  return value;
 }
-
-export default ProfileContext
+export default Context;

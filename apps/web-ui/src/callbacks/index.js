@@ -1,1 +1,1 @@
-export { default as SpotifySuccess } from './Spotify/Success'
+export { default as SpotifySuccess } from "./Spotify/Success";

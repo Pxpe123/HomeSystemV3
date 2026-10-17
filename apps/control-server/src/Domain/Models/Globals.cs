@@ -41,8 +41,7 @@ public static class Globals
     // User Data
     // ─────────────────────────────────────────────────────────────
 
-    public static Dictionary<string, Profile> Profiles { get; } = new();
-    public static Dictionary<string, SpotifyProfile> SpotifyProfiles { get; } = new();
+    public static System.Collections.Concurrent.ConcurrentDictionary<string, SpotifyProfile> SpotifyProfiles { get; } = new();
     public static Dictionary<string, Notification> Notifications { get; } = new();
 
     // ─────────────────────────────────────────────────────────────

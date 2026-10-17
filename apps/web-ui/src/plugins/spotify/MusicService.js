@@ -12,6 +12,7 @@ export class MusicService extends ObservableStore {
       error: null,
       loading: false,
       pending: false,
+      reconnectRequired: false,
     });
     this.server = server;
     this.runtime = runtime;
@@ -31,6 +32,7 @@ export class MusicService extends ObservableStore {
       error: null,
       loading: false,
       pending: false,
+      reconnectRequired: false,
     });
     this.runtime.setSession("spotify", { status: "idle", summary: "" });
     if (userId) {
@@ -53,6 +55,11 @@ export class MusicService extends ObservableStore {
       const result = await this.server.request("Spotify/GetState", { userId });
       if (generation !== this.generation) return;
       this.update({ ...result.data, updatedAt: Date.now(), error: null });
+      if (result.data?.reconnectRequired) {
+        this.update({ playback: null, devices: [], playlists: [], queue: [] });
+        this.runtime.setSession("spotify", { status: "idle", summary: "" });
+        return;
+      }
       const player = result.data?.playback;
       this.runtime.setSession("spotify", {
         status: player?.playbackState

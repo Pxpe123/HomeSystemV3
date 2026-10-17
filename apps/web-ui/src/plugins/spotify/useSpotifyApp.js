@@ -2,9 +2,11 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { music } from "./music";
 import { server, runtime } from "../../application/services";
 import { useClock } from "../../shared/hooks/useClock";
+import { useProfile } from "../../context/ProfileContext";
 
 /** View adapter for the original Spotify UI. MusicService owns background work. */
 export function useSpotifyApp() {
+  const { currentProfile } = useProfile();
   const state = useSyncExternalStore(music.subscribe, music.getSnapshot);
   const now = useClock();
   const [linkQr, setLinkQr] = useState(null);
@@ -82,8 +84,13 @@ export function useSpotifyApp() {
 
   async function handleLinkSpotify() {
     try {
-      const result = await server.request("Spotify/Login");
-      setLinkQr(result.data?.qrCode || null);
+      const result = await server.request("Spotify/Login", {
+        profileId: currentProfile?.id,
+      });
+      setLinkQr({
+        profileId: currentProfile?.id,
+        image: result.data?.qrCode || null,
+      });
     } catch (error) {
       report(error);
     }
@@ -117,8 +124,8 @@ export function useSpotifyApp() {
       hour: "2-digit",
       minute: "2-digit",
     }),
-    isLinked: !!state.userId,
-    linkQr,
+    isLinked: !!state.userId && !state.reconnectRequired,
+    linkQr: linkQr?.profileId === currentProfile?.id ? linkQr.image : null,
     player,
     isPlaying: player?.playbackState || false,
     localProgress: Math.min(progress, duration),

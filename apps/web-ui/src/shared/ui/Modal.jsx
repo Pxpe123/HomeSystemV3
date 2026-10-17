@@ -25,7 +25,10 @@ export function Modal({
       ref={ref}
       aria-labelledby={id}
       aria-describedby={`${id}-description`}
-      onCancel={onClose}
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
     >
       <h2 id={id}>{title}</h2>
       <p id={`${id}-description`}>{description}</p>

@@ -1,9 +1,5 @@
-import "./Statistics.css"
+import "./Statistics.css";
 
 export default function Statistics() {
-  return (
-    <div className="Page">
-      
-    </div>
-  )
+  return <div className="Page"></div>;
 }

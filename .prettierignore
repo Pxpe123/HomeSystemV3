@@ -1,0 +1,9 @@
+.git/
+.local/
+Deployments/
+Packages/
+**/node_modules/
+**/bin/
+**/obj/
+**/package-lock.json
+**/packages.lock.json

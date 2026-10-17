@@ -11,7 +11,9 @@ public static class SystemHello
     {
         var response = JsonSerializer.SerializeToUtf8Bytes(new
         {
-            Type = "System/Hello", message.RequestId, Success = true,
+            Type = "System/Hello",
+            message.RequestId,
+            Success = true,
             Data = new { service = "HomeSystem.ControlServer", protocolVersion = 1, build = Hosting.BuildInfo.Current }
         });
         await socket.SendAsync(new ArraySegment<byte>(response), WebSocketMessageType.Text, true, CancellationToken.None);

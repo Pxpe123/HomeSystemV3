@@ -1,4 +1,4 @@
-﻿namespace CentralServer.Modules.Data.PcAgent;
+namespace CentralServer.Modules.Data.PcAgent;
 
 public class PcAgent
 {
@@ -15,8 +15,8 @@ public class PcAgent
 
     public PcAgentSettings Settings { get; set; } = new();
 
-    public PcAgentStates PcAgentStates { get; set; }
-    
+    public PcAgentStates PcAgentStates { get; set; } = new();
+
     public void Connect()
     {
         PcAgentStates.Status = PcAgentStatus.Online;

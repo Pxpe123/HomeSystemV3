@@ -10,7 +10,8 @@ C# / ASP.NET Core integration host. Open HomeSystem.sln here; the solution also 
 - src/Transport: WebSocket connections and module registration.
 - src/Services: provider integrations / background work.
 - src/Domain/Models: data types.
-- src/Persistence: persistence boundary; currently not a finished database.
+- src/Persistence/AccountRepository.cs: serialized atomic profile/account writes, encrypted tokens, schema and recovery boundary.
+- tests/: dependency-free account/token lifecycle tests and real WebSocket/restart checks.
 - src/Platform: existing experimental V4 code, not silently substituted for the active protocol.
 
 `GET /api/health` reports service identity/readiness; `System/Hello` returns service identity + protocolVersion 1 over the shared WebSocket. Neither is authentication.
@@ -19,6 +20,8 @@ Build: `npm run build:server` from repo root. Run: `dotnet run --project apps/co
 
 Project SDK/config/lockfiles live here. Outputs go to .local/build, Deployments and .local/cache. The installed working SDK is pinned locally; the current framework target remains net9.0 and should be reviewed/upgraded to a supported LTS before production.
 
-The new baseplate preserves legacy modules behind a composition root. It is not a completed DI/lifecycle/authentication migration: profiles are still in-memory in existing Globals, provider services still include static state, and existing nullable/platform warnings remain. Persist household state and migrate services to cancellable hosted services before an unattended production rollout.
+Profiles are password-free household selectors, not authentication. Profiles, links and encrypted Spotify tokens persist under HOMESYSTEM_DATA. Access token expiry is saved, refreshes are serialized per account, and rotated refresh tokens are saved before use. See [account storage](../../docs/guides/Accounts-and-Spotify.md). Provider polling/transport still include legacy static state; cancellation, network authentication and broader integration refactoring remain separate work.
+
+Run account checks from this directory: `dotnet run --project tests/AccountTests.csproj -c Release` then `node tests/verify-accounts.mjs`. Neither contacts Spotify; the endpoint check uses a disposable local server and data directory. To enable the testing reset button, explicitly set `HOMESYSTEM_ALLOW_DATA_RESET=true`; leave it unset on public/normal deployments.
 
 The canonical linked container stack is scripts/deployment/compose.yaml. See docs/guides/Development-and-Deployment.md for the deployment plan.

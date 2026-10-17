@@ -7,6 +7,8 @@ using CentralServer.Modules.Data;
 using CentralServer.Modules.Data.Messages;
 using QRCoder;
 using SpotifyAPI.Web;
+using CentralServer.Persistence;
+using System.Security.Cryptography;
 
 namespace CentralServer.Modules.EndPoints.Spotify;
 
@@ -14,16 +16,13 @@ public class SpotifyManager
 {
     private static void LogSpotifyError(string operation, Exception ex)
     {
-        // Full exception output includes type, stack trace and inner exceptions.
-        // Never log access tokens, refresh tokens or OAuth authorization codes.
-        Console.Error.WriteLine($"[Spotify] {operation} failed: {ex}");
+        // Provider exception bodies can contain credentials; log the operation and type only.
+        Console.Error.WriteLine($"[Spotify] {operation} failed ({ex.GetType().Name}).");
     }
 
-    public static readonly string ClientId =
-        Environment.GetEnvironmentVariable("SpotifyClientID") ?? throw new InvalidOperationException("SpotifyClientID is not configured");
+    private static string ClientId => Environment.GetEnvironmentVariable("SpotifyClientID") ?? "";
 
-    public static readonly string ClientSecret =
-        Environment.GetEnvironmentVariable("SpotifyClientSecret") ?? throw new InvalidOperationException("SpotifyClientSecret is not configured");
+    private static string ClientSecret => Environment.GetEnvironmentVariable("SpotifyClientSecret") ?? "";
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -32,16 +31,18 @@ public class SpotifyManager
     };
 
     // Cached SpotifyClient per profile to avoid recreating on every call
-    private static readonly ConcurrentDictionary<string, SpotifyClient> _clients = new();
+    private static readonly ConcurrentDictionary<string, (string Token, SpotifyClient Client)> _clients = new();
+    private static readonly Lazy<SpotifyTokenService> _tokens = new(() => new(AccountRepository.Current, SpotifyTokenService.RefreshFromSpotify));
 
-    private static SpotifyClient GetClient(SpotifyProfile profile)
+    private static async Task<SpotifyClient> GetClient(SpotifyProfile profile)
     {
         // Recreate client if token changed
-        if (_clients.TryGetValue(profile.Id, out var existing))
-            return existing;
+        var token = await _tokens.Value.GetAccessTokenAsync(profile.Id);
+        if (_clients.TryGetValue(profile.Id, out var existing) && existing.Token == token)
+            return existing.Client;
 
-        var client = new SpotifyClient(profile.AccessToken);
-        _clients[profile.Id] = client;
+        var client = new SpotifyClient(token);
+        _clients[profile.Id] = (token, client);
         return client;
     }
 
@@ -51,47 +52,90 @@ public class SpotifyManager
         _clients.TryRemove(profileId, out _);
     }
 
+    public static void ForgetUnusedAccounts()
+    {
+        foreach (var id in Globals.SpotifyProfiles.Keys.Concat(_clients.Keys).Distinct().ToArray())
+            if (AccountRepository.Current.FindSpotify(id) == null)
+            {
+                Globals.SpotifyProfiles.TryRemove(id, out _);
+                InvalidateClient(id);
+            }
+    }
+
     public class Login
     {
-        private static readonly ConcurrentDictionary<string, WebSocket> PendingSockets = new();
+        private sealed record PendingLogin(WebSocket Socket, string ProfileId, DateTime ExpiresAtUtc,
+            string ShortCode, string AuthorizationUrl);
+        private static readonly ConcurrentDictionary<string, PendingLogin> PendingSockets = new();
+        private static readonly ConcurrentDictionary<string, string> ShortLinks = new();
+        public static void ClearPendingLinks()
+        {
+            ShortLinks.Clear();
+            PendingSockets.Clear();
+        }
 
         public static readonly string RedirectUri =
             "https://jay.cpope.uk/Spotify/Callback";
 
         public static void RegisterCallbackEndpoint()
         {
-            Globals.App.MapGet("/Spotify/Callback", async ctx =>
+            var app = Globals.App ?? throw new InvalidOperationException("Server is not initialized.");
+            SpotifyCallbackPage.Map(app);
+            app.MapGet("/s/{token}", async ctx =>
+            {
+                ctx.Response.Headers.CacheControl = "no-store";
+                ctx.Response.Headers["Referrer-Policy"] = "no-referrer";
+                var token = ctx.Request.RouteValues["token"]?.ToString() ?? "";
+                if (!ShortLinks.TryGetValue(token, out var state) ||
+                    !PendingSockets.TryGetValue(state, out var pending) ||
+                    pending.ExpiresAtUtc <= DateTime.UtcNow ||
+                    AccountRepository.Current.Find(pending.ProfileId) == null)
+                {
+                    ShortLinks.TryRemove(token, out _);
+                    ctx.Response.StatusCode = StatusCodes.Status410Gone;
+                    await ctx.Response.WriteAsync("Spotify login link expired. Generate a new QR code on your home display.");
+                    return;
+                }
+
+                // Only redirect to the server-created Spotify request, never a caller-supplied URL.
+                ctx.Response.Redirect(pending.AuthorizationUrl);
+            });
+            app.MapGet("/Spotify/Callback", async ctx =>
             {
                 var code = ctx.Request.Query["code"].ToString();
                 var state = ctx.Request.Query["state"].ToString();
 
-                if (string.IsNullOrEmpty(code) || string.IsNullOrEmpty(state) ||
-                    !PendingSockets.TryRemove(state, out var socket))
+                if (string.IsNullOrEmpty(state) ||
+                    !PendingSockets.TryRemove(state, out var pending) || pending.ExpiresAtUtc < DateTime.UtcNow ||
+                    AccountRepository.Current.Find(pending.ProfileId) == null)
                 {
                     await ctx.Response.WriteAsync("Invalid login session.");
+                    return;
+                }
+                ShortLinks.TryRemove(pending.ShortCode, out _);
+                if (string.IsNullOrEmpty(code))
+                {
+                    ctx.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    await ctx.Response.WriteAsync("Spotify connection was not completed. Return to your home display to try again.");
                     return;
                 }
 
                 try
                 {
-                    Console.WriteLine($"Connecting to {RedirectUri}...");
                     var config = SpotifyClientConfig.CreateDefault();
                     var oAuthClient = new OAuthClient(config);
-                    
-                    Console.WriteLine($"After OAuth to {RedirectUri}...");
+
 
                     var tokenRequest = new AuthorizationCodeTokenRequest(
                         ClientId, ClientSecret, code, new Uri(RedirectUri)
                     );
-                    
-                    Console.WriteLine("[SPOTIFY] After Token Request");
+
 
                     var tokenResponse = await oAuthClient.RequestToken(tokenRequest);
 
                     var spotify = new SpotifyClient(tokenResponse.AccessToken);
                     var me = await spotify.UserProfile.Current();
-                    
-                    Console.WriteLine("[SPOTIFY] After User Profile Request");
+
 
                     var profile = new SpotifyProfile
                     {
@@ -99,23 +143,22 @@ public class SpotifyManager
                         DisplayName = me.DisplayName ?? "",
                         Email = me.Email ?? "",
                         AccessToken = tokenResponse.AccessToken,
-                        RefreshToken = tokenResponse.RefreshToken
+                        RefreshToken = tokenResponse.RefreshToken ?? AccountRepository.Current.FindSpotify(me.Id ?? "")?.RefreshToken ?? "",
+                        AccessTokenExpiresAtUtc = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn),
+                        LastRequestedAtUtc = DateTime.MinValue
                     };
-                    
+
+                    await AccountRepository.Current.SaveSpotify(profile, pending.ProfileId);
                     Globals.SpotifyProfiles[profile.Id] = profile;
                     InvalidateClient(profile.Id);
 
-                    Console.WriteLine("[SPOTIFY] After Register");
-                    
-                    Console.WriteLine($"[Spotify] {profile.DisplayName} logged in");
+                    Console.WriteLine("[Spotify] Account credentials and household link saved.");
 
-                    string webUiUrl =
-                        $"{Globals.WebUiUrl.TrimEnd('/')}/Spotify/Callback/Success" +
-                        $"?name={Uri.EscapeDataString(profile.DisplayName)}" +
-                        $"&email={Uri.EscapeDataString(profile.Email)}";
-                    ctx.Response.Redirect(webUiUrl);
-                    
-                    Console.WriteLine("[SPOTIFY] Generated URL: " + webUiUrl);
+                    var homeProfile = AccountRepository.Current.Find(pending.ProfileId)!;
+                    ctx.Response.Headers.CacheControl = "no-store";
+                    ctx.Response.Redirect("/Spotify/Connected?receipt=" + SpotifyCallbackPage.CreateReceipt(homeProfile.Name));
+
+                    var socket = pending.Socket;
 
                     if (socket.State == WebSocketState.Open)
                     {
@@ -123,16 +166,20 @@ public class SpotifyManager
                         {
                             Type = "Spotify/LoginResult",
                             DisplayName = profile.DisplayName,
-                            UserId = profile.Id
+                            UserId = profile.Id,
+                            ProfileId = pending.ProfileId
                         };
                         var json = JsonSerializer.Serialize(payload, JsonOptions);
                         var bytes = Encoding.UTF8.GetBytes(json);
-                        await socket.SendAsync(new ArraySegment<byte>(bytes),
+                        try
+                        {
+                            await socket.SendAsync(new ArraySegment<byte>(bytes),
                             WebSocketMessageType.Text, true, CancellationToken.None);
+                        }
+                        catch (WebSocketException) { /* The link is durable even if the display disconnected. */ }
                     }
 
                     StateUpdater.EnsureRunning();
-                    TokenRefresher.EnsureRunning();
                 }
                 catch (Exception ex)
                 {
@@ -148,8 +195,34 @@ public class SpotifyManager
 
         public static async Task Handle(WebSocket socket, ClientMessage message)
         {
-            var state = Guid.NewGuid().ToString();
-            PendingSockets[state] = socket;
+            if (string.IsNullOrWhiteSpace(ClientId) || string.IsNullOrWhiteSpace(ClientSecret))
+            {
+                await socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(new
+                {
+                    Type = "Spotify/Login",
+                    message.RequestId,
+                    Error = "Spotify is not configured on the home server."
+                }), WebSocketMessageType.Text, true, CancellationToken.None);
+                return;
+            }
+            var profileId = message.Data.ValueKind == JsonValueKind.Object && message.Data.TryGetProperty("profileId", out var selected)
+                ? selected.GetString() ?? "" : "";
+            if (AccountRepository.Current.Find(profileId) == null)
+            {
+                await socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(new
+                {
+                    Type = "Spotify/Login",
+                    message.RequestId,
+                    Error = "Choose a household profile before connecting Spotify."
+                }), WebSocketMessageType.Text, true, CancellationToken.None);
+                return;
+            }
+            foreach (var old in PendingSockets.Where(item => item.Value.ExpiresAtUtc < DateTime.UtcNow).ToArray())
+            {
+                PendingSockets.TryRemove(old.Key, out _);
+                ShortLinks.TryRemove(old.Value.ShortCode, out _);
+            }
+            var state = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
 
             var loginRequest = new LoginRequest(
                 new Uri(RedirectUri),
@@ -169,7 +242,13 @@ public class SpotifyManager
                 State = state
             };
 
-            var loginUrl = loginRequest.ToUri().ToString();
+            // 128 random bits keep the public link short without making sessions guessable.
+            var shortCode = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16))
+                .TrimEnd('=').Replace('+', '-').Replace('/', '_');
+            PendingSockets[state] = new(socket, profileId, DateTime.UtcNow.AddMinutes(10),
+                shortCode, loginRequest.ToUri().ToString());
+            ShortLinks[shortCode] = state;
+            var loginUrl = new Uri(RedirectUri).GetLeftPart(UriPartial.Authority) + "/s/" + shortCode;
 
             // Generate QR code as base64 PNG
             using var qrGenerator = new QRCodeGenerator();
@@ -196,67 +275,11 @@ public class SpotifyManager
         }
     }
 
-    public static class TokenRefresher
-    {
-        private static bool _running;
-        private static readonly object _lock = new();
-
-        public static void EnsureRunning()
-        {
-            lock (_lock)
-            {
-                if (_running) return;
-                _running = true;
-            }
-
-            _ = Task.Run(async () =>
-            {
-                while (true)
-                {
-                    await Task.Delay(TimeSpan.FromMinutes(30));
-                    try { await RefreshAllProfiles(); }
-                    catch (Exception ex) { LogSpotifyError("Token refresh loop", ex); }
-                }
-            });
-
-            Console.WriteLine("[Spotify] Token refresher started");
-        }
-
-        private static async Task RefreshAllProfiles()
-        {
-            if (Globals.SpotifyProfiles.Count == 0) return;
-
-            var config = SpotifyClientConfig.CreateDefault();
-            var oAuthClient = new OAuthClient(config);
-
-            foreach (var profile in Globals.SpotifyProfiles.Values)
-            {
-                if (string.IsNullOrEmpty(profile.RefreshToken)) continue;
-
-                try
-                {
-                    var request = new AuthorizationCodeRefreshRequest(ClientId, ClientSecret, profile.RefreshToken);
-                    var response = await oAuthClient.RequestToken(request);
-
-                    profile.AccessToken = response.AccessToken;
-                    if (!string.IsNullOrEmpty(response.RefreshToken))
-                        profile.RefreshToken = response.RefreshToken;
-
-                    InvalidateClient(profile.Id);
-
-                    if (Globals.DevMode)
-                        Console.WriteLine($"[Spotify] Refreshed token for {profile.DisplayName}");
-                }
-                catch (Exception ex)
-                {
-                    LogSpotifyError($"Token refresh for {profile.Id}", ex);
-                }
-            }
-        }
-    }
-
     public static class StateUpdater
     {
+        public static Task Prime() => Task.WhenAll(UpdateDevicesForAll(), UpdatePlaylistsForAll());
+        private static bool IsActive(SpotifyProfile profile) => profile.LastRequestedAtUtc > DateTime.UtcNow.AddMinutes(-1)
+            && AccountRepository.Current.FindSpotify(profile.Id) is { ReconnectRequired: false };
         private static bool _running;
         private static readonly object _lock = new();
 
@@ -313,7 +336,8 @@ public class SpotifyManager
                 var operation = "GetCurrentPlayback";
                 try
                 {
-                    var spotify = GetClient(profile);
+                    if (!IsActive(profile)) continue;
+                    var spotify = await GetClient(profile);
                     var playback = await spotify.Player.GetCurrentPlayback();
 
                     if (playback?.Item is FullTrack track)
@@ -371,7 +395,8 @@ public class SpotifyManager
 
                 try
                 {
-                    var spotify = GetClient(profile);
+                    if (!IsActive(profile)) continue;
+                    var spotify = await GetClient(profile);
                     var devices = await spotify.Player.GetAvailableDevices();
                     profile.Devices = devices?.Devices?.Select(d => new SpotifyProfile.DeviceInfo
                     {
@@ -394,7 +419,8 @@ public class SpotifyManager
 
                 try
                 {
-                    var spotify = GetClient(profile);
+                    if (!IsActive(profile)) continue;
+                    var spotify = await GetClient(profile);
                     var playlists = await spotify.Playlists.GetUsers(profile.Id);
                     profile.Playlists = playlists.Items?.Select(p => new SpotifyProfile.UserPlaylist
                     {
@@ -445,6 +471,10 @@ public class SpotifyManager
                 return;
             }
 
+            var firstRequest = profile.LastRequestedAtUtc == DateTime.MinValue;
+            profile.LastRequestedAtUtc = DateTime.UtcNow;
+            if (firstRequest) _ = StateUpdater.Prime();
+            var saved = AccountRepository.Current.FindSpotify(profile.Id);
             var response = new
             {
                 Type = "Spotify/GetState",
@@ -453,6 +483,7 @@ public class SpotifyManager
                 {
                     profile.Id,
                     profile.DisplayName,
+                    ReconnectRequired = saved?.ReconnectRequired ?? true,
                     Playback = profile.CurrentPlayback,
                     profile.Devices,
                     profile.Playlists,
@@ -511,7 +542,7 @@ public class SpotifyManager
 
             try
             {
-                var spotify = GetClient(profile);
+                var spotify = await GetClient(profile);
                 switch (action.ToLower())
                 {
                     case "play": await spotify.Player.ResumePlayback(); break;
@@ -598,7 +629,7 @@ public class SpotifyManager
 
             try
             {
-                var spotify = GetClient(profile);
+                var spotify = await GetClient(profile);
                 var searchRequest = new SearchRequest(SearchRequest.Types.Track, query) { Limit = 20 };
                 var result = await spotify.Search.Item(searchRequest);
 
@@ -651,7 +682,7 @@ public class SpotifyManager
 
             try
             {
-                var spotify = GetClient(profile);
+                var spotify = await GetClient(profile);
                 var items = await spotify.Playlists.GetItems(playlistId);
 
                 var tracks = items.Items?

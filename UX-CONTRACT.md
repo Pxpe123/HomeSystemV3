@@ -4,16 +4,16 @@ Business evidence: current user request (preserve restored UI; shared app state,
 
 ## Canonical UI Map
 
-| Capability | Canonical owner | Source of truth | Variants | Verification |
-| --- | --- | --- | --- | --- |
-| Toast | NotificationShade | HomeRuntime | info / success / warning / error | runtime tests + browser |
-| Form | TimerApp | HomeRuntime duration rules | create timer | invalid / valid submit |
-| Scrollbar | Existing app styles | vars.css | scoped feature scroll | browser |
-| CRUD | HomeRuntime | versioned StorageRepository | notifications / timers / settings | runtime tests |
-| Dialog | NotificationShade native dialog | React open state | modal shade | focus / Escape / close |
-| App modal | shared/ui/Modal | caller state | launcher folder / uninstall | pure layout tests; browser review pending |
-| Empty/error/loading | shared/ui/AppState and ErrorBoundary | plugin and service snapshots | unavailable / opening / failure | lint/build; browser review pending |
-| App placement | core/LauncherLayout | appData.launcher.layout | folder / app / hidden | foundations tests |
+| Capability          | Canonical owner                      | Source of truth                                | Variants                          | Verification                              |
+| ------------------- | ------------------------------------ | ---------------------------------------------- | --------------------------------- | ----------------------------------------- |
+| Toast               | NotificationShade                    | HomeRuntime                                    | info / success / warning / error  | runtime tests + browser                   |
+| Form                | TimerApp and ProfileContext          | runtime rules and AccountRepository validation | timer / household profile         | invalid / valid submit                    |
+| Scrollbar           | Existing app styles                  | vars.css                                       | scoped feature scroll             | browser                                   |
+| CRUD                | HomeRuntime                          | versioned StorageRepository                    | notifications / timers / settings | runtime tests                             |
+| Dialog              | NotificationShade native dialog      | React open state                               | modal shade                       | focus / Escape / close                    |
+| App modal           | shared/ui/Modal                      | caller state                                   | launcher folder / uninstall       | pure layout tests; browser review pending |
+| Empty/error/loading | shared/ui/AppState and ErrorBoundary | plugin and service snapshots                   | unavailable / opening / failure   | lint/build; browser review pending        |
+| App placement       | core/LauncherLayout                  | appData.launcher.layout                        | folder / app / hidden             | foundations tests                         |
 
 ## State and workflow ownership
 
@@ -32,7 +32,7 @@ Business evidence: current user request (preserve restored UI; shared app state,
 - Playback commands wait for server outcome; no fire-and-forget optimistic claim. Error feedback is shared with notification history. Offline commands fail rather than replaying later.
 - Notification shade follows a downward pointer gesture from the full-width top 28px edge; release beyond 80px opens it, short pulls cancel. A bottom handle accepts upward drag beyond 60px to dismiss. Pointer clicks do not open it. Keyboard Enter/Space/ArrowDown on the top edge opens; Close/Escape dismisses. Opening does not mark messages read. Mark read and dismiss are explicit; filters do not mutate history. History is capped at 100 entries.
 - Settings groups display, notifications, household and connection. Controls save immediately through HomeRuntime; reduced effects changes the runtime document attribute and CSS. Security status is informational, not a pretend editable setting. Household creation uses the existing server workflow, which switches to the new profile after success.
-- App layout, page selection and non-sensitive globals are versioned browser state. This is per-display persistence, not cross-tablet synchronisation. Existing login PIN flow remains.
+- App layout, page selection and non-sensitive globals are versioned browser state. This is per-display persistence, not cross-tablet synchronisation. Profiles are password-free household selectors, saved on the server; profile lists/selection and Spotify links come from AccountRepository. Reconnect validates the saved profile ID rather than trusting a browser-cached account record.
 - Local time/date formatting uses en-GB. Scoped feature classes preserve existing sibling visual styles.
 - All four home swipe panels stay mounted and ready; inactive panels are inert and aria-hidden. No app-loading placeholder is used for swiping. Standalone app routes may still load on demand. Settings/Activity receive an explicit embedded variant without an app back bar.
 - Launcher organisation uses named move/group/hide actions with keyboard equivalents instead of a drag-only dependency. Layout operations normalise stale IDs and duplicate placements. Removing an app removes its launcher placements as well as its widgets and state.
@@ -46,4 +46,6 @@ Business evidence: current user request (preserve restored UI; shared app state,
 
 Build diagnostics live in Settings → Connection using existing setting-card/row styles. Build metadata is immutable artifact data, not a file modification time or startup time. System/Hello owns the server read, with disconnected/loading/failure/legacy states and reconnect revalidation. A matching status requires non-local version, build ID, commit and UTC timestamp to agree; this is deployment identity, not functional certification. Displayed timestamps use en-GB and Europe/London with a timezone label. The build details chunk loads only when Connection is opened.
 
-Existing authentication, mock smart-home/PC/statistics screens and server database work are not redesigned or represented as complete in this frontend refactor. No permission/security policy is invented. Local display storage is shared by profiles on that display. The server remains the authority for integration state and credentials.
+User-approved household policy removes PIN/password authentication, not Spotify OAuth state checks or server-only credential storage. Anyone with display/server access can choose profiles. Settings → Connection's destructive test reset is controlled by the server testing flag and a typed confirmation using the canonical Modal; it never runs automatically. It clears this display after acknowledgement and propagates a data-generation change to other displays on profile refresh/reconnect. Offline displays cannot be wiped immediately. The standalone OAuth receipt belongs to the scanning phone, not the display's app route. See docs/guides/Accounts-and-Spotify.md for source-backed storage/lifecycle details and first-upgrade limitations.
+
+Mock smart-home/PC/statistics screens and broad server lifecycle work are not represented as complete. Local display storage is shared by profiles on that display. The server remains the authority for integration state and credentials.

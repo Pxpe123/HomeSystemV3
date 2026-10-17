@@ -1,20 +1,27 @@
-﻿namespace CentralServer.Modules.Data;
+using System.Text.Json.Serialization;
+
+namespace CentralServer.Modules.Data;
 
 public class SpotifyProfile
 {
     public string Id { get; set; } = "";
     public string DisplayName { get; set; } = "";
     public string Email { get; set; } = "";
+    [JsonIgnore]
     public string AccessToken { get; set; } = "";
+    [JsonIgnore]
     public string RefreshToken { get; set; } = "";
+    public DateTime AccessTokenExpiresAtUtc { get; set; }
+    public bool ReconnectRequired { get; set; }
+    public DateTime LastRequestedAtUtc { get; set; }
     public DateTime LastActive { get; set; }
 
     public List<UserPlaylist> Playlists { get; set; } = new();
     public string? ActivePlaylistId { get; set; }
 
-    public PlaybackInfo? CurrentPlayback { get; set; } // renamed class
+    public PlaybackInfo? CurrentPlayback { get; set; }
 
-    public class PlaybackInfo // renamed from PlaybackState
+    public class PlaybackInfo
     {
         public string SongId { get; set; } = "";
         public string PlaylistId { get; set; } = "";
@@ -50,7 +57,7 @@ public class SpotifyProfile
         public string Type { get; set; } = "";
         public int VolumePercent { get; set; } = 0;
     }
-    
+
     public class UserPlaylist
     {
         public string Id { get; set; } = "";

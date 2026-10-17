@@ -4,10 +4,7 @@
  * Handles device management, weather data, Spotify integration, and user profiles.
  */
 
-using System.Reflection;
 using System.Text.Json;
-using System.Net;
-using System.Text;
 using CentralServer;
 using CentralServer.Modules;
 using CentralServer.Modules.Data;
@@ -25,6 +22,16 @@ internal static class ControlServerHost
 
         // Load configuration from environment
         var config = ServerOptions.FromEnvironment();
+        var dataDirectory = Environment.GetEnvironmentVariable("HOMESYSTEM_DATA");
+        if (string.IsNullOrWhiteSpace(dataDirectory))
+        {
+            var localData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData,
+                Environment.SpecialFolderOption.Create);
+            if (string.IsNullOrEmpty(localData)) throw new InvalidOperationException("Set HOMESYSTEM_DATA to a persistent absolute directory.");
+            dataDirectory = Path.Combine(localData, "HomeSystem", "ControlServer");
+        }
+        if (!Path.IsPathFullyQualified(dataDirectory)) throw new InvalidOperationException("HOMESYSTEM_DATA must be an absolute directory.");
+        Persistence.AccountRepository.Initialize(dataDirectory);
 
         // Initialize the web application
         var app = BuildWebApplication(args, config.Port);
@@ -41,6 +48,7 @@ internal static class ControlServerHost
 
         // Register Spotify OAuth callback endpoint
         SpotifyManager.Login.RegisterCallbackEndpoint();
+        SpotifyManager.StateUpdater.EnsureRunning();
 
         // Setup WebSocket server with all endpoint modules
         var ws = SetupWebSocket(app, config.DevMode);
@@ -76,6 +84,8 @@ internal static class ControlServerHost
     private static WebApplication BuildWebApplication(string[] args, int port)
     {
         var builder = WebApplication.CreateBuilder(args);
+        // OAuth callback query strings must never appear in request logs.
+        builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics", LogLevel.Warning);
         builder.WebHost.ConfigureKestrel(options => options.ListenAnyIP(port));
         return builder.Build();
     }
@@ -116,25 +126,24 @@ internal static class ControlServerHost
         {
             Globals.IpInfo = new IpInfo
             {
-                City = "Liverpool", Region = "England", Country = "GB",
-                CountryName = "United Kingdom", Timezone = "Europe/London",
-                Latitude = 53.4084f, Longitude = -2.9916f
+                City = "Liverpool",
+                Region = "England",
+                Country = "GB",
+                CountryName = "United Kingdom",
+                Timezone = "Europe/London",
+                Latitude = 53.4084f,
+                Longitude = -2.9916f
             };
             return;
         }
         try
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-            var request = (HttpWebRequest)WebRequest.Create("https://ipapi.co/json/");
-            request.UserAgent = "HomeSystemV3/1.0";
-            request.Timeout = 10_000;
-
-            using var response = (HttpWebResponse)await request.GetResponseAsync();
-            using var stream = response.GetResponseStream();
-            using var reader = new StreamReader(stream!, Encoding.UTF8);
-
-            var json = await reader.ReadToEndAsync();
+            using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
+            using var request = new HttpRequestMessage(HttpMethod.Get, "https://ipapi.co/json/");
+            request.Headers.UserAgent.ParseAdd("HomeSystem/3.0");
+            using var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
             var ipInfo = JsonSerializer.Deserialize<IpInfo>(json, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true

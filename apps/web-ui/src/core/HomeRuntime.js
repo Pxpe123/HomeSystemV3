@@ -30,6 +30,12 @@ export class HomeRuntime extends ObservableStore {
   id() {
     return `${this.clock()}-${Math.random().toString(36).slice(2, 10)}`;
   }
+  resetUserData() {
+    this.notificationUndo = [];
+    this.storageWarning = false;
+    this.update(RuntimeState.restore(null));
+    return this.repository.remove();
+  }
   open(id) {
     if (!registry.get(id)) return;
     const previous = this.state.sessions[id] || {};

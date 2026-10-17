@@ -1,9 +1,85 @@
-.Clock-Container .hs-quick-timer { display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg-elevated);border:1px solid var(--border-secondary);border-radius:var(--radius-responsive-md);flex-shrink:0; }
-.hs-quick-presets { display:flex;gap:4px;flex:1; }
-.hs-quick-presets button { flex:1;min-width:34px;min-height:40px;padding:5px;border:1px solid transparent;border-radius:9px;background:var(--bg-card);font:600 12px var(--font-family-primary);color:var(--text-secondary);cursor:pointer; }
-.hs-quick-presets button span { font-size:9px;margin-left:2px;color:var(--text-tertiary); }
-.hs-quick-presets button[aria-pressed=true] { border-color:var(--border-focus);background:#4a9eff20;color:var(--accent-primary); }
-.hs-quick-presets button:disabled { opacity:.5;cursor:default; }.hs-quick-presets button:disabled[aria-pressed=true] { opacity:.9; }
-.hs-quick-time { font-family:var(--font-family-mono);font-size:clamp(12px,4.5cqw,18px);font-variant-numeric:tabular-nums;color:var(--text-primary);min-width:48px;text-align:center; }
-.hs-quick-controls { display:flex;gap:3px; }.hs-quick-controls button { width:36px;height:40px;border:0;border-radius:10px;background:transparent;color:var(--text-secondary);cursor:pointer;font-size:12px; }.hs-quick-controls button.play { color:var(--accent-success);background:#00d9a318; }.hs-quick-controls button.pause { color:var(--accent-warning);background:#ffb74d18; }.hs-quick-controls button:disabled { opacity:.3;cursor:default; }
-.hs-quick-timer button:not(:disabled):hover { background:var(--bg-card-hover); }.hs-quick-timer button:focus-visible { outline:2px solid var(--accent-primary);outline-offset:2px; }
+.Clock-Container .hs-quick-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-responsive-md);
+  flex-shrink: 0;
+}
+.hs-quick-presets {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.hs-quick-presets button {
+  flex: 1;
+  min-width: 34px;
+  min-height: 40px;
+  padding: 5px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: var(--bg-card);
+  font: 600 12px var(--font-family-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.hs-quick-presets button span {
+  font-size: 9px;
+  margin-left: 2px;
+  color: var(--text-tertiary);
+}
+.hs-quick-presets button[aria-pressed="true"] {
+  border-color: var(--border-focus);
+  background: #4a9eff20;
+  color: var(--accent-primary);
+}
+.hs-quick-presets button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.hs-quick-presets button:disabled[aria-pressed="true"] {
+  opacity: 0.9;
+}
+.hs-quick-time {
+  font-family: var(--font-family-mono);
+  font-size: clamp(12px, 4.5cqw, 18px);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  min-width: 48px;
+  text-align: center;
+}
+.hs-quick-controls {
+  display: flex;
+  gap: 3px;
+}
+.hs-quick-controls button {
+  width: 36px;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+}
+.hs-quick-controls button.play {
+  color: var(--accent-success);
+  background: #00d9a318;
+}
+.hs-quick-controls button.pause {
+  color: var(--accent-warning);
+  background: #ffb74d18;
+}
+.hs-quick-controls button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.hs-quick-timer button:not(:disabled):hover {
+  background: var(--bg-card-hover);
+}
+.hs-quick-timer button:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}

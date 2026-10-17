@@ -14,7 +14,7 @@
 }
 
 .login-screen::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
@@ -82,7 +82,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Profile Selector */
@@ -206,34 +208,6 @@
   background: var(--accent-secondary);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-}
-
-/* Login Keypad View */
-.login-keypad-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding-top: var(--space-xl);
-}
-
-.login-user-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-lg);
-}
-
-.login-greeting {
-  font-size: var(--font-size-base);
-  color: var(--text-secondary);
-}
-
-.login-username {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
 }
 
 /* Create User View */

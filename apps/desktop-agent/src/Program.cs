@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -9,25 +9,14 @@ class Program
 
     static void Main()
     {
-        #if DEBUG
-            AllocConsole();
-            Console.WriteLine("Debug console active. Close this window or press Ctrl+C to exit.");
-        #endif
+#if DEBUG
+        AllocConsole();
+        Console.WriteLine("Debug console active. Close this window or press Ctrl+C to exit.");
+#endif
 
-        Console.WriteLine("Hello World!");
-
-        Thread worker = new Thread(() =>
-        {
-            while (true)
-            {
-                Console.WriteLine($"Worker tick: {DateTime.Now}");
-                Thread.Sleep(5000);
-            }
-        });
-        worker.IsBackground = true;
-        worker.Start();
-
-        var exitEvent = new ManualResetEvent(false);
-        exitEvent.WaitOne();
+        Console.WriteLine("HomeSystem desktop agent scaffold. ControlServer transport is not configured.");
+        using var exitEvent = new ManualResetEventSlim(false);
+        Console.CancelKeyPress += (_, args) => { args.Cancel = true; exitEvent.Set(); };
+        exitEvent.Wait();
     }
 }

@@ -13,7 +13,7 @@ HomeSystemV3/
         Endpoints/           request handlers, identity handshake
         Transport/           WebSocket transport and registry
         Services/            integration/background services
-        Persistence/         existing persistence boundary (not a finished database)
+        Persistence/         atomic profile/account snapshots and encrypted provider tokens
         Platform/            existing experimental V4 implementation
     desktop-agent/           Windows agent, project configuration and src/
     display-client/          CMake, desktop/Android sources, QML, package manifest
@@ -41,6 +41,6 @@ HomeSystemV3/
 
 Application-owned solution/SDK/package settings are no longer in the repository root. Each .NET app imports shared output conventions; frontend dependencies stay inside web-ui. All build and publish output goes under Deployments. Local IDE metadata and node_modules remain ignored, app-local developer state—not deployable source.
 
-Old Packages sources are now under apps. Legacy artifacts, old Qt builds and previous bin/dist outputs are preserved under Deployments/archive, not deleted. Historical verification reports intentionally retain historical paths. Existing uncommitted changes were preserved; no reset, staging or commit was performed.
+Old Packages sources are now under apps. Deployments contains the current builds directly in app folders, without timestamp/archive nesting; temporary build tools and caches belong in .local. Historical verification reports intentionally retain historical paths and should not be mistaken for the current layout.
 
 Run `node scripts/check-layout.mjs` to check solution references, app entry points and Compose build contexts.

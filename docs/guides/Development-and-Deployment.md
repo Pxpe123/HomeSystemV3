@@ -66,11 +66,11 @@ Android unattended APK installation requires suitable managed-device distributio
 
 ## Release blockers still to resolve
 
-- Docker daemon/image/runtime smoke test on the target host.
-- Persist legacy household/profile state; current Globals profiles are in-memory despite the provisioned volume.
+- Re-run target Docker smoke checks after deployment changes; the Pi stack and runner are already provisioned, not merely proposed.
+- Migrate/recreate accounts from the former process-only profile implementation before its first upgrade. New accounts persist through AccountRepository; back up their encryption keys with the account file.
 - Existing authentication/authorization, transport concurrency and hosted-service lifecycle hardening.
 - Review .NET 9 and installed Qt versions against supported security/LTS baselines.
 - Production TLS/Android cleartext restriction, release signing, physical-device validation.
-- CI host/registry/runner credentials and implementation of safe client release reload.
+- Continue protecting the configured GitHub/Pi runner and GHCR access. An automatic client reload/update prompt is not yet implemented for already-open WebUI sessions.
 
-These are not hidden by a successful build. The current deliverable is a working build/setup foundation plus the explicit unattended deployment plan.
+These are not hidden by a successful build. The active GitHub/Pi rollout is documented in [GitHub deployment](GitHub-Deployment.md); the diagram also illustrates future native distribution work, which is not the same as Docker rollout.

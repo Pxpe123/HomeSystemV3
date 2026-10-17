@@ -2,17 +2,16 @@
 #include <QObject>
 #include <QString>
 
-class Backend : public QObject
-{
+class Backend : public QObject {
     Q_OBJECT
-public:
-    explicit Backend(QObject* parent = nullptr) : QObject(parent) {}
+  public:
+    explicit Backend(QObject *parent = nullptr) : QObject(parent) {}
 
-public slots:
+  public slots:
     void openConsole();
-    void receiveData(const QString& data);
+    void receiveData(const QString &data);
 
-signals:
-    void dataFromQt(const QString& message);
+  signals:
+    void dataFromQt(const QString &message);
     void numberResult(int result);
 };

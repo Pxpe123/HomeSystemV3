@@ -1,6 +1,6 @@
 /*
  * Profile - User profile model for the home system
- * Each profile has a name, PIN passcode, and linked services.
+ * Each profile has a name and linked services. Selection is not authentication.
  * Profiles are used to personalize the UI and store user preferences.
  */
 
@@ -8,13 +8,12 @@ namespace CentralServer.Modules.Data;
 
 /// <summary>
 /// Represents a user profile in the home system.
-/// Stores authentication, linked accounts, and user preferences.
+/// Stores linked accounts and user preferences, not authentication credentials.
 /// </summary>
 public class Profile
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public string Name { get; set; } = "";
-    public string Passcode { get; set; } = "";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastLogin { get; set; }
 

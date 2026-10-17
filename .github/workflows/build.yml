@@ -28,7 +28,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '22'
+          node-version: "22"
           cache: npm
           cache-dependency-path: apps/web-ui/package-lock.json
       - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
@@ -48,6 +48,13 @@ jobs:
         run: |
           dotnet publish apps/control-server/CentralServer.csproj -c Release --no-restore -p:UseAppHost=false -o Deployments/control-server
           dotnet publish apps/desktop-agent/PcAgent.csproj -c Release --no-restore -p:UseAppHost=false -o Deployments/desktop-agent
+      - name: Account persistence and token lifecycle tests
+        working-directory: apps/control-server
+        env:
+          DOTNET_ROLL_FORWARD: Major
+        run: |
+          dotnet run --project tests/AccountTests.csproj -c Release --no-restore
+          node tests/verify-accounts.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: application-builds

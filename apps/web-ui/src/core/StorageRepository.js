@@ -11,6 +11,14 @@ export class StorageRepository {
       return null;
     }
   }
+  remove() {
+    try {
+      this.storage?.removeItem(this.key);
+      return !!this.storage;
+    } catch {
+      return false;
+    }
+  }
   save(value) {
     try {
       if (!this.storage) return false;

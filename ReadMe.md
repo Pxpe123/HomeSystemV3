@@ -26,7 +26,7 @@ node apps/web-ui/tests/fixture-server.mjs
 npm run dev
 ```
 
-Open http://127.0.0.1:5174/. First-run setup verifies the test server; choose Continue. Fixture profile: UI Test, PIN 1234. Preview weather and playback are sample data, not real integrations.
+Open http://127.0.0.1:5174/. First-run setup verifies the test server; choose Continue. Choose the UI Test household profile; no password is needed. Preview weather and playback are sample data, not real integrations.
 
 ## Build and run
 
@@ -41,6 +41,6 @@ Configure your Qt/Android paths in ignored `apps/display-client/build.local.json
 
 For the connected server/UI container stack, see [Docker setup](docs/guides/Run-with-Docker.md). For live development and the proposed automatic rollout, see [deployment flow](docs/guides/Development-and-Deployment.md).
 
-[Repository layout](docs/architecture/repository-layout.md) · [Android setup](apps/display-client/README.md) · [Verification](docs/verification/2026-10-17-setup-android.md)
+[Repository layout](docs/architecture/repository-layout.md) · [Android setup](apps/display-client/README.md) · [Verification](docs/verification/2026-10-18-handover.md)
 
-The refactor establishes project ownership and build/setup foundations; it is not a claim that all legacy server code is modernised. Persistent server profiles/auth hardening, integration service migration and production signing remain explicit work.
+Profiles and encrypted Spotify tokens persist in the server data volume; household profiles deliberately have no passwords. See [account storage and migration](docs/guides/Accounts-and-Spotify.md) and [maintainer handover](docs/architecture/Maintainer-Handover.md). Provider lifecycle migration, network authentication and production signing remain explicit work.

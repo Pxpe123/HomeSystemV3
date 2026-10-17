@@ -34,6 +34,6 @@ The source stack definition is `scripts/deployment/pi.compose.yaml`. Rebuild the
 
 The original `homesystem-centralserver-1` container is stopped with its restart policy disabled. Its configuration and `/opt/CentralServer/ServerFiles` are retained for recovery only. Do not start it alongside the current stack: port 8080 belongs to the current ControlServer.
 
-No existing images, containers, bind mounts or volumes are pruned. The new stack provisions `homesystem-data` for the persistence boundary, but the current profile implementation is still in-memory. Existing live profiles are not silently migrated to the new server and may need to be recreated.
+No existing images, containers, bind mounts or volumes are pruned. `homesystem-data` now holds persistent profiles and encrypted Spotify credentials through `AccountRepository`. Accounts from the earlier in-memory implementation are not silently migrated; plan their first upgrade using [the account guide](Accounts-and-Spotify.md).
 
 The existing public domain now reaches the current server on port 8080, as verified by its health endpoint. No public DNS, router forwarding, TLS settings, passwords or SSH keys were changed. A successful health check is not proof of completed Spotify authentication.

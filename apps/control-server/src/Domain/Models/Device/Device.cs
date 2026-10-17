@@ -1,4 +1,4 @@
-﻿namespace CentralServer.Modules.Data.Device;
+namespace CentralServer.Modules.Data.Device;
 
 public class Device
 {
