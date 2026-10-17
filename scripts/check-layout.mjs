@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const required = [
-  'apps/control-server/HomeSystem.sln', 'scripts/deployment/compose.yaml', 'README.md',
+  'apps/control-server/HomeSystem.sln', 'scripts/deployment/compose.yaml', 'ReadMe.md',
   'apps/control-server/CentralServer.csproj', 'apps/control-server/src/Program.cs',
   'apps/desktop-agent/PcAgent.csproj', 'apps/desktop-agent/src/Program.cs',
   'apps/display-client/CMakeLists.txt', 'apps/display-client/src/main.cpp',
@@ -13,7 +13,15 @@ const required = [
   'docs/README.md', 'docs/architecture/repository-layout.md',
   'apps/control-server/Dockerfile.artifact', 'apps/web-ui/Dockerfile.artifact',
 ];
-for (const file of required) await access(path.join(root, file));
+for (const file of required) {
+  await access(path.join(root, file));
+  // Windows resolves filenames case-insensitively; Linux CI does not.
+  let directory = root;
+  for (const segment of file.split('/')) {
+    assert.ok((await readdir(directory)).includes(segment), `Incorrect filename casing: ${file}`);
+    directory = path.join(directory, segment);
+  }
+}
 const solutionRoot = path.join(root, 'apps/control-server');
 const solution = await readFile(path.join(solutionRoot, 'HomeSystem.sln'), 'utf8');
 for (const [, project] of solution.matchAll(/"([^"\r\n]+\.csproj)"/g)) {
