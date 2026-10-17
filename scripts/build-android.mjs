@@ -23,8 +23,8 @@ const java =
   android.java ||
   (bundledJava ? path.join(javaRoot, bundledJava) : process.env.JAVA_HOME);
 const ndk = path.join(sdk, "ndk/27.2.12479018");
-const cmake = local.cmake || "cmake";
-const ninja = local.ninja;
+const cmake = process.env.HOMESYSTEM_CMAKE || local.cmake || "cmake";
+const ninja = process.env.HOMESYSTEM_NINJA || local.ninja;
 const requirements = [
   [
     "Qt 6.10 ARM64 WebView",
