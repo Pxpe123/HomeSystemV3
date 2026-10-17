@@ -2,31 +2,33 @@ name: homesystem-v3
 
 services:
   homesystem-server:
-    image: homesystem/control-server:current
-    build:
-      context: ./bundle
-      dockerfile: infra/Dockerfile.server
-    env_file: .server.env
-    ports: ["8080:8080"]
+    image: ${CONTROL_SERVER_IMAGE:?Set the tested ControlServer image}
+    env_file: /opt/stacks/homesystem-v3/.server.env
+    environment:
+      Logging__LogLevel__Microsoft.AspNetCore: Warning
+    ports:
+      - 8080:8080
     volumes:
       - homesystem-data:/var/lib/homesystem
     restart: unless-stopped
-    networks: [homesystem]
+    networks:
+      - homesystem
     healthcheck:
-      test: [CMD-SHELL, "curl --fail --silent http://127.0.0.1:8080/api/health || exit 1"]
-      interval: 15s
+      test:
+        - CMD-SHELL
+        - curl --fail --silent http://127.0.0.1:8080/api/health || exit 1
+      interval: 10s
       timeout: 5s
       start_period: 30s
-      retries: 5
+      retries: 6
 
   homesystem-ui:
-    image: homesystem/web-ui:current
-    build:
-      context: ./bundle
-      dockerfile: infra/Dockerfile.ui
-    ports: ["8088:80"]
+    image: ${WEB_UI_IMAGE:?Set the tested WebUI image}
+    ports:
+      - 8088:80
     restart: unless-stopped
-    networks: [homesystem]
+    networks:
+      - homesystem
     depends_on:
       homesystem-server:
         condition: service_healthy

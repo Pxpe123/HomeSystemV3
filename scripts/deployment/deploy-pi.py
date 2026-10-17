@@ -19,10 +19,22 @@ STACK = Path('/opt/stacks/homesystem-v3')
 SERVICES = ('homesystem-server', 'homesystem-ui')
 
 
-def run(*args, env=None, capture=False):
-    return subprocess.run(args, env=env, check=True, text=True,
-                          stdout=subprocess.PIPE if capture else None).stdout
+def run(*args, env=None):
+    print(f"Running: {' '.join(args)}", flush=True)
 
+    result = subprocess.run(
+        args,
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+
+    if result.stdout:
+        print(result.stdout, flush=True)
+
+    result.check_returncode()
+    return result
 
 def image_for(service):
     name = f'homesystem-v3-{service}-1'
