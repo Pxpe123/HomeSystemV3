@@ -17,6 +17,18 @@ spec.loader.exec_module(deployment)
 
 
 class RolloutTests(unittest.TestCase):
+    def test_command_capture_contract_used_by_image_lookup(self):
+        with patch.object(deployment.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0, 'sha256:image\n')):
+            self.assertEqual(deployment.run('docker', 'inspect', capture=True), 'sha256:image\n')
+
+    def test_latest_gate_rejects_superseded_commit(self):
+        response = unittest.mock.MagicMock()
+        response.__enter__.return_value.read.return_value = b'{"object":{"sha":"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}}'
+        with patch.object(deployment.urllib.request, 'urlopen', return_value=response):
+            deployment.require_latest('owner/repo', 'b' * 40)
+            with self.assertRaisesRegex(RuntimeError, 'refusing stale build'):
+                deployment.require_latest('owner/repo', 'a' * 40)
+
     def test_build_pair_rejects_stale_or_missing_metadata(self):
         build = dict(version='3.0.27', buildId='900.1', commit='a' * 40, builtAtUtc='2026-10-17T17:00:00Z')
         deployment.verify_build_pair(build, dict(build), 'a' * 40)

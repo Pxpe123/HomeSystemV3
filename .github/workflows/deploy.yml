@@ -29,19 +29,16 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
           persist-credentials: false
-      - name: Deploy exact successful commit (skip superseded builds)
+      - name: Deploy latest successful main build
         env:
           DEPLOY_SHA: ${{ github.event.workflow_run.head_sha }}
+          DEPLOY_BUILD_ID: ${{ github.event.workflow_run.id }}.${{ github.event.workflow_run.run_attempt }}
           REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_CONFIG: ${{ runner.temp }}/homesystem-docker
         run: |
           set -euo pipefail
-          if [ "$(git rev-parse origin/main)" != "$DEPLOY_SHA" ]; then
-            echo 'Build superseded by a newer main commit; no deployment.' >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
           mkdir -p "$DOCKER_CONFIG"
           trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
           printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
-          python3 scripts/deployment/deploy-pi.py --repository "$GITHUB_REPOSITORY" --commit "$DEPLOY_SHA"
+          python3 scripts/deployment/deploy-pi.py --repository "$GITHUB_REPOSITORY" --commit "$DEPLOY_SHA" --build-id "$DEPLOY_BUILD_ID" --require-latest
           echo "Deployed commit $DEPLOY_SHA. Server :8080, WebUI :8088; health gates passed." >> "$GITHUB_STEP_SUMMARY"

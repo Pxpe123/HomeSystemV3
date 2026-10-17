@@ -25,7 +25,11 @@ The runner must NOT execute untrusted pull requests: only the separate successfu
 
 ## Status and boundaries
 
-README badges link to Build and Deploy Pi. Opening them shows queued/running jobs and logs. A badge is workflow status, not continuous uptime monitoring. Failed builds never deploy. Superseded main commits are skipped. Deployment jobs serialize without cancelling a rollout midway. Existing `.server.env`, the named `homesystem-data` volume and unrelated containers are preserved. No automatic image pruning is performed.
+Deployment freshness: the helper reads the current `main` SHA directly from GitHub before pulling and again immediately before replacing containers. A superseded build fails without deploying; it never silently falls back to an older successful commit. The final health gate compares server and WebUI version, build ID, commit and UTC build time, and requires the exact triggering workflow run. Commit-tagged images are pulled explicitly, rather than trusting a cached `current`/`latest` tag. The command wrapper supports captured image-ID lookups; offline tests cover this contract so logging changes cannot silently break deployment again.
+
+Build identity is visible under Settings → Connection. CI versions use `3.0.<run number>+<attempt>.<short commit>`; reruns have distinct build IDs. `/api/version` and `/build-info.json` expose immutable server/UI metadata. These timestamps are build stamps, not file modification or application startup times. Matching metadata verifies artifact identity, not every integration's functionality.
+
+README badges link to Build and Deploy Pi. Opening them shows queued/running jobs and logs. A badge is workflow status, not continuous uptime monitoring. Failed builds never deploy. Superseded main commits are rejected with a clear stale-build error. Deployment jobs serialize without cancelling a rollout midway. Existing `.server.env`, the named `homesystem-data` volume and unrelated containers are preserved. No automatic image pruning is performed.
 
 Only ControlServer and WebUI belong in the Pi Docker stack. Windows agent output is a downloadable build artifact, not a Linux container. Qt Windows/Android native binaries still use the existing local build pipeline; this workflow does not build, install or automatically update those binaries. Their hosted WebUI updates on reload without reinstalling the wrapper. An app already open may need a reload. Native client changes and production-signed Android delivery require a separate platform-specific distribution pipeline.
 
