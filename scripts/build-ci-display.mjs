@@ -3,11 +3,19 @@ import {
   mkdirSync,
   readFileSync,
   readdirSync,
+  existsSync,
   writeFileSync,
 } from "node:fs";
 import { createHash } from "node:crypto";
 import path from "node:path";
-import { buildDisplay, deployments, local, run } from "./deployment-tools.mjs";
+import {
+  buildDisplay,
+  displayToolchain,
+  deployments,
+  local,
+  root,
+  run,
+} from "./deployment-tools.mjs";
 import { createBuildInfo } from "../apps/web-ui/scripts/build-info.mjs";
 
 const platform = process.argv[2];
@@ -21,7 +29,32 @@ if (process.platform !== "win32")
 const output = path.join(deployments, "display-client", platform);
 mkdirSync(output, { recursive: true });
 if (platform === "windows") {
-  buildDisplay(output);
+  const tools = displayToolchain();
+  buildDisplay(output, tools);
+  const redist = Object.entries(tools.env).find(
+    ([key]) => key.toLowerCase() === "vctoolsredistdir",
+  )?.[1];
+  if (!redist) throw new Error("MSVC redistributable directory is missing");
+  const redistX64 = path.join(redist, "x64");
+  const crtName = readdirSync(redistX64).find((name) =>
+    /^Microsoft\.VC\d+\.CRT$/i.test(name),
+  );
+  if (!crtName) throw new Error("MSVC x64 CRT package is missing");
+  const crt = path.join(redistX64, crtName);
+  for (const entry of readdirSync(crt).filter((file) => file.endsWith(".dll")))
+    copyFileSync(path.join(crt, entry), path.join(output, "bin", entry));
+  for (const file of ["vcruntime140.dll", "vcruntime140_1.dll", "msvcp140.dll"])
+    if (!existsSync(path.join(output, "bin", file)))
+      throw new Error(`Missing runtime: ${file}`);
+  const compiler =
+    process.env.HOMESYSTEM_ISCC || path.join(local, "tools/inno/ISCC.exe");
+  if (!existsSync(compiler))
+    throw new Error("Run scripts/setup-inno.ps1 before packaging Windows");
+  run(compiler, [
+    `/DPackageRoot=${output}`,
+    `/DPackageVersion=${createBuildInfo().version.split("+")[0].split("-")[0]}`,
+    path.join(root, "apps/display-client/packaging/windows.iss"),
+  ]);
 } else {
   run(process.execPath, ["scripts/build-android.mjs"]);
   copyFileSync(
@@ -54,7 +87,7 @@ function hashes(directory, prefix = "") {
 }
 const files = hashes(output);
 const entrypoint =
-  platform === "windows" ? "bin/HomeSystemV3.exe" : "HomeSystem-debug.apk";
+  platform === "windows" ? "HomeSystem-Setup.exe" : "HomeSystem-debug.apk";
 if (!files.some((file) => file.path === entrypoint && file.bytes > 0))
   throw new Error(`Native build is missing ${entrypoint}`);
 writeFileSync(

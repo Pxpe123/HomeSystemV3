@@ -35,6 +35,7 @@ jobs:
         with:
           global-json-file: apps/control-server/global.json
       - run: node scripts/check-layout.mjs
+      - run: node --test scripts/tests/native-downloads.test.mjs
       - name: Stamp one identity for every build artifact
         id: identity
         run: node apps/web-ui/scripts/build-info.mjs
@@ -126,6 +127,10 @@ jobs:
           modules: ${{ matrix.modules }}
           cache: true
           cache-key-prefix: homesystem-qt-${{ matrix.platform }}
+      - name: Install verified Windows installer compiler
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: ./scripts/setup-inno.ps1
       - name: Package native client and build manifest
         shell: pwsh
         env:
@@ -135,6 +140,30 @@ jobs:
           $env:HOMESYSTEM_QT_ANDROID = $env:QT_ROOT_DIR
           node scripts/build-ci-display.mjs $env:CLIENT_PLATFORM
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Smoke-test Windows installation and runtime loading
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          $installer = Join-Path $env:GITHUB_WORKSPACE 'Deployments/display-client/windows/HomeSystem-Setup.exe'
+          $destination = Join-Path $env:RUNNER_TEMP 'homesystem-install-test'
+          $setup = Start-Process -FilePath $installer -ArgumentList @('/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=`"$destination`"") -Wait -PassThru -WindowStyle Hidden
+          if ($setup.ExitCode -ne 0) { throw "Installer failed: $($setup.ExitCode)" }
+          $client = Join-Path $destination 'bin/HomeSystemV3.exe'
+          $stdout = Join-Path $env:RUNNER_TEMP 'homesystem-client-help.txt'
+          $stderr = Join-Path $env:RUNNER_TEMP 'homesystem-client-errors.txt'
+          $test = Start-Process -FilePath $client -ArgumentList '--help' -Wait -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+          Get-Content -LiteralPath $stdout
+          if ($test.ExitCode -ne 0) { Get-Content -LiteralPath $stderr; throw "Installed Qt client failed: $($test.ExitCode)" }
+          if ((Get-Content -LiteralPath $stdout -Raw) -notmatch 'HomeSystem') { throw 'Client help output is missing' }
+      - name: Verify Android package and signature
+        if: matrix.platform == 'android'
+        shell: pwsh
+        run: |
+          $apk = 'Deployments/display-client/android/HomeSystem-debug.apk'
+          & "$env:ANDROID_SDK_ROOT/build-tools/36.0.0/aapt2.exe" dump badging $apk
+          if ($LASTEXITCODE -ne 0) { throw 'APK metadata validation failed' }
+          & "$env:ANDROID_SDK_ROOT/build-tools/36.0.0/apksigner.bat" verify --verbose $apk
+          if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed' }
       - name: Upload installable client
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -187,3 +216,55 @@ jobs:
       - name: Registry logout
         if: always()
         run: docker logout ghcr.io
+
+  client-downloads:
+    name: Publish direct APK and Windows installer downloads
+    needs: [checks, display-clients, containers]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      HOMESYSTEM_BUILD_VERSION: ${{ needs.checks.outputs.version }}
+      HOMESYSTEM_BUILD_ID: ${{ needs.checks.outputs.build-id }}
+      HOMESYSTEM_BUILD_COMMIT: ${{ needs.checks.outputs.commit }}
+      HOMESYSTEM_BUILD_TIME_UTC: ${{ needs.checks.outputs.built-at }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "22"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: display-client-*
+          path: .local/client-downloads
+      - name: Verify and prepare direct download assets
+        run: |
+          node --test scripts/tests/native-downloads.test.mjs
+          node scripts/prepare-client-downloads.mjs .local/client-downloads
+      - name: Publish complete build as latest development download
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          latest=$(gh api "repos/$GH_REPO/commits/main" --jq .sha)
+          if [ "$latest" != "$GITHUB_SHA" ]; then
+            echo "Main has advanced; leave downloads on the previous successful build."
+            exit 0
+          fi
+          tag="build-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          gh release create "$tag" .local/client-downloads/release/* \
+            --target "$GITHUB_SHA" --draft \
+            --title "Development build $HOMESYSTEM_BUILD_VERSION" \
+            --notes "Test build of commit $GITHUB_SHA, built $HOMESYSTEM_BUILD_TIME_UTC. Download HomeSystem-debug.apk directly on Android, or HomeSystem-Setup.exe on Windows x64; no ZIP extraction required. Android is debug-signed and Windows is unsigned. Checksums and build metadata are attached. This is not a production-signed release."
+          latest=$(gh api "repos/$GH_REPO/commits/main" --jq .sha)
+          if [ "$latest" != "$GITHUB_SHA" ]; then
+            echo "Main advanced during upload; retain this draft without changing public downloads."
+            exit 0
+          fi
+          gh release edit "$tag" --draft=false --latest
+          echo "Direct APK/EXE downloads published: https://github.com/$GH_REPO/releases/tag/$tag" >> "$GITHUB_STEP_SUMMARY"

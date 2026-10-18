@@ -36,13 +36,17 @@ Only ControlServer and WebUI belong in the Pi Docker stack. Windows agent output
 
 ## Download native clients
 
-Open **Actions → Build → a successful run → Artifacts** while signed into GitHub:
+Use the large **Download Android APK** and **Download Windows EXE** buttons at the top of the repository README. They resolve to assets on the latest published development build: `HomeSystem-debug.apk` and `HomeSystem-Setup.exe`. No ZIP extraction is needed. Windows uses a per-user installer containing Qt/WebEngine and app-local MSVC runtime DLLs; it creates a Start menu entry and uninstaller without requesting administrator access. Both packages are testing builds, not production-signed releases; Windows may warn about an unsigned installer.
 
-- `display-client-windows`: extract the entire ZIP and run `bin/HomeSystemV3.exe`. Keep its DLLs, plugins, resources and WebEngine helper alongside it; the EXE alone is not portable. This is a Release build, not a signed installer.
+The `client-downloads` job runs only for trusted `main` builds after checks, both native jobs and both container jobs succeed. It verifies artifact checksums and shared build identities before uploading binaries, manifests and `SHA256SUMS.txt` to a draft release. Only a complete upload is published and marked latest; existing public downloads remain until then. Each release uses a new build/run-attempt tag pointing to the exact commit; it does not move old tags or overwrite old assets. The publisher refuses to promote a superseded main commit. Download URLs work after the first successful publishing run. Releases are marked latest for stable direct links, but explicitly labelled development/testing builds, not production readiness. Only this publishing job receives repository write permission.
+
+For portable files or individual job diagnostics, open **Actions → Build → a successful run → Artifacts** while signed into GitHub:
+
+- `display-client-windows`: includes `HomeSystem-Setup.exe`, plus the portable `bin/` tree. For portable use, extract the entire ZIP and run `bin/HomeSystemV3.exe`. Keep its DLLs, plugins, resources and WebEngine helper alongside it; that EXE alone is not portable.
 - `display-client-android`: extract `HomeSystem-debug.apk` and install it on an ARM64 Android device such as the S24 FE. Minimum API 28, target API 36. This is explicitly a debug-signed testing APK, not a Play Store release.
 - `application-builds`: server, desktop agent and WebUI output from the existing checks job.
 
-Native artifacts are retained for 14 days. Each contains `build-info.json` with the shared workflow version, commit, build ID/time and SHA256 file checksums. The Android job installs JDK 17, SDK platform/build-tools 36 and NDK 27.2.12479018; it explicitly accepts SDK licences on the disposable CI runner. Qt's Android installer supplies matching host tools. Actions are SHA-pinned and caches hold toolchains only, not account data or signing secrets.
+Native Actions artifacts are retained for 14 days; published release assets remain until explicitly removed. Each contains `build-info.json` with the shared workflow version, commit, build ID/time and SHA256 file checksums. The Android job installs JDK 17, SDK platform/build-tools 36 and NDK 27.2.12479018; it explicitly accepts SDK licences on the disposable CI runner. Qt's Android installer supplies matching host tools. The Windows installer compiler is Inno Setup 7.1.0, downloaded from its official release and checked against a pinned SHA256 before installation into ignored local tooling. Actions are SHA-pinned and caches hold toolchains only, not account data or signing secrets.
 
 GitHub creates a fresh Android debug key on each clean runner. Consequently, replacing an APK from another run/local machine may require uninstalling the old testing app (which removes its native settings). Stable signing across updates is intentionally not claimed; configure a protected owned signing key before production distribution. GitHub artifact download is not an app-update service.
 

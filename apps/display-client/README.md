@@ -31,7 +31,9 @@ Run from repo root. Test APK: .local/packages/display-client/android-arm64-debug
 
 ## GitHub downloads
 
-The Build workflow has Qt Windows x64 and Android ARM64 jobs on GitHub-hosted Windows runners. Open **Actions → Build → successful run → Artifacts**, then download `display-client-windows` or `display-client-android`. Windows includes its Qt/WebEngine runtime; extract the whole ZIP and launch `bin/HomeSystemV3.exe`. Android contains `HomeSystem-debug.apk`. Each artifact includes shared build metadata and file checksums, and is retained for 14 days. See [CI toolchains and signing limitations](../../docs/guides/GitHub-Deployment.md#download-native-clients).
+Use the direct APK/Windows EXE buttons at the top of the root README. Successful main builds publish `HomeSystem-debug.apk` and `HomeSystem-Setup.exe` as release assets, with metadata and checksums. The Windows per-user installer includes Qt/WebEngine and MSVC runtime DLLs; no ZIP extraction or administrator access is needed. Windows remains unsigned and Android debug-signed.
+
+The Build workflow also has Qt Windows x64 and Android ARM64 artifacts on GitHub-hosted Windows runners. Open **Actions → Build → successful run → Artifacts**, then download `display-client-windows` or `display-client-android`. For portable Windows use, extract the whole ZIP and launch `bin/HomeSystemV3.exe`. Each artifact includes shared build metadata and file checksums, and is retained for 14 days. See [CI toolchains and signing limitations](../../docs/guides/GitHub-Deployment.md#download-native-clients).
 
 Enable Developer options / USB debugging on the S24 FE and approve this computer on the phone. Then install the test APK with Android Studio/Qt Creator or `adb install -r <APK>`. No phone was connected during verification, and no device install was performed. Use your PC/server LAN address, not 127.0.0.1, when entering the display URL on the phone.
 

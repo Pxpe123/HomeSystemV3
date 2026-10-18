@@ -1,5 +1,10 @@
 # HomeSystem V3
 
+[![Download Android APK](https://img.shields.io/badge/Download-Android_APK-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/Pxpe123/HomeSystemV3/releases/latest/download/HomeSystem-debug.apk)
+[![Download Windows EXE](https://img.shields.io/badge/Download-Windows_EXE-0078D4?style=for-the-badge)](https://github.com/Pxpe123/HomeSystemV3/releases/latest/download/HomeSystem-Setup.exe)
+
+**Direct downloads—no ZIP extraction.** Android ARM64 testing APK · Windows x64 installer with Qt/WebEngine included. Development builds: Android is debug-signed; Windows is unsigned and may show a security warning. [Build details and checksums](https://github.com/Pxpe123/HomeSystemV3/releases/latest).
+
 [![Build](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/build.yml)
 [![Deploy Pi](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/deploy.yml/badge.svg)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/deploy.yml)
 [![CodeQL Advanced](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/codeql.yml/badge.svg)](https://github.com/Pxpe123/HomeSystemV3/actions/workflows/codeql.yml)
